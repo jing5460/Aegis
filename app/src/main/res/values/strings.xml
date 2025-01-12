@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" translatable="false">Aegis</string>
     <string name="app_name_full" translatable="false">Aegis Authenticator</string>
     <string name="org_name_full" translatable="false">Beem Development</string>
@@ -12,6 +12,7 @@
     <string name="action_default_icon">Restore default icon</string>
     <string name="discard">Discard</string>
     <string name="save">Save</string>
+    <string name="all">All</string>
     <string name="issuer">Issuer</string>
     <string name="yandex_pin">PIN (4–16 digits)</string>
     <string name="motp_pin">PIN (4 digits)</string>
@@ -31,11 +32,15 @@
     <string name="pref_section_security_summary">Configure encryption, biometric unlock, auto lock and other security settings.</string>
     <string name="pref_section_import_export_title">Import &amp; Export</string>
     <string name="pref_section_import_export_summary">Import backups of Aegis or other authenticator apps. Create manual exports of your Aegis vault.</string>
+    <string name="pref_section_audit_log_title">Audit log</string>
+    <string name="pref_section_audit_log_summary">Find a list of all reported important events that happened within the app.</string>
     <string name="pref_section_backups_title">Backups</string>
     <string name="pref_section_backups_summary">Set up automatic backups to a location of your choosing or enable participation in Android\'s cloud backup system.</string>
     <string name="pref_section_icon_packs">Icon packs</string>
     <string name="pref_section_icon_packs_summary">Manage and import icon packs</string>
     <string name="pref_select_theme_title">Theme</string>
+    <string name="pref_dynamic_colors_title">Dynamic colors</string>
+    <string name="pref_dynamic_colors_summary">Apply an overlay based on the colors of your Android theme</string>
     <string name="pref_view_mode_title">View mode</string>
     <string name="pref_lang_title">Language</string>
     <string name="pref_show_icons_title">Show icons</string>
@@ -43,9 +48,14 @@
     <string name="pref_code_group_size_title">Code digit grouping</string>
     <string name="pref_code_group_size_summary">Select number of digits to group codes by</string>
     <string name="pref_account_name_position_title">Show the account name</string>
+    <string name="pref_show_next_code_title">Show next code</string>
+    <string name="pref_show_next_code_summary">Generate and show the next code ahead of time</string>
+    <string name="pref_expiration_state_title">Indicate when codes are about to expire</string>
+    <string name="pref_expiration_state_summary">Change the color of the codes and have them blink when they are about to expire</string>
+    <string name="pref_expiration_state_fallback">Change the color of the codes when they are about to expire</string>
     <string name="pref_shared_issuer_account_name_title">Only show account name when necessary</string>
     <string name="pref_shared_issuer_account_name_summary">Only show account names whenever they share the same issuer. Other account names will be hidden.</string>
-    <string name="pref_account_name_position_summary_override">This setting is overridden by the tiles view mode. Account name will always be shown below the issuer.</string>
+    <string name="pref_account_name_position_summary_override">This setting is overridden by the tiles view mode. Account name will be shown below the issuer.</string>
     <string name="pref_import_file_title">Import from file</string>
     <string name="pref_import_file_summary">Import tokens from a file</string>
     <string name="pref_android_backups_title">Android cloud backups</string>
@@ -57,15 +67,23 @@
     <string name="pref_backups_reminder_summary">Show a reminder to backup your vault in case you haven\'t backed up your latest changes.</string>
     <string name="pref_backups_reminder_dialog_title">Disable backup reminder</string>
     <string name="pref_backups_reminder_dialog_summary">Disabling this reminder means Aegis won\'t tell you whether or not you have changes that are not backed up yet. This puts you at risk of losing access to your tokens. Are you sure you want to disable the reminder?</string>
-    <string name="pref_backups_location_title">Directory for backup files</string>
+    <string name="pref_backups_versioning_strategy_title">Backup strategy</string>
+    <string name="pref_backups_versioning_strategy_keep_x_versions">Keep a number of versions</string>
+    <string name="pref_backups_versioning_strategy_single_backup">Single backup</string>
+    <string name="pref_backups_versioning_strategy_single_backup_warning">The selected backup strategy is not reliable and not recommended. A single backup failure could lead to losing your only backup.</string>
+    <string name="pref_backups_versioning_strategy_dialog_title">Select a backup strategy</string>
+    <string name="pref_backups_location_title">Backup location</string>
     <string name="pref_backups_location_summary">Backups will be stored at</string>
+    <string name="pref_backup_location_summary">Backup will be stored at</string>
     <string name="pref_backups_trigger_title">Trigger backup</string>
     <string name="pref_backups_trigger_summary">Manually trigger a backup</string>
     <string name="pref_backups_versions_title">Number of versions to keep</string>
+    <string name="pref_backups_versions_infinite">\u221E</string>
     <plurals name="pref_backups_versions_summary">
         <item quantity="one">Keep %1$d version of the backup</item>
         <item quantity="other">Keep %1$d versions of the backup</item>
     </plurals>
+    <string name="pref_backups_versions_infinite_summary">Keep an infinite number of versions of the backup</string>
     <string name="pref_import_app_title">Import from app</string>
     <string name="pref_import_app_summary">Import tokens from an app (requires root access)</string>
     <string name="pref_export_title">Export</string>
@@ -101,8 +119,36 @@
     <string name="pref_encryption_summary">Encrypt the vault and unlock it with a password or biometrics</string>
     <string name="pref_biometrics_title">Biometric unlock</string>
     <string name="pref_biometrics_summary">Allow biometric authentication to unlock the vault</string>
+    <string name="pref_search_behavior_summary">Search through: %s</string>
+    <string name="pref_search_behavior_prompt">Search in any of the following fields</string>
+    <string name="pref_search_behavior_type_name">Name</string>
+    <string name="pref_search_behavior_type_issuer">Issuer</string>
+    <string name="pref_search_behavior_type_note">Note</string>
+    <string name="pref_search_behavior_type_groups">Groups</string>
     <string name="pref_set_password_title">Change password</string>
     <string name="pref_set_password_summary">Set a new password which you will need to unlock your vault</string>
+
+    <string name="no_events_title">No reported events</string>
+    <string name="no_events_description">No important events have been reported within the app</string>
+    <string name="event_title_vault_unlocked">Vault unlocked</string>
+    <string name="event_description_vault_unlocked">The vault has been successfully unlocked</string>
+    <string name="event_title_backup_created">Backup created</string>
+    <string name="event_description_backup_created">A backup of the vault has been successfully created</string>
+    <string name="event_title_android_backup_created">Backup created by Android</string>
+    <string name="event_description_android_backup_created">A backup of the vault has been successfully created by Android</string>
+    <string name="event_title_vault_exported">Vault exported</string>
+    <string name="event_description_vault_exported">A copy of the vault has been exported</string>
+    <string name="event_title_entry_shared">Entry shared</string>
+    <string name="event_description_entry_shared">An entry was shared</string>
+    <string name="event_title_vault_unlock_failed_password">Vault unlock failed (password)</string>
+    <string name="event_description_vault_unlock_failed_password">An attempt to unlock the vault with a password failed</string>
+    <string name="event_title_vault_unlock_failed_biometrics">Vault unlock failed (biometrics)</string>
+    <string name="event_description_vault_unlock_failed_biometrics">An attempt to unlock the vault with biometrics failed</string>
+    <string name="event_unknown">Unknown event type</string>
+    <string name="audit_log_entry_deleted">(deleted)</string>
+
+    <string name="today_at_time">Today at %1$s</string>
+    <string name="day_of_week_at_time">%1$s at %2$s</string>
 
     <string name="export_encrypted">Encrypt the vault</string>
     <string name="export_help">This action will export the vault out of Aegis\' internal storage. Select the format you\'d like your export to be in:</string>
@@ -173,6 +219,9 @@
     <string name="edit">Edit</string>
     <string name="select_all">Select all</string>
     <string name="assign_icons">Assign icons</string>
+    <string name="assign_groups">Assign to group</string>
+    <string name="assign_groups_dialog_summary">Select a group you wish to assign the selected entries to.</string>
+    <string name="assign_groups_dialog_dropdown">Select group</string>
     <string name="favorite" comment="Verb">Favorite</string>
     <string name="unfavorite" comment="Verb">Unfavorite</string>
     <string name="error_all_caps">ERROR</string>
@@ -187,10 +236,12 @@
     <string name="snackbar_authentication_method">Please select an authentication method</string>
     <string name="encrypting_vault">Encrypting the vault</string>
     <string name="exporting_vault">Exporting the vault</string>
+    <string name="optimizing_icon">Optimizing icon</string>
+    <string name="optimizing_icon_multiple">Optimizing icons %1$d/%2$d</string>
     <string name="reading_file">Reading file</string>
     <string name="requesting_root_access">Requesting root access</string>
     <string name="analyzing_qr">Analyzing QR code</string>
-    <string name="analyzing_qr_multiple">Analyzing QR code %d/%d (%s)</string>
+    <string name="analyzing_qr_multiple">Analyzing QR code %1$d/%2$d (%3$s)</string>
     <plurals name="added_new_entries">
         <item quantity="one">Added %d new entry to the vault</item>
         <item quantity="other">Added %d new entries to the vault</item>
@@ -216,6 +267,7 @@
     <string name="copied">Copied</string>
     <string name="errors_copied">Errors copied to the clipboard</string>
     <string name="version_copied">Version copied to the clipboard</string>
+    <string name="error_required_field">This field is required</string>
     <string name="error_occurred">An error occurred</string>
     <string name="decryption_error">An error occurred while trying to unlock the vault</string>
     <string name="decryption_corrupt_error">An error occurred while trying to unlock the vault. Your vault file might be corrupt.</string>
@@ -279,11 +331,16 @@
     <string name="partial_google_auth_import">Incomplete Google Authenticator export detected</string>
     <string name="partial_google_auth_import_warning">Some QR codes are missing from your import. The following codes were not found:\n\n<b>%s</b>\n\nYou may continue importing this partial export but we recommend retrying with all of the QR codes so you don\'t risk losing access to any tokens.</string>
     <string name="missing_qr_code_descriptor">• QR code %d</string>
-    <string name="import_partial_export_anyway">Import %d tokens anyway</string>
+    <plurals name="import_partial_export_anyway">
+        <item quantity="one">Import %d token anyway</item>
+        <item quantity="other">Import %d tokens anyway</item>
+    </plurals>
     <string name="import_google_auth_failure">Importing Google Authenticator export failed</string>
     <string name="unrelated_google_auth_batches_error">Export contains information for an unrelated batch. Try importing 1 batch at a time.</string>
     <string name="no_tokens_can_be_imported">No tokens can be imported as a result</string>
     <string name="unlocking_vault">Unlocking the vault</string>
+    <string name="rename_group">Rename Group</string>
+    <string name="no_group_selection">If an entry is not part of any group, it can be found under \"No group\".</string>
     <string name="remove_group">Remove group</string>
     <string name="remove_group_description">Are you sure you want to remove this group? Entries in this group will automatically switch to \'No group\'.</string>
     <string name="remove_unused_groups">Delete unused groups</string>
@@ -301,7 +358,10 @@
     <string name="sort_alphabetically_name">Account (A to Z)</string>
     <string name="sort_alphabetically_name_reverse">Account (Z to A)</string>
     <string name="sort_usage_count">Usage count</string>
+    <string name="sort_last_used">Last used</string>
     <string name="sort_custom">Custom</string>
+    <string name="last_used">Last used</string>
+    <string name="last_used_never">never</string>
     <string name="new_group">New group…</string>
     <string name="group">Group</string>
     <string name="group_name_hint">Group name</string>
@@ -318,6 +378,7 @@
     <string name="pref_minimize_on_copy_title">Minimize on copy</string>
     <string name="pref_minimize_on_copy_summary">Minimize the app after copying a token</string>
     <string name="pref_copy_behavior_title">Copy tokens to the clipboard</string>
+    <string name="pref_search_behavior_title">Search behavior</string>
     <string name="pref_pause_entry_title">Freeze tokens when tapped</string>
     <string name="pref_pause_entry_summary">Pause automatic refresh of tokens by tapping them. Tokens will not update as long as they are focused. Requires \"Highlight tokens when tapped\" or \"Tap to reveal\".</string>
 
@@ -344,7 +405,7 @@
     <string name="unable_to_process_deeplink">Unable to process deep link</string>
     <string name="unable_to_read_qrcode_file">Unable to read and process QR code from file: %s.</string>
     <string name="unable_to_process_shared_text">Unable to process shared text as OTP</string>
-    <string name="unable_to_read_qrcode_files">Unable to read and process some of the QR codes. Only %d/%d entries will be imported.</string>
+    <string name="unable_to_read_qrcode_files">Unable to read and process some of the QR codes. Only %1$d/%2$d entries will be imported.</string>
     <string name="unable_to_generate_qrcode">Unable to generate QR code</string>
     <string name="select_picture">Select picture</string>
     <string name="select_icon">Select icon</string>
@@ -380,20 +441,20 @@
     <string name="time_sync_warning_disable">Stop warning me. I know what I\'m doing.</string>
     <string name="google_qr_export_unrelated">Unrelated QR code found. Try restarting the scanner.</string>
     <plurals name="google_qr_export_scanned">
-        <item quantity="one">Scanned %d/%d QR codes</item>
-        <item quantity="other">Scanned %d/%d QR codes</item>
+        <item quantity="one">Scanned %1$d/%2$d QR codes</item>
+        <item quantity="other">Scanned %1$d/%2$d QR codes</item>
     </plurals>
-    <string name="google_qr_export_unexpected">Expected QR code #%d, but scanned #%d instead</string>
+    <string name="google_qr_export_unexpected">Expected QR code #%1$d, but scanned #%2$d instead</string>
     <string name="backup_error_bar_message"><b>Vault backup failed recently</b></string>
     <string
         name="backup_error_dialog_details"
         comment="The first parameter is the type of backup (e.g. built-in or Android backup). The second parameter is an elapsed time in the style of 'x seconds/minutes/days ago'.">
-        A recent vault backup attempt using %s failed because an error occurred. The backup was attempted %s. Please check your backup settings to make sure backups can complete successfully.
+        A recent vault backup attempt using %1$s failed because an error occurred. The backup was attempted %2$s. Please check your backup settings to make sure backups can complete successfully.
     </string>
     <string
         name="backup_permission_error_dialog_details"
         comment="The first parameter is the type of backup (e.g. built-in or Android backup). The second parameter is an elapsed time in the style of 'x seconds/minutes/days ago'.">
-        A recent vault backup attempt using %s failed because Aegis did not have permission to write to the backup destination. The backup was attempted %s. This error can occur if you moved/renamed the backup destination or if you recently restored Aegis from a backup. Please reconfigure the backup destination.
+        A recent vault backup attempt using %1$s failed because Aegis did not have permission to write to the backup destination. The backup was attempted %2$s. This error can occur if you moved/renamed the backup destination or if you recently restored Aegis from a backup. Please reconfigure the backup destination.
     </string>
     <string name="backup_system_builtin">Aegis\' built-in automatic backups</string>
     <string name="backup_system_android">Android\'s cloud backup system</string>
@@ -415,22 +476,6 @@
     <string name="backup_plaintext_warning_explanation">This warning is shown because you recently exported an unencrypted copy of the vault. To maintain security of your tokens, we recommend deleting this file once it\'s no longer needed.</string>
     <string name="switch_camera">Switch camera</string>
 
-    <string name="custom_notices_format_style" translatable="false" >
-        body {
-            background-color: #%1$s;
-            color: #%2$s;
-            font-family: sans-serif;
-            overflow-wrap: break-word;
-        }
-        pre {
-            background-color: #%3$s;
-            padding: 1em;
-            white-space: pre-wrap;
-        }
-        a {
-            color: #%4$s;
-        }
-    </string>
     <string name="empty_list">There are no codes to be shown. Start adding entries by tapping the plus sign in the bottom right corner</string>
     <string name="empty_list_title">No entries found</string>
     <string name="empty_group_list">There are no groups to be shown. Add groups in the edit screen of an entry</string>
@@ -449,7 +494,6 @@
     <string name="copy_uri">Copy URI</string>
     <string name="unable_to_copy_uri_to_clipboard">Unable to copy URI to clipboard</string>
     <string name="uri_copied_to_clipboard">URI copied to clipboard</string>
-    <string name="transfer_entry">Transfer entry</string>
     <string name="transfer_entry_description">Scan this QR code with the authenticator app you would like to transfer this entry to</string>
     <string name="google_auth_compatible_transfer_description">Scan these QR codes with Aegis or Google Authenticator.\n\nDue to limitations of the Google Authenticator app, only TOTP &amp; HOTP tokens that use SHA1 and produce 6-digit codes are included</string>
 
@@ -458,6 +502,7 @@
     <string name="password_strength_fair">Fair</string>
     <string name="password_strength_good">Good</string>
     <string name="password_strength_strong">Strong</string>
+    <string name="password_strength_unknown">Password too long for strength analysis</string>
     <string name="pref_pin_keyboard_title">Use PIN keyboard on lockscreen</string>
     <string name="pref_pin_keyboard_summary">Enable this if you want to enable the PIN keyboard on the lockscreen. This only works for numeric passwords</string>
 
@@ -469,6 +514,7 @@
     <string name="title_activity_scan_qr">Scan a QR code</string>
     <string name="title_activity_import_entries">Import entries</string>
     <string name="title_activity_assign_icons">Assign icons</string>
+    <string name="title_activity_licenses">Third-party licenses</string>
     <string name="dialog_wipe_entries_title">Wipe entries</string>
     <string name="dialog_wipe_entries_message">Your vault already contains entries. Do you want to remove these entries before importing this file?\n\n<b>In doing so, you will permanently lose access to the existing entries in the vault.</b></string>
     <string name="dialog_wipe_entries_checkbox">Wipe vault contents</string>
@@ -486,18 +532,21 @@
     <string name="importer_help_2fas">Supply a 2FAS Authenticator backup file.</string>
     <string name="importer_help_aegis">Supply an Aegis export/backup file.</string>
     <string name="importer_help_authenticator_plus">Supply an Authenticator Plus export file obtained through <b>Settings -> Backup &amp; Restore -> Export as Text and HTML</b>.</string>
-    <string name="importer_help_authenticator_pro">Supply an Authenticator Pro export file obtained through <b>Settings -> Back up -> Back up to encrypted file (recommended)</b>.</string>
     <string name="importer_help_authy">Supply a copy of <b>/data/data/com.authy.authy/shared_prefs/com.authy.storage.tokens.authenticator.xml</b>, located in the internal storage directory of Authy.</string>
     <string name="importer_help_andotp">Supply an andOTP export/backup file.</string>
     <string name="importer_help_bitwarden">Supply a Bitwarden export/backup file. Encrypted files are not supported.</string>
-    <string name="importer_help_battle_net_authenticator">Supply a copy of <b>/data/data/com.blizzard.bma/shared_prefs/com.blizzard.bma.AUTH_STORE.xml</b>, located in the internal storage directory of Battle.net Authenticator.</string>
+    <string name="importer_help_battle_net_authenticator">Supply a copy of <b>/data/data/com.blizzard.messenger/shared_prefs/com.blizzard.messenger.authenticator_preferences.xml</b>, located in the internal storage directory of Battle.net Authenticator.</string>
     <string name="importer_help_duo">Supply a copy of <b>/data/data/com.duosecurity.duomobile/files/duokit/accounts.json</b>, located in the internal storage directory of DUO.</string>
-    <string name="importer_help_freeotp">Supply a copy of <b>/data/data/org.fedorahosted.freeotp/shared_prefs/tokens.xml</b>, located in the internal storage directory of FreeOTP (1.x).</string>
+    <string name="importer_help_ente_auth">Supply an Ente Auth export file. Currently only unencrypted files are supported.</string>
+    <string name="importer_help_freeotp">FreeOTP 2: Supply a backup file.\nFreeOTP 1.x: Supply a copy of <b>/data/data/org.fedorahosted.freeotp/shared_prefs/tokens.xml</b>, located in the internal storage directory of FreeOTP.</string>
     <string name="importer_help_freeotp_plus">Supply a FreeOTP+ export file.</string>
+    <string name="importer_warning_title_freeotp2">FreeOTP 2 compatibility</string>
+    <string name="importer_warning_message_freeotp2">There are a number of issues in FreeOTP 2 that can result in corrupt backups. Aegis will try to salvage as many entries as possible, but it\'s possible that some or even all of them fail to import.</string>
     <string name="importer_help_google_authenticator"><b>Only database files from Google Authenticator v5.10 and prior are supported</b>.\n\nSupply a copy of <b>/data/data/com.google.android.apps.authenticator2/databases/databases</b>, located in the internal storage directory of Google Authenticator.</string>
     <string name="importer_help_microsoft_authenticator">Supply a copy of <b>/data/data/com.azure.authenticator/databases/PhoneFactor</b>, located in the internal storage directory of Microsoft Authenticator.</string>
     <string name="importer_help_plain_text">Supply a plain text file with a Google Authenticator URI on each line.</string>
     <string name="importer_help_steam"><b>Steam v3.0 and newer are not supported</b>. Supply a copy of <b>/data/data/com.valvesoftware.android.steam.community/files/Steamguard-*.json</b>, located in the internal storage directory of Steam.</string>
+    <string name="importer_help_stratum">Supply a Stratum export file obtained through <b>Settings -> Back up -> Back up to encrypted file (recommended)</b>.</string>
     <string name="importer_help_totp_authenticator">Supply a TOTP Authenticator export file.</string>
     <string name="importer_help_winauth">Supply a WinAuth export file.</string>
     <string name="import_assign_icons_dialog_title">Assign icons</string>
@@ -524,23 +573,23 @@
     <string name="pref_account_name_position_end">Next to the issuer</string>
     <string name="pref_account_name_position_below">Below the issuer</string>
 
-    <plurals name="time_elapsed_seconds">
+    <plurals name="time_elapsed_seconds" tools:ignore="UnusedResources">
         <item quantity="one">%d second ago</item>
         <item quantity="other">%d seconds ago</item>
     </plurals>
-    <plurals name="time_elapsed_minutes">
+    <plurals name="time_elapsed_minutes" tools:ignore="UnusedResources">
         <item quantity="one">%d minute ago</item>
         <item quantity="other">%d minutes ago</item>
     </plurals>
-    <plurals name="time_elapsed_hours">
+    <plurals name="time_elapsed_hours" tools:ignore="UnusedResources">
         <item quantity="one">%d hour ago</item>
         <item quantity="other">%d hours ago</item>
     </plurals>
-    <plurals name="time_elapsed_days">
+    <plurals name="time_elapsed_days" tools:ignore="UnusedResources">
         <item quantity="one">%d day ago</item>
         <item quantity="other">%d days ago</item>
     </plurals>
-    <plurals name="time_elapsed_years">
+    <plurals name="time_elapsed_years" tools:ignore="UnusedResources">
         <item quantity="one">%d year ago</item>
         <item quantity="other">%d years ago</item>
     </plurals>

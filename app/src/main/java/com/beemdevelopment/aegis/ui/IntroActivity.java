@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.beemdevelopment.aegis.R;
-import com.beemdevelopment.aegis.ThemeMap;
 import com.beemdevelopment.aegis.ui.dialogs.Dialogs;
 import com.beemdevelopment.aegis.ui.intro.IntroBaseActivity;
 import com.beemdevelopment.aegis.ui.intro.SlideFragment;
@@ -21,7 +20,9 @@ import com.beemdevelopment.aegis.ui.slides.DoneSlide;
 import com.beemdevelopment.aegis.ui.slides.SecurityPickerSlide;
 import com.beemdevelopment.aegis.ui.slides.SecuritySetupSlide;
 import com.beemdevelopment.aegis.ui.slides.WelcomeSlide;
+import com.beemdevelopment.aegis.vault.VaultFile;
 import com.beemdevelopment.aegis.vault.VaultFileCredentials;
+import com.beemdevelopment.aegis.vault.VaultRepository;
 import com.beemdevelopment.aegis.vault.VaultRepositoryException;
 import com.beemdevelopment.aegis.vault.slots.BiometricSlot;
 import com.beemdevelopment.aegis.vault.slots.PasswordSlot;
@@ -38,11 +39,6 @@ public class IntroActivity extends IntroBaseActivity {
         addSlide(SecurityPickerSlide.class);
         addSlide(SecuritySetupSlide.class);
         addSlide(DoneSlide.class);
-    }
-
-    @Override
-    protected void onSetTheme() {
-        setTheme(ThemeMap.NO_ACTION_BAR);
     }
 
     @Override
@@ -108,8 +104,17 @@ public class IntroActivity extends IntroBaseActivity {
                 return;
             }
         } else {
+            VaultFile vaultFile;
             try {
-                _vaultManager.load(creds);
+                vaultFile = VaultRepository.readVaultFile(this);
+            } catch (VaultRepositoryException e) {
+                e.printStackTrace();
+                Dialogs.showErrorDialog(this, R.string.vault_load_error, e);
+                return;
+            }
+
+            try {
+                _vaultManager.loadFrom(vaultFile, creds);
             } catch (VaultRepositoryException e) {
                 e.printStackTrace();
                 Dialogs.showErrorDialog(this, R.string.vault_load_error, e);

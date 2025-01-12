@@ -5,8 +5,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.text.InputType;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
@@ -21,6 +19,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +29,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 
+import com.beemdevelopment.aegis.BackupsVersioningStrategy;
 import com.beemdevelopment.aegis.Preferences;
 import com.beemdevelopment.aegis.R;
 import com.beemdevelopment.aegis.helpers.EditTextHelper;
@@ -40,10 +41,9 @@ import com.beemdevelopment.aegis.vault.VaultEntry;
 import com.beemdevelopment.aegis.vault.slots.PasswordSlot;
 import com.beemdevelopment.aegis.vault.slots.Slot;
 import com.beemdevelopment.aegis.vault.slots.SlotException;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.nulabinc.zxcvbn.Strength;
-import com.nulabinc.zxcvbn.Zxcvbn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,9 +87,10 @@ public class Dialogs {
         }
         textMessage.setText(message);
 
-        showSecureDialog(new AlertDialog.Builder(context)
+        showSecureDialog(new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Aegis_AlertDialog_Warning)
                 .setTitle(title)
                 .setView(view)
+                .setIconAttribute(android.R.attr.alertDialogIcon)
                 .setPositiveButton(android.R.string.yes, onDelete)
                 .setNegativeButton(android.R.string.no, null)
                 .create());
@@ -108,16 +109,16 @@ public class Dialogs {
     }
 
     public static void showDiscardDialog(Context context, DialogInterface.OnClickListener onSave, DialogInterface.OnClickListener onDiscard) {
-        showSecureDialog(new AlertDialog.Builder(context)
+        showSecureDialog(new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Aegis_AlertDialog_Warning)
                 .setTitle(context.getString(R.string.discard_changes))
                 .setMessage(context.getString(R.string.discard_changes_description))
+                .setIconAttribute(android.R.attr.alertDialogIcon)
                 .setPositiveButton(R.string.save, onSave)
                 .setNegativeButton(R.string.discard, onDiscard)
                 .create());
     }
 
     public static void showSetPasswordDialog(ComponentActivity activity, PasswordSlotListener listener) {
-        Zxcvbn zxcvbn = new Zxcvbn();
         View view = activity.getLayoutInflater().inflate(R.layout.dialog_password, null);
         EditText textPassword = view.findViewById(R.id.text_password);
         EditText textPasswordConfirm = view.findViewById(R.id.text_password_confirm);
@@ -125,6 +126,8 @@ public class Dialogs {
         TextView textPasswordStrength = view.findViewById(R.id.text_password_strength);
         TextInputLayout textPasswordWrapper = view.findViewById(R.id.text_password_wrapper);
         CheckBox switchToggleVisibility = view.findViewById(R.id.check_toggle_visibility);
+        PasswordStrengthHelper passStrength = new PasswordStrengthHelper(
+                textPassword, barPasswordStrength, textPasswordStrength, textPasswordWrapper);
 
         switchToggleVisibility.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
@@ -138,7 +141,7 @@ public class Dialogs {
             }
         });
 
-        AlertDialog dialog = new AlertDialog.Builder(activity)
+        AlertDialog dialog = new MaterialAlertDialogBuilder(activity)
                 .setTitle(R.string.set_password)
                 .setView(view)
                 .setPositiveButton(android.R.string.ok, null)
@@ -180,13 +183,7 @@ public class Dialogs {
         TextWatcher watcher = new SimpleTextWatcher(text -> {
             boolean equal = EditTextHelper.areEditTextsEqual(textPassword, textPasswordConfirm);
             buttonOK.get().setEnabled(equal);
-
-            Strength strength = zxcvbn.measure(textPassword.getText());
-            barPasswordStrength.setProgress(strength.getScore());
-            barPasswordStrength.setProgressTintList(ColorStateList.valueOf(Color.parseColor(PasswordStrengthHelper.getColor(strength.getScore()))));
-            textPasswordStrength.setText((textPassword.getText().length() != 0) ? PasswordStrengthHelper.getString(strength.getScore(), activity) : "");
-            textPasswordWrapper.setError(strength.getFeedback().getWarning());
-            strength.wipe();
+            passStrength.measure(activity);
         });
         textPassword.addTextChangedListener(watcher);
         textPasswordConfirm.addTextChangedListener(watcher);
@@ -194,10 +191,13 @@ public class Dialogs {
         showSecureDialog(dialog);
     }
 
-    private static void showTextInputDialog(Context context, @StringRes int titleId, @StringRes int messageId, @StringRes int hintId, TextInputListener listener, DialogInterface.OnCancelListener cancelListener, boolean isSecret) {
+    private static void showTextInputDialog(Context context, @StringRes int titleId, @StringRes int messageId, @StringRes int hintId, TextInputListener listener, DialogInterface.OnCancelListener cancelListener, boolean isSecret,@Nullable String hint) {
         final AtomicReference<Button> buttonOK = new AtomicReference<>();
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_text_input, null);
         TextInputEditText input = view.findViewById(R.id.text_input);
+        if(hint != null) {
+            input.setText(hint);
+        }
         input.addTextChangedListener(new SimpleTextWatcher(text -> {
             if (buttonOK.get() != null) {
                 buttonOK.get().setEnabled(!text.toString().isEmpty());
@@ -209,7 +209,7 @@ public class Dialogs {
         }
         inputLayout.setHint(hintId);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context)
                 .setTitle(titleId)
                 .setView(view)
                 .setPositiveButton(android.R.string.ok, null);
@@ -239,12 +239,16 @@ public class Dialogs {
         showSecureDialog(dialog);
     }
 
-    private static void showTextInputDialog(Context context, @StringRes int titleId, @StringRes int hintId, TextInputListener listener, boolean isSecret) {
-        showTextInputDialog(context, titleId, 0, hintId, listener, null, isSecret);
+    public static void showTextInputDialog(Context context, @StringRes int titleId, @StringRes int hintId, TextInputListener listener, String text) {
+        showTextInputDialog(context, titleId, 0, hintId, listener, null, false, text);
     }
 
-    public static void showTextInputDialog(Context context, @StringRes int titleId, @StringRes int hintId, TextInputListener listener, @Nullable DialogInterface.OnCancelListener onCancel) {
-        showTextInputDialog(context, titleId, 0, hintId, listener, onCancel, false);
+    private static void showTextInputDialog(Context context, @StringRes int titleId, @StringRes int hintId, TextInputListener listener, boolean isSecret) {
+        showTextInputDialog(context, titleId, 0, hintId, listener, null, isSecret, null);
+    }
+
+    public static void showTextInputDialog(Context context, @StringRes int titleId, @StringRes int hintId, TextInputListener listener) {
+        showTextInputDialog(context, titleId, 0, hintId, listener, null, false, null);
     }
 
     public static void showPasswordInputDialog(Context context, TextInputListener listener) {
@@ -252,19 +256,19 @@ public class Dialogs {
     }
 
     public static void showPasswordInputDialog(Context context, TextInputListener listener, DialogInterface.OnCancelListener cancelListener) {
-        showTextInputDialog(context, R.string.set_password, 0, R.string.password, listener, cancelListener, true);
+        showTextInputDialog(context, R.string.set_password, 0, R.string.password, listener, cancelListener, true, null);
     }
 
     public static void showPasswordInputDialog(Context context, @StringRes int messageId, TextInputListener listener) {
-        showTextInputDialog(context, R.string.set_password, messageId, R.string.password, listener, null, true);
+        showTextInputDialog(context, R.string.set_password, messageId, R.string.password, listener, null, true, null);
     }
 
     public static void showPasswordInputDialog(Context context, @StringRes int messageId, TextInputListener listener, DialogInterface.OnCancelListener cancelListener) {
-        showTextInputDialog(context, R.string.set_password, messageId, R.string.password, listener, cancelListener, true);
+        showTextInputDialog(context, R.string.set_password, messageId, R.string.password, listener, cancelListener, true, null);
     }
 
     public static void showPasswordInputDialog(Context context, @StringRes int titleId, @StringRes int messageId, TextInputListener listener, DialogInterface.OnCancelListener cancelListener) {
-        showTextInputDialog(context, titleId, messageId, R.string.password, listener, cancelListener, true);
+        showTextInputDialog(context, titleId, messageId, R.string.password, listener, cancelListener, true, null);
     }
 
     public static void showCheckboxDialog(Context context, @StringRes int titleId, @StringRes int messageId, @StringRes int checkboxMessageId, CheckboxInputListener listener) {
@@ -272,7 +276,7 @@ public class Dialogs {
         CheckBox checkBox = view.findViewById(R.id.checkbox);
         checkBox.setText(checkboxMessageId);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context)
                 .setTitle(titleId)
                 .setView(view)
                 .setNegativeButton(R.string.no, (dialog1, which) ->
@@ -306,7 +310,7 @@ public class Dialogs {
         numberPicker.setValue(currentValue);
         numberPicker.setWrapSelectorWheel(true);
 
-        AlertDialog dialog = new AlertDialog.Builder(context)
+        AlertDialog dialog = new MaterialAlertDialogBuilder(context)
                 .setTitle(R.string.set_number)
                 .setView(view)
                 .setPositiveButton(android.R.string.ok, (dialog1, which) ->
@@ -317,25 +321,32 @@ public class Dialogs {
     }
 
     public static void showBackupVersionsPickerDialog(Context context, int currentVersionCount, NumberInputListener listener) {
-        final int max = 30;
-        String[] numbers = new String[max / 5];
-        for (int i = 0; i < numbers.length; i++) {
-            numbers[i] = Integer.toString(i * 5 + 5);
+        String infinite = context.getString(R.string.pref_backups_versions_infinite);
+        String[] values = {"5", "10", "15", "20", "25", "30", infinite};
+        int[] numbers = {5, 10, 15, 20, 25, 30, Preferences.BACKUPS_VERSIONS_INFINITE};
+        int selectedIndex;
+        if (currentVersionCount == Preferences.BACKUPS_VERSIONS_INFINITE) {
+            selectedIndex = numbers.length - 1;
+        } else {
+            selectedIndex = currentVersionCount / 5 - 1;
         }
 
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_number_picker, null);
         NumberPicker numberPicker = view.findViewById(R.id.numberPicker);
-        numberPicker.setDisplayedValues(numbers);
-        numberPicker.setMaxValue(numbers.length - 1);
+        numberPicker.setDisplayedValues(values);
+        numberPicker.setMaxValue(values.length - 1);
         numberPicker.setMinValue(0);
-        numberPicker.setValue(currentVersionCount / 5 - 1);
+        numberPicker.setValue(selectedIndex);
         numberPicker.setWrapSelectorWheel(false);
 
-        AlertDialog dialog = new AlertDialog.Builder(context)
+        AlertDialog dialog = new MaterialAlertDialogBuilder(context)
                 .setTitle(R.string.set_number)
                 .setView(view)
-                .setPositiveButton(android.R.string.ok, (dialog1, which) ->
-                        listener.onNumberInputResult(numberPicker.getValue()))
+                .setPositiveButton(android.R.string.ok, (dialog1, which) -> {
+                    int index = numberPicker.getValue();
+                    int number = numbers[index];
+                    listener.onNumberInputResult(number);
+                })
                 .create();
 
         showSecureDialog(dialog);
@@ -372,10 +383,11 @@ public class Dialogs {
         TextView textMessage = view.findViewById(R.id.error_message);
         textMessage.setText(message);
 
-        AlertDialog dialog = new AlertDialog.Builder(context)
+        AlertDialog dialog = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Aegis_AlertDialog_Error)
                 .setTitle(R.string.error_occurred)
                 .setView(view)
                 .setCancelable(false)
+                .setIconAttribute(android.R.attr.alertDialogIcon)
                 .setPositiveButton(android.R.string.ok, (dialog1, which) -> {
                     if (listener != null) {
                         listener.onClick(dialog1, which);
@@ -412,34 +424,35 @@ public class Dialogs {
         Dialogs.showErrorDialog(context, message, backupRes.getError(), listener);
     }
 
-    public static void showMultiMessageDialog(
+    public static void showMultiErrorDialog(
             Context context, @StringRes int title, String message, List<CharSequence> messages, DialogInterface.OnClickListener listener) {
-        Dialogs.showSecureDialog(new AlertDialog.Builder(context)
+        Dialogs.showSecureDialog(new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Aegis_AlertDialog_Error)
                 .setTitle(title)
                 .setMessage(message)
                 .setCancelable(false)
+                .setIconAttribute(android.R.attr.alertDialogIcon)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     if (listener != null) {
                         listener.onClick(dialog, which);
                     }
                 })
                 .setNeutralButton(context.getString(R.string.details), (dialog, which) -> {
-                    showDetailedMultiMessageDialog(context, title, messages, listener);
+                    showDetailedMultiErrorDialog(context, title, messages, listener);
                 })
                 .create());
     }
 
-    public static <T extends Throwable> void showMultiErrorDialog(
+    public static <T extends Throwable> void showMultiExceptionDialog(
             Context context, @StringRes int title, String message, List<T> errors, DialogInterface.OnClickListener listener) {
         List<CharSequence> messages = new ArrayList<>();
         for (Throwable e : errors) {
             messages.add(e.toString());
         }
 
-        showMultiMessageDialog(context, title, message, messages, listener);
+        showMultiErrorDialog(context, title, message, messages, listener);
     }
 
-    private static void showDetailedMultiMessageDialog(
+    private static void showDetailedMultiErrorDialog(
             Context context, @StringRes int title, List<CharSequence> messages, DialogInterface.OnClickListener listener) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
         for (CharSequence message : messages) {
@@ -447,10 +460,11 @@ public class Dialogs {
             builder.append("\n\n");
         }
 
-        AlertDialog dialog = new AlertDialog.Builder(context)
+        AlertDialog dialog = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Aegis_AlertDialog_Error)
                 .setTitle(title)
                 .setMessage(builder)
                 .setCancelable(false)
+                .setIconAttribute(android.R.attr.alertDialogIcon)
                 .setPositiveButton(android.R.string.ok, (dialog1, which) -> {
                     if (listener != null) {
                         listener.onClick(dialog1, which);
@@ -477,10 +491,11 @@ public class Dialogs {
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_time_sync, null);
         CheckBox checkBox = view.findViewById(R.id.check_warning_disable);
 
-        showSecureDialog(new AlertDialog.Builder(context)
+        showSecureDialog(new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Aegis_AlertDialog_Warning)
                 .setTitle(R.string.time_sync_warning_title)
                 .setView(view)
                 .setCancelable(false)
+                .setIconAttribute(android.R.attr.alertDialogIcon)
                 .setPositiveButton(R.string.yes, (dialog, which) -> {
                     if (checkBox.isChecked()) {
                         prefs.setIsTimeSyncWarningEnabled(false);
@@ -515,7 +530,7 @@ public class Dialogs {
             setImporterHelpText(helpText, importers.get(position), isDirect);
         });
 
-        Dialogs.showSecureDialog(new AlertDialog.Builder(context)
+        Dialogs.showSecureDialog(new MaterialAlertDialogBuilder(context)
                 .setTitle(R.string.choose_application)
                 .setView(view)
                 .setPositiveButton(android.R.string.ok, (dialog1, which) -> {
@@ -536,12 +551,13 @@ public class Dialogs {
             errorDetails.append("\n\n");
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Aegis_AlertDialog_Warning)
                 .setTitle(R.string.partial_google_auth_import)
                 .setMessage(context.getString(R.string.partial_google_auth_import_warning, missingIndexesAsString))
                 .setView(view)
                 .setCancelable(false)
-                .setPositiveButton(context.getString(R.string.import_partial_export_anyway, entries), (dialog, which) -> {
+                .setIconAttribute(android.R.attr.alertDialogIcon)
+                .setPositiveButton(context.getResources().getQuantityString(R.plurals.import_partial_export_anyway, entries, entries), (dialog, which) -> {
                     dismissHandler.onClick(dialog, which);
                 })
                 .setNegativeButton(android.R.string.cancel, null);
@@ -562,6 +578,54 @@ public class Dialogs {
         });
 
         showSecureDialog(dialog);
+    }
+
+    public static void showBackupsVersioningStrategy(Context context, BackupsVersioningStrategy currentStrategy, BackupsVersioningStrategyListener listener) {
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_backups_versioning_strategy, null);
+        RadioGroup radioGroup = view.findViewById(R.id.radio_group);
+        RadioButton keepXVersionsButton = view.findViewById(R.id.keep_x_versions_button);
+        RadioButton singleBackupButton = view.findViewById(R.id.single_backup_button);
+        TextView warningText = view.findViewById(R.id.warning_text);
+        CheckBox riskAccept = view.findViewById(R.id.risk_accept);
+        final AtomicReference<Button> positiveButtonRef = new AtomicReference<>();
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            Button positiveButton = positiveButtonRef.get();
+            if (positiveButton != null) {
+                positiveButton.setEnabled(checkedId == keepXVersionsButton.getId());
+            }
+            int visibility = checkedId == singleBackupButton.getId() ? View.VISIBLE : View.GONE;
+            warningText.setVisibility(visibility);
+            riskAccept.setVisibility(visibility);
+        });
+        riskAccept.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            Button positiveButton = positiveButtonRef.get();
+            if (positiveButton != null) {
+                positiveButton.setEnabled(isChecked);
+            }
+        });
+        AlertDialog alertDialog = new MaterialAlertDialogBuilder(context)
+                .setTitle(R.string.pref_backups_versioning_strategy_dialog_title)
+                .setView(view)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    int checkedId = radioGroup.getCheckedRadioButtonId();
+                    if (checkedId == keepXVersionsButton.getId()) {
+                        listener.onStrategySelectionResult(BackupsVersioningStrategy.MULTIPLE_BACKUPS);
+                    } else if (checkedId == singleBackupButton.getId()) {
+                        listener.onStrategySelectionResult(BackupsVersioningStrategy.SINGLE_BACKUP);
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .create();
+        alertDialog.setOnShowListener(dialog -> {
+            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButtonRef.set(positiveButton);
+            if (currentStrategy == BackupsVersioningStrategy.MULTIPLE_BACKUPS) {
+                radioGroup.check(keepXVersionsButton.getId());
+            } else if (currentStrategy == BackupsVersioningStrategy.SINGLE_BACKUP) {
+                radioGroup.check(singleBackupButton.getId());
+            }
+        });
+        showSecureDialog(alertDialog);
     }
 
     private static void setImporterHelpText(TextView view, DatabaseImporter.Definition definition, boolean isDirect) {
@@ -591,5 +655,9 @@ public class Dialogs {
 
     public interface ImporterListener {
         void onImporterSelectionResult(DatabaseImporter.Definition definition);
+    }
+
+    public interface BackupsVersioningStrategyListener {
+        void onStrategySelectionResult(BackupsVersioningStrategy strategy);
     }
 }

@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.core.util.AtomicFile;
 
 import com.beemdevelopment.aegis.otp.GoogleAuthInfo;
+import com.beemdevelopment.aegis.util.Cloner;
 import com.beemdevelopment.aegis.util.IOUtils;
 import com.google.zxing.WriterException;
 
@@ -225,6 +226,10 @@ public class VaultRepository {
         _vault.getEntries().add(entry);
     }
 
+    public boolean hasEntryByUUID(UUID uuid) {
+        return _vault.getEntries().has(uuid);
+    }
+
     public VaultEntry getEntryByUUID(UUID uuid) {
         return _vault.getEntries().getByUUID(uuid);
     }
@@ -243,6 +248,13 @@ public class VaultRepository {
 
     public VaultEntry replaceEntry(VaultEntry entry) {
         return _vault.getEntries().replace(entry);
+    }
+
+    public VaultEntry editEntry(VaultEntry entry, EntryEditor editor) {
+        VaultEntry newEntry = Cloner.clone(entry);
+        editor.edit(newEntry);
+        replaceEntry(newEntry);
+        return newEntry;
     }
 
     /**
@@ -287,6 +299,13 @@ public class VaultRepository {
         removeGroup(group);
     }
 
+    public void replaceGroups(Collection<VaultGroup> groups) {
+        _vault.getGroups().wipe();
+        for (VaultGroup group : groups) {
+            _vault.getGroups().add(group);
+        }
+    }
+
     public void removeGroup(VaultGroup group) {
         for (VaultEntry entry : getEntries()) {
             entry.removeGroup(group.getUUID());
@@ -310,6 +329,18 @@ public class VaultRepository {
                 .collect(Collectors.toList());
     }
 
+    public boolean isGroupsMigrationFresh() {
+        return _vault.isGroupsMigrationFresh();
+    }
+
+    public boolean areIconsOptimized() {
+        return _vault.areIconsOptimized();
+    }
+
+    public void setIconsOptimized(boolean optimized) {
+        _vault.setIconsOptimized(optimized);
+    }
+
     public VaultFileCredentials getCredentials() {
         return _creds == null ? null : _creds.clone();
     }
@@ -328,5 +359,9 @@ public class VaultRepository {
         }
 
         return getCredentials().getSlots().findBackupPasswordSlots().size() > 0;
+    }
+
+    public interface EntryEditor {
+        void edit(VaultEntry entry);
     }
 }

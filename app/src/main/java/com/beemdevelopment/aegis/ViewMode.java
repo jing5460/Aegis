@@ -35,32 +35,24 @@ public enum ViewMode {
     }
 
     /**
-     * Retrieves the height (in dp) that the divider between entries should have in this view mode.
+     * Retrieves the offset (in dp) that should exist between entries in this view mode.
      */
-    public float getDividerHeight() {
+    public float getItemOffset() {
         if (this == ViewMode.COMPACT) {
-            return 0;
+            return 1;
         } else if (this == ViewMode.TILES) {
             return 4;
         }
 
-        return 20;
+        return 8;
     }
 
-    public int getColumnSpan() {
+    public int getSpanCount() {
         if (this == ViewMode.TILES) {
             return 2;
         }
 
         return 1;
-    }
-
-    public float getDividerWidth() {
-        if (this == ViewMode.TILES) {
-            return 4;
-        }
-
-        return 0;
     }
 
     public String getFormattedAccountName(String accountName) {

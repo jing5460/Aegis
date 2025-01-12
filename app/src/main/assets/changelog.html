@@ -31,6 +31,128 @@
     </head>
     <body>
         <div></div>
+        <h3>Version 3.3.4</h3>
+        <h4>Fixes</h4>
+        <ul>
+            <li>Icons are now resized to 512x512 to reduce the size of the vault file and to reduce the chance of encountering out of memory conditions</li>
+        </ul>
+        <h3>Version 3.3.3</h3>
+        <h4>Fixes</h4>
+        <ul>
+            <li>Some users ran into out of memory conditions due to large icons in their vault file. We've introduced a temporary measure that should help in most cases, but we'll follow up with a more comprehensive fix soon.</li>
+            <li>Window insets were not always applied correctly, causing parts of the UI to appear off-screen</li>
+            <li>The 2FAS importer did not tolerate spaces for secrets and was not always able to extract the issuer</li>
+        </ul>
+        <h3>Version 3.3.2</h3>
+        <h4>New</h4>
+        <ul>
+            <li>Find entries by searching in multiple fields simultaneously</li>
+        </ul>
+        <h4>Fixes</h4>
+        <ul>
+            <li>Entries would not actually be added to the Aegis vault in some cases when importing from Google Authenticator export QR codes</li>
+            <li>The lock button was sometimes shown for unencrypted vaults</li>
+            <li>The sort category menu item did not always reflect the current sorting</li>
+            <li>The next code was not always easy to read because its color had low contrast with the background</li>
+            <li>Entry selection was not cancelled when changing the group filter</li>
+        </ul>
+        <h3>Version 3.3.1</h3>
+        <h4>Fixes</h4>
+        <ul>
+            <li>Codes were not shown in case the tiles view mode was combined with hidden account names</li>
+        </ul>
+        <h3>Version 3.3</h3>
+        <h4>New</h4>
+        <ul>
+            <li>Significant improvements to group filtering
+                <ul>
+                    <li>Groups can now be filtered on straight from the main view instead of through a dialog</li>
+                    <li>Ability to assign multiple entries to a group in one go</li>
+                    <li>Support for reordering groups</li>
+                </ul>
+            </li>
+            <li>Codes now change color when they're about to expire</li>
+            <li>Option to show the next code ahead of time</li>
+            <li>Support for backing up to a single file (This enables support for more cloud providers, such as Google Drive)</li>
+            <li>Various minor improvements to make QR code exports easier to scan</li>
+            <li>Support for importing from Ente Auth</li>
+            <li>Support for importing FreeOTP 2 backups</li>
+            <li>Updated translations</li>
+        </ul>
+        <h4>Fixes</h4>
+        <ul>
+            <li>QR codes exported for Google Authenticator could not be scanned on iOS</li>
+            <li>The code would be copied after a single tap in case "Tap to reveal" and "Copy tokens to the clipboard" were enabled simultaneously</li>
+            <li>Various other minor UI, stability and performance improvements</li>
+        </ul>
+        <h3>Version 3.2</h3>
+        <h4>New</h4>
+        <ul>
+            <li>The ability to add a single entry to multiple groups</li>
+            <li>Option to keep an infinite number of backups</li>
+            <li>Option to customize which fields to search for in entries</li>
+            <li>Allow hiding entry names in the tiled view mode</li>
+        </ul>
+        <h4>Fixes</h4>
+        <ul>
+            <li>With "Tap to reveal" enabled, the size of the shown dots would not be consistent with the size of the code digits, on some devices</li>
+            <li>After importing a backup, the UI would in some cases incorrectly claim that biometric unlock is enabled</li>
+            <li>The export dialog was not fully visible on some devices</li>
+            <li>Various other minor UI, stability and performance improvements</li>
+        </ul>
+        <h3>Version 3.1.1</h3>
+        <h4>Fixes</h4>
+        <p>
+            A recent Android Pixel update introduced a bug causing Aegis to sometimes show a black screen after unlocking the vault.
+            We have reported this issue to the Google Issue Tracker (<a href="https://issuetracker.google.com/issues/352963108">link</a>) and
+            are awaiting a response from Google. In the meantime, we have implemented a workaround that eliminates this bug.
+        </p>
+        <ul>
+            <li>Group filter now gets applied properly upon unlocking the vault</li>
+            <li>Advanced entry settings now gets shown correctly</li>
+            <li>Keyboard when searching for entries now gets hidden when the user starts scrolling through the list</li>
+        </ul>
+        <h3>Version 3.1</h3>
+        <h4>New</h4>
+        <ul>
+            <li>A new audit log has been added to check all important events that occurred in your vault</li>
+            <li>Added the ability to rename groups</li>
+        </ul>
+        <h4>Fixes</h4>
+        <ul>
+            <li>Group selection will now be remembered again upon launch</li>
+            <li>Various UI improvements</li>
+            <li>Stability fixes</li>
+        </ul>
+        <h3>Version 3.0.1</h3>
+        <h4>New</h4>
+        <ul>
+            <li>Support for importing from the new Battle.net app</li>
+        </ul>
+        <h4>Fixes</h4>
+        <ul>
+            <li>Visual glitches when AMOLED theme was used on old Android versions</li>
+            <li>Minor UI improvements</li>
+        </ul>
+        <h3>Version 3.0</h3>
+        <h4>New</h4>
+        <ul>
+            <li>Material 3 (and Material You)</li>
+            <li>Automatic assignment of icons to entries</li>
+            <li>Ability to select all entries in one go</li>
+            <li>Support for importing 2FAS schema v4 backups</li>
+            <li>Sort entries based on the last time they were used</li>
+            <li>Some clarifications related to importing and backup permission errors</li>
+            <li>Preparations for the ability to assign a single entry to multiple groups</li>
+            <li>Performance improvements when scrolling through an entry list with lots of icons</li>
+            <li>A new look for the third-party licenses list</li>
+        </ul>
+        <h4>Fixes</h4>
+        <ul>
+            <li>Directly importing from Authy using root would fail</li>
+            <li>Minor glitches related to animation duration scale settings</li>
+            <li>Various stability improvements</li>
+        </ul>
         <h3>Version 2.2.2</h3>
         <h4>New</h4>
         <ul>

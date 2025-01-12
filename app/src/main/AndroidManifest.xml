@@ -27,8 +27,8 @@
         android:icon="@mipmap/${iconName}"
         android:label="Aegis"
         android:supportsRtl="true"
+        android:largeHeap="true"
         android:theme="@style/Theme.Aegis.Launch"
-        tools:replace="android:theme"
         tools:targetApi="tiramisu">
         <activity android:name=".ui.TransferEntriesActivity"
             android:label="@string/title_activity_transfer" />
@@ -84,6 +84,8 @@
             android:label="@string/title_activity_manage_groups" />
         <activity android:name=".ui.AssignIconsActivity"
             android:label="@string/title_activity_assign_icons"/>
+        <activity android:name=".ui.LicensesActivity"
+            android:label="@string/title_activity_licenses"/>
         <activity
             android:name=".ui.PanicResponderActivity"
             android:exported="true"
@@ -148,7 +150,7 @@
     </application>
 
     <queries>
-        <package android:name="me.jmh.authenticatorpro" />
+        <package android:name="com.stratumauth.app" />
         <package android:name="com.authy.authy" />
         <package android:name="org.fedorahosted.freeotp" />
         <package android:name="org.liberty.android.freeotpplus" />
@@ -157,7 +159,7 @@
         <package android:name="com.valvesoftware.android.steam.community" />
         <package android:name="com.authenticator.authservice2" />
         <package android:name="com.duosecurity.duomobile" />
-        <package android:name="com.blizzard.bma" />
+        <package android:name="com.blizzard.messenger" />
     </queries>
 
 </manifest>

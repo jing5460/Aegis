@@ -30,6 +30,7 @@ import com.beemdevelopment.aegis.vault.slots.PasswordSlot;
 import com.beemdevelopment.aegis.vault.slots.Slot;
 import com.beemdevelopment.aegis.vault.slots.SlotException;
 import com.beemdevelopment.aegis.vault.slots.SlotList;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -54,18 +55,10 @@ public class SecurityPreferencesFragment extends PreferencesFragment {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        super.onCreatePreferences(savedInstanceState, rootKey);
         addPreferencesFromResource(R.xml.preferences_security);
-
-        Preference tapToRevealPreference = requirePreference("pref_tap_to_reveal");
-        tapToRevealPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-            getResult().putExtra("needsRefresh", true);
-            return true;
-        });
 
         Preference screenPreference = requirePreference("pref_secure_screen");
         screenPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-            getResult().putExtra("needsRecreate", true);
             Window window = requireActivity().getWindow();
             if ((boolean) newValue) {
                 window.addFlags(WindowManager.LayoutParams.FLAG_SECURE);
@@ -81,7 +74,6 @@ public class SecurityPreferencesFragment extends PreferencesFragment {
             Dialogs.showTapToRevealTimeoutPickerDialog(requireContext(), _prefs.getTapToRevealTime(), number -> {
                 _prefs.setTapToRevealTime(number);
                 tapToRevealTimePreference.setSummary(number + " seconds");
-                getResult().putExtra("needsRefresh", true);
             });
             return false;
         });
@@ -91,9 +83,10 @@ public class SecurityPreferencesFragment extends PreferencesFragment {
             if (!_vaultManager.getVault().isEncryptionEnabled()) {
                 Dialogs.showSetPasswordDialog(requireActivity(), new EnableEncryptionListener());
             } else {
-                Dialogs.showSecureDialog(new AlertDialog.Builder(requireContext())
+                Dialogs.showSecureDialog(new MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_Aegis_AlertDialog_Warning)
                         .setTitle(R.string.disable_encryption)
                         .setMessage(getText(R.string.disable_encryption_description))
+                        .setIconAttribute(android.R.attr.alertDialogIcon)
                         .setPositiveButton(android.R.string.yes, (dialog, which) -> {
                             try {
                                 _vaultManager.disableEncryption();
@@ -169,9 +162,10 @@ public class SecurityPreferencesFragment extends PreferencesFragment {
                     task.execute(getLifecycle(), params);
                 } else {
                     _pinKeyboardPreference.setChecked(false);
-                    Dialogs.showSecureDialog(new AlertDialog.Builder(requireContext())
+                    Dialogs.showSecureDialog(new MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_Aegis_AlertDialog_Error)
                             .setTitle(R.string.pin_keyboard_error)
                             .setMessage(R.string.pin_keyboard_error_description)
+                            .setIconAttribute(android.R.attr.alertDialogIcon)
                             .setCancelable(false)
                             .setPositiveButton(android.R.string.ok, null)
                             .create());
@@ -192,7 +186,7 @@ public class SecurityPreferencesFragment extends PreferencesFragment {
                 checkedItems[i] = _prefs.isAutoLockTypeEnabled(items[i]);
             }
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext())
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext())
                     .setTitle(R.string.pref_auto_lock_prompt)
                     .setMultiChoiceItems(textItems, checkedItems, (dialog, index, isChecked) -> checkedItems[index] = isChecked)
                     .setPositiveButton(android.R.string.ok, (dialog, which) -> {
@@ -221,7 +215,7 @@ public class SecurityPreferencesFragment extends PreferencesFragment {
                     .map(f -> getString(f.getStringRes()))
                     .toArray(String[]::new);
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext())
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext())
                     .setTitle(R.string.pref_password_reminder_title)
                     .setSingleChoiceItems(textItems, currFreq.ordinal(), (dialog, which) -> {
                         int i = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
@@ -459,9 +453,10 @@ public class SecurityPreferencesFragment extends PreferencesFragment {
             if (result != null) {
                 _pinKeyboardPreference.setChecked(true);
             } else {
-                Dialogs.showSecureDialog(new AlertDialog.Builder(requireContext())
+                Dialogs.showSecureDialog(new MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_Aegis_AlertDialog_Error)
                         .setTitle(R.string.pin_keyboard_error)
                         .setMessage(R.string.invalid_password)
+                        .setIconAttribute(android.R.attr.alertDialogIcon)
                         .setCancelable(false)
                         .setPositiveButton(android.R.string.ok, null)
                         .create());

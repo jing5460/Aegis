@@ -17,16 +17,23 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ProcessLifecycleOwner;
+import androidx.room.Room;
 
+import com.beemdevelopment.aegis.database.AppDatabase;
+import com.beemdevelopment.aegis.database.AuditLogEntry;
+import com.beemdevelopment.aegis.database.AuditLogRepository;
 import com.beemdevelopment.aegis.receivers.VaultLockReceiver;
 import com.beemdevelopment.aegis.ui.MainActivity;
 import com.beemdevelopment.aegis.util.IOUtils;
 import com.beemdevelopment.aegis.vault.VaultManager;
-import com.mikepenz.iconics.Iconics;
-import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
 import com.topjohnwu.superuser.Shell;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.EarlyEntryPoint;
@@ -47,9 +54,6 @@ public abstract class AegisApplicationBase extends Application {
     public void onCreate() {
         super.onCreate();
         _vaultManager = EarlyEntryPoints.get(this, EntryPoint.class).getVaultManager();
-
-        Iconics.init(this);
-        Iconics.registerFont(new MaterialDesignIconic());
 
         VaultLockReceiver lockReceiver = new VaultLockReceiver();
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_SCREEN_OFF);

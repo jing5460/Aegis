@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="action_settings">सेटिंग</string>
     <string name="action_about">हमारे बारे में</string>
     <string name="action_delete">हटाएँ</string>
@@ -50,7 +50,6 @@
     <string name="pref_backups_reminder_summary">यदि आपने अपने नवीनतम परिवर्तनों का बैकअप नहीं लिया है तो अपनी वॉल्ट का बैकअप लेने के लिए एक रिमाइंडर दिखाएँ।</string>
     <string name="pref_backups_reminder_dialog_title">बैकअप रिमाइंडर बंद करें</string>
     <string name="pref_backups_reminder_dialog_summary">इस रिमाइंडर को बंद करने का मतलब है कि एजिस आपको यह नहीं बताएगा कि आपके पास ऐसे परिवर्तन हैं या नहीं जिनका अभी तक बैकअप नहीं लिया गया है। इससे आपको अपने टोकन तक पहुंच खोने का खतरा रहता है। क्या आप वाकई रिमाइंडर बंद करना चाहते हैं?</string>
-    <string name="pref_backups_location_title">बैकअप फाइल्स के लिए स्थान</string>
     <string name="pref_backups_location_summary">बैकअप को इसमें सहेजा जाएगा</string>
     <string name="pref_backups_trigger_title">ट्रिगर बैकअप</string>
     <string name="pref_backups_trigger_summary">हाथ से बैकअप ट्रिगर करें</string>
@@ -112,7 +111,7 @@
         <item quantity="other">%d समूह चयनित</item>
     </plurals>
     <string name="export_no_groups_selected">एक्सपोर्ट करने के लिए किसी भी ग्रुप का चयन नही किया गया</string>
-    <string name="export_html_title" context="The title of an HTML export document">एजिस ऑथेंटिकेटर एक्सपोर्ट</string>
+    <string name="export_html_title" comment="The title of an HTML export document">एजिस ऑथेंटिकेटर एक्सपोर्ट</string>
     <string name="choose_authentication_method">सुरक्षा</string>
     <string name="authentication_method_explanation">Aegis एक सुरक्षा-केंद्रित 2FA ऐप है। टोकनों को एक वॉल्ट में संग्रहीत किया जाता है, जिसे वैकल्पिक रूप से आपके चुने पासवर्ड के साथ एन्क्रिप्ट किया जा सकता है। यदि कोई हमलावर आपकी एन्क्रिप्टेड वॉल्ट फ़ाइल प्राप्त करता है, तो वे पासवर्ड को जाने बिना सामग्री तक नहीं पहुँच पाएंगे। \n\nहमने उन विकल्पों पहले से सेट कर रखा है जो हमें लगता है कि आपके डिवाइस के लिए सबसे उपयुक्त होगा।</string>
     <string name="authentication_method_none">कोई नहीं</string>
@@ -173,7 +172,6 @@
     <string name="reading_file">फ़ाइल डेटा पढ़ना</string>
     <string name="requesting_root_access">रूट एक्सेस रिक्वेस्ट कर रहा</string>
     <string name="analyzing_qr">क्यूआर कोड एनालाइज कर रहा है</string>
-    <string name="analyzing_qr_multiple">एनालाइजिंग क्यूआर कोड %d/%d (%s)</string>
     <plurals name="added_new_entries">
         <item quantity="one">वॉल्ट में %d नयी एंट्री जोड़ी गई</item>
         <item quantity="other">वॉल्ट में %d नयी एंट्रीज जोड़ी गईं </item>
@@ -259,7 +257,6 @@
     <string name="partial_google_auth_import">अपूर्ण गूगल ऑथेंटिकेटर एक्सपोर्ट का पता चला</string>
     <string name="partial_google_auth_import_warning">आपके इंपोर्ट से कुछ क्यूआर कोड गायब हैं। निम्नलिखित कोड नहीं मिले:\n\n<b>%s</b>\n\nआप इस आंशिक एक्सपोर्ट को इंपोर्ट करना जारी रख सकते हैं लेकिन हम सभी क्यूआर कोड के साथ पुनः प्रयास करने की सलाह देते हैं ताकि आप किसी भी टोकन तक पहुंच खोने का जोखिम न उठाएं|</string>
     <string name="missing_qr_code_descriptor">• क्यूआर कोड %d </string>
-    <string name="import_partial_export_anyway">फिर भी %d टोकंस इंपोर्ट करें</string>
     <string name="import_google_auth_failure">गूगल ऑथेंटिकेटर एक्सपोर्ट को इंपोर्ट करना असफल हुआ</string>
     <string name="unrelated_google_auth_batches_error">एक्सपोर्ट में किसी असंबंधित बैच की जानकारी शामिल है. एक समय में 1 बैच इंपोर्ट करने का प्रयास करें।</string>
     <string name="no_tokens_can_be_imported">परिणामस्वरूप कोई टोकन आयात नहीं किया जा सकता</string>
@@ -273,7 +270,7 @@
     <string name="lock">लॉक करें</string>
     <string name="name">नाम</string>
     <string name="no_group">कोई समूह नहीं</string>
-    <string name="sort">क्रमबद्ध</string>
+    <string name="sort" comment="Title of the Sort button in the top action bar of the main view">क्रमबद्ध</string>
     <string name="sort_alphabetically">जारीकर्ता (A से Z)</string>
     <string name="sort_alphabetically_reverse">जारीकर्ता (Z से A)</string>
     <string name="sort_alphabetically_name">खाता (A से Z)</string>
@@ -288,7 +285,7 @@
     <string name="preference_reset_usage_count">उपयोग गणना रीसेट करें</string>
     <string name="preference_reset_usage_count_summary">अपनी तिजोरी में प्रत्येक प्रविष्टि की उपयोग संख्या को रीसेट करें</string>
     <string name="preference_reset_usage_count_dialog">क्या आप वाकई अपनी तिजोरी में प्रत्येक प्रविष्टि की उपयोग संख्या को 0 पर सेट करना चाहते हैं?</string>
-    <string name="note">नोट</string>
+    <string name="note" comment="Users can add a note to an entry">नोट</string>
     <string name="clear">खाली करें</string>
     <string name="pref_highlight_entry_title">टैप करने पर टोकन हाइलाइट करें</string>
     <string name="pref_highlight_entry_summary">टैप करने पर टोकनों को एक दूसरे से अलग उजागर करने के लिए उन्हें अस्थायी रूप से हाईलाइट करें</string>
@@ -311,14 +308,9 @@
     <string name="small_mode_title">छोटा</string>
     <string name="unknown_issuer">अज्ञात जारीकर्ता</string>
     <string name="unknown_account_name">अज्ञात खाता नाम</string>
-    <plurals name="import_error_dialog">
-        <item quantity="one">Aegis %d टोकन आयात नहीं कर सका। इन टोकन को छोड़ दिया जाएगा। त्रुटियों के बारे में अधिक जानकारी देखने के लिए \'विवरण\' दबाएँ।</item>
-        <item quantity="other">Aegis %d टोकनों को आयात नहीं कर सका। इन टोकनों को छोड़ दिया जाएगा। त्रुटियों के बारे में अधिक जानकारी देखने के लिए \'विवरण\' दबाएँ।</item>
-    </plurals>
     <string name="unable_to_process_deeplink">डीप लिंक प्रक्रिया करने में असमर्थ</string>
     <string name="unable_to_read_qrcode_file">क्यूआर कोड को फाइल:%s से पढ़ने और प्रोसेस करने में असमर्थ.</string>
     <string name="unable_to_process_shared_text">शेयर्ड टेक्स्ट को ओटीपी के रूप में प्रोसेस करने में असफल</string>
-    <string name="unable_to_read_qrcode_files">कुछ क्यूआर कोड को पढ़ने और प्रोसेस करने में असमर्थ। केवल %d/%d प्रविष्टियाँ इंपोर्ट की जाएंगी।</string>
     <string name="unable_to_generate_qrcode">क्यूआर कोड उत्पन्न करने में असमर्थ</string>
     <string name="select_picture">छवि चयन करें</string>
     <string name="select_icon">आइकन चयन करें</string>
@@ -349,13 +341,7 @@
     <string name="time_sync_warning_message">Aegis सही कोड उत्पन्न करने के लिए सिस्टम समय पर निर्भर करता है। केवल कुछ सेकंड के विचलन से गलत कोड हो सकते हैं। ऐसा लगता है कि आपका डिवाइस समय को स्वचालित रूप से सिंक्रनाइज़ करने के लिए कॉन्फ़िगर नहीं किया गया है। क्या आप अब ऐसा करना चाहेंगे?</string>
     <string name="time_sync_warning_disable">मुझे चेतावनी देना बंद करें। मैं जानता हूँ मैं क्या कर रहा हूँ</string>
     <string name="google_qr_export_unrelated">असंबंधित क्यूआर कोड मिला। स्कैनर को पुनरारंभ करने का प्रयास करें।</string>
-    <plurals name="google_qr_export_scanned">
-        <item quantity="one">%d/%d क्यूआर कोड स्कैन किए गए</item>
-        <item quantity="other">%d/%d क्यूआर कोड स्कैन किए गए</item>
-    </plurals>
-    <string name="google_qr_export_unexpected">अपेक्षित क्यूआर कोड #%d, लेकिन इसके बजाय #%d को स्कैन किया गया</string>
     <string name="backup_error_bar_message"><b>हाल ही में वॉल्ट बैकअप विफल रहा</b></string>
-    <string name="backup_error_dialog_details" comment="The first parameter is the type of backup (e.g. built-in or Android backup). The second parameter is an elapsed time in the style of 'x seconds/minutes/days ago'.">        %s का उपयोग करके हाल ही में वॉल्ट बैकअप का प्रयास विफल हो गया क्योंकि कोई त्रुटि उत्पन्न हुई। बैकअप का प्रयास %s किया गया था. यह सुनिश्चित करने के लिए कि बैकअप सफलतापूर्वक पूरा हो सकता है, कृपया अपनी बैकअप सेटिंग्स जांचें।</string>
     <string name="backup_system_builtin">एजिस के बिल्ट-इन स्वचालित बैकअप्स </string>
     <string name="backup_system_android">एंड्रॉयड क्लाउड बैकअप सिस्टम </string>
     <string name="backup_reminder_bar_message_with_latest" comment="The parameter is an elapsed time in the style of 'x seconds/minutes/days ago'">        लेटेस्ट बैकअप आउटडेटेड है (%s)
@@ -387,7 +373,6 @@
     <string name="copy_uri">URI को कॉपी करें</string>
     <string name="unable_to_copy_uri_to_clipboard">क्लिपबोर्ड पर कॉपी करने में असमर्थ</string>
     <string name="uri_copied_to_clipboard">क्लिपबोर्ड में कॉपी हो गया</string>
-    <string name="transfer_entry">प्रविष्टि स्थानांतरित करें</string>
     <string name="transfer_entry_description">इस क्यूआर कोड को उस ऑथेंटिकेटर ऐप के साथ स्कैन करें जिसमें आप इस प्रविष्टि को स्थानांतरित करना चाहते हैं</string>
     <string name="google_auth_compatible_transfer_description">इन क्यूआर कोड को एजिस या गूगल ऑथेंटिकेटर से स्कैन करें।\n\n गूगल ऑथेंटिकेटर ऐप की सीमाओं के कारण, केवल TOTP &amp; HOTP टोकन जो SHA1 का उपयोग करते हैं और 6-अंकीय कोड उत्पन्न करते हैं, शामिल हैं</string>
     <string name="password_strength_very_weak">बहुत कमज़ोर</string>
@@ -410,18 +395,14 @@
     <string name="panic_trigger_ignore_toast">एजिस को पैनिक ट्रिगर मिला लेकिन सेटिंग अक्षम है, अनदेखा कर रहा है</string>
     <string name="pref_panic_trigger_title">पैनिक ट्रिगर पर तिजोरी हटाएं</string>
     <string name="pref_panic_trigger_summary">रिपल से पैनिक ट्रिगर मिलने पर वॉल्ट को डिलीट करें</string>
-    <string name="import_vault">वॉल्ट इंपोर्ट</string>
     <string name="importer_help_2fas">2FAS प्रमाणक बैकअप फ़ाइल प्रदान करें।</string>
     <string name="importer_help_aegis">एजिस निर्यात/बैकअप फ़ाइल की आपूर्ति करें।</string>
     <string name="importer_help_authenticator_plus">एक प्रमाणक प्लस निर्यात फ़ाइल की आपूर्ति करें
 <b>सेटिंग्स -&gt; बैकअप &amp; पुनर्स्थापना -&gt; पाठ और HTML के रूप में निर्यात करें</b>।</string>
-    <string name="importer_help_authenticator_pro"><b>सेटिंग्स -&gt; बैक अप -&gt; के माध्यम से प्राप्त ऑथेंटिकेटर प्रो एक्सपोर्ट फ़ाइल की आपूर्ति करें।  एन्क्रिप्टेड फ़ाइल का बैकअप लें (अनुशंसित)</b>।</string>
     <string name="importer_help_authy">Authy की आंतरिक संग्रहण निर्देशिका में स्थित <b>/data/data/com.authy.authy/shared_prefs/com.authy.storage.tokens.authenticator.xml</b> की एक प्रति प्रदान करें।</string>
     <string name="importer_help_andotp">एक andOTP निर्यात/बैकअप फ़ाइल की आपूर्ति करें।</string>
     <string name="importer_help_bitwarden">एक बिटवर्डन निर्यात/बैकअप फ़ाइल की आपूर्ति करें। एन्क्रिप्टेड फ़ाइलें समर्थित नहीं हैं।</string>
-    <string name="importer_help_battle_net_authenticator">इंटरनल स्टोरेज की Battle.net ऑथेंटिकेटर डायरेक्ट्री में स्थित <b>/data/data/com.blizzard.bma/shared_prefs/com.blizzard.bma.AUTH_STORE.xml</b> की एक प्रति प्रदान करें।</string>
     <string name="importer_help_duo">DUO की आंतरिक संग्रहण निर्देशिका में स्थित <b>/data/data/com.duosecurity.duomobile/files/duokit/accounts.json</b> की एक प्रति प्रदान करें।</string>
-    <string name="importer_help_freeotp">फ्रीओटीपी की आंतरिक संग्रहण निर्देशिका में स्थित <b>/data/data/org.fedorahosted.freeotp/shared_prefs/tokens.xml</b> की एक प्रति प्रदान करें।</string>
     <string name="importer_help_freeotp_plus">एक फ्रीओटीपी+ निर्यात फ़ाइल की आपूर्ति करें।</string>
     <string name="importer_help_google_authenticator"><b>केवल गूगल प्रमाणक v5.10 और पूर्व की डेटाबेस फ़ाइलें समर्थित हैं</b>।\n\n<b>/data/data/com.google.android.apps.authenticator2/databases/databases</b> की एक प्रति प्रदान करें, गूगल प्रमाणक की आंतरिक संग्रहण निर्देशिका में स्थित है।</string>
     <string name="importer_help_microsoft_authenticator">माइक्रोसॉफ्ट प्रमाणक। की आंतरिक संग्रहण निर्देशिका में स्थित <b>/data/data/com.azure.authenticator/databases/PhoneFactor</b> की एक प्रति प्रदान करें।</string>
@@ -439,23 +420,23 @@
     <string name="pref_grouping_size_two">२ का समूह</string>
     <string name="pref_grouping_size_three">३ का समूह</string>
     <string name="pref_grouping_size_four">४ का समूह</string>
-    <plurals name="time_elapsed_seconds">
+    <plurals name="time_elapsed_seconds" tools:ignore="UnusedResources">
         <item quantity="one">%d सेकंड पहले</item>
         <item quantity="other">%d सेकंड्स पहले</item>
     </plurals>
-    <plurals name="time_elapsed_minutes">
+    <plurals name="time_elapsed_minutes" tools:ignore="UnusedResources">
         <item quantity="one">%d मिनट पहले</item>
         <item quantity="other">%d मिनट्स पहले</item>
     </plurals>
-    <plurals name="time_elapsed_hours">
+    <plurals name="time_elapsed_hours" tools:ignore="UnusedResources">
         <item quantity="one">%d घंटा पहले</item>
         <item quantity="other">%d घंटे पहले</item>
     </plurals>
-    <plurals name="time_elapsed_days">
+    <plurals name="time_elapsed_days" tools:ignore="UnusedResources">
         <item quantity="one">%d दिन पहले</item>
         <item quantity="other">%d दिनों पहले</item>
     </plurals>
-    <plurals name="time_elapsed_years">
+    <plurals name="time_elapsed_years" tools:ignore="UnusedResources">
         <item quantity="one">%d वर्ष पहले</item>
         <item quantity="other">%d वर्षों पहले</item>
     </plurals>

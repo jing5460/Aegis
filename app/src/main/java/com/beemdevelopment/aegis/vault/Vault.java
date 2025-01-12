@@ -15,6 +15,10 @@ public class Vault {
     private static final int VERSION = 3;
     private final UUIDMap<VaultEntry> _entries = new UUIDMap<>();
     private final UUIDMap<VaultGroup> _groups = new UUIDMap<>();
+    private boolean _iconsOptimized = true;
+
+    // Whether we've migrated the group list to the new format while parsing the vault
+    private boolean _isGroupsMigrationFresh = false;
 
     public JSONObject toJson() {
         return toJson(null);
@@ -39,6 +43,7 @@ public class Vault {
             obj.put("version", VERSION);
             obj.put("entries", entriesArray);
             obj.put("groups", groupsArray);
+            obj.put("icons_optimized", _iconsOptimized);
 
             return obj;
         } catch (JSONException e) {
@@ -70,7 +75,9 @@ public class Vault {
             JSONArray array = obj.getJSONArray("entries");
             for (int i = 0; i < array.length(); i++) {
                 VaultEntry entry = VaultEntry.fromJson(array.getJSONObject(i));
-                vault.migrateOldGroup(entry);
+                if (vault.migrateOldGroup(entry)) {
+                    vault.setGroupsMigrationFresh();
+                }
 
                 // check the vault has a group corresponding to each one the entry claims to be in
                 for (UUID groupUuid: entry.getGroups()) {
@@ -81,6 +88,10 @@ public class Vault {
 
                 entries.add(entry);
             }
+
+            if (!obj.optBoolean("icons_optimized")) {
+                vault.setIconsOptimized(false);
+            }
         } catch (VaultEntryException | JSONException e) {
             throw new VaultException(e);
         }
@@ -88,7 +99,23 @@ public class Vault {
         return vault;
     }
 
-    public void migrateOldGroup(VaultEntry entry) {
+    private void setGroupsMigrationFresh() {
+        _isGroupsMigrationFresh = true;
+    }
+
+    public boolean isGroupsMigrationFresh() {
+        return _isGroupsMigrationFresh;
+    }
+
+    public void setIconsOptimized(boolean optimized) {
+        _iconsOptimized = optimized;
+    }
+
+    public boolean areIconsOptimized() {
+        return _iconsOptimized;
+    }
+
+    public boolean migrateOldGroup(VaultEntry entry) {
         if (entry.getOldGroup() != null) {
             Optional<VaultGroup> optGroup = getGroups().getValues()
                                                  .stream()
@@ -104,7 +131,10 @@ public class Vault {
             }
 
             entry.setOldGroup(null);
+            return true;
         }
+
+        return false;
     }
 
     public UUIDMap<VaultEntry> getEntries() {

@@ -125,6 +125,10 @@ documentation](docs/iconpacks.md).
   [<img width=500 alt="aegis-icons preview"
   src="https://raw.githubusercontent.com/aegis-icons/aegis-icons/master/showcase.png">](https://github.com/aegis-icons/aegis-icons)
 
+- [delta-aegis-icons](https://github.com/Delta-Icons/aegis-icons)
+
+  Delta version of the unofficial monochrome-styled 2FA icon pack aegis-icons.
+
 - [aegis-simple-icons](https://github.com/alexbakker/aegis-simple-icons) *
 
   This project periodically generates an icon pack for Aegis based on [Simple
@@ -151,3 +155,8 @@ Swing by our Matrix room to interact with other contributors:
 
 This project is licensed under the GNU General Public License v3.0. See the
 [LICENSE](LICENSE) file for details.
+
+A couple of libraries vendored in Aegis' repository are licensed under a
+different license:
+- [TextDrawable](app/src/main/java/com/amulyakhare/textdrawable)
+- [TrustedIntents](app/src/main/java/info/guardianproject/trustedintents)

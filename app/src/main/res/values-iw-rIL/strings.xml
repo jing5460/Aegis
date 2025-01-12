@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="action_settings">הגדרות</string>
     <string name="action_about">אודות</string>
     <string name="action_delete">מחיקה</string>
@@ -51,7 +51,6 @@
     <string name="pref_backups_reminder_summary">הצג תזכורת לגיבוי הכספת שלך למקרה שלא גיבית את השינויים האחרונים שלך.</string>
     <string name="pref_backups_reminder_dialog_title">השבת תזכורת גיבוי</string>
     <string name="pref_backups_reminder_dialog_summary">השבתת תזכורת זו פירושה ש-Aegis לא יגיד לך אם יש לך שינויים שעדיין לא מגובים. זה מעמיד אותך בסיכון לאבד גישה לאסימונים שלך. האם אתה בטוח שברצונך להשבית את התזכורת?</string>
-    <string name="pref_backups_location_title">ספריה עבור קבצי גיבוי</string>
     <string name="pref_backups_location_summary">הגיבויים יאוחסנו ב</string>
     <string name="pref_backups_trigger_title">הפעלת גיבוי</string>
     <string name="pref_backups_trigger_summary">הפעלה ידנית של גיבוי</string>
@@ -119,7 +118,7 @@
         <item quantity="other">נבחרו %d קבוצות</item>
     </plurals>
     <string name="export_no_groups_selected">לא נבחרו קבוצות לייצוא</string>
-    <string name="export_html_title" context="The title of an HTML export document">Aegis מאמת ייצוא</string>
+    <string name="export_html_title" comment="The title of an HTML export document">Aegis מאמת ייצוא</string>
     <string name="choose_authentication_method">אבטחה</string>
     <string name="authentication_method_explanation">Aegis היא אפליקציית אימות דו-שלבי ממוקדת אבטחה. אסימונים מאוחסנים בכספת, שבאופן אופציונלי ניתן להצפין באמצעות סיסמה לבחירתך. אם תוקף משיג את קובץ הכספת המוצפן שלך, הוא לא יוכל לגשת לתוכן מבלי לדעת את הסיסמה. \n\nבחרנו מראש באפשרות שלדעתנו תתאים ביותר למכשיר שלך.</string>
     <string name="authentication_method_none">ללא</string>
@@ -180,7 +179,6 @@
     <string name="reading_file">קריאת קובץ</string>
     <string name="requesting_root_access">בקשת גישה לשורש</string>
     <string name="analyzing_qr">ניתוח קוד QR</string>
-    <string name="analyzing_qr_multiple">מנתח קוד QR %d/%d (%s)</string>
     <plurals name="added_new_entries">
         <item quantity="one">הוספה %d כניסה חדשה לכספת</item>
         <item quantity="two">נוספו %d ערכים חדשים לכספת</item>
@@ -252,7 +250,6 @@
     <string name="partial_google_auth_import">זוהה ייצוא לא שלם של Google Authenticator</string>
     <string name="partial_google_auth_import_warning">כמה קודי QR חסרים בייבוא שלך. הקודים הבאים לא נמצאו:\n\n<b>%s</b>\n\nתוכל להמשיך לייבא את הייצוא החלקי הזה, אך אנו ממליצים לנסות שוב עם כל קודי ה-QR כדי לא להסתכן באובדן גישה לכל קודי אסימונים.</string>
     <string name="missing_qr_code_descriptor">• קוד QR %d</string>
-    <string name="import_partial_export_anyway">ייבוא אסימוני %d בכל מקרה</string>
     <string name="import_google_auth_failure">ייבוא ייצוא מאמת Google נכשל</string>
     <string name="unrelated_google_auth_batches_error">ייצוא מכיל מידע עבור אצווה לא קשורה. נסה לייבא אצווה אחת בכל פעם.</string>
     <string name="no_tokens_can_be_imported">לא ניתן לייבא אסימונים כתוצאה מכך</string>
@@ -266,7 +263,7 @@
     <string name="lock">נעל</string>
     <string name="name">שם</string>
     <string name="no_group">אין קבוצה</string>
-    <string name="sort">מיין</string>
+    <string name="sort" comment="Title of the Sort button in the top action bar of the main view">מיין</string>
     <string name="sort_alphabetically">מנפיק (א\' עד ת\')</string>
     <string name="sort_alphabetically_reverse">מנפיק (ת עד א)</string>
     <string name="sort_alphabetically_name">חשבון (א\' עד ת\')</string>
@@ -281,7 +278,7 @@
     <string name="preference_reset_usage_count">אפס ספירת שימוש</string>
     <string name="preference_reset_usage_count_summary">איפוס ספירת השימוש של כל ערך בכספת</string>
     <string name="preference_reset_usage_count_dialog">האם אתה בטוח שברצונך להגדיר את ספירת השימוש של כל ערך בכספת שלך ל- 0?</string>
-    <string name="note">הערה</string>
+    <string name="note" comment="Users can add a note to an entry">הערה</string>
     <string name="clear">נקה</string>
     <string name="pref_highlight_entry_title">סימון טוקנים בעת הקשה</string>
     <string name="pref_highlight_entry_summary">הפוך אסימונים לקלים יותר להבחנה זה מזה על-ידי הדגשתם באופן זמני בעת הקשה עליהם</string>
@@ -307,7 +304,6 @@
     <string name="unable_to_process_deeplink">לא ניתן לעבד קישור עמוק</string>
     <string name="unable_to_read_qrcode_file">לא ניתן לקרוא ולעבד קוד QR מהקובץ: %s.</string>
     <string name="unable_to_process_shared_text">לא ניתן לעבד טקסט משותף כ-OTP</string>
-    <string name="unable_to_read_qrcode_files">לא ניתן לקרוא ולעבד חלק מקודי ה-QR. רק %d/%d ערכים ייובאו.</string>
     <string name="unable_to_generate_qrcode">לא ניתן ליצור קוד QR</string>
     <string name="select_picture">בחר תמונה</string>
     <string name="select_icon">בחר סמל</string>
@@ -338,10 +334,7 @@
     <string name="time_sync_warning_message">Aegis מסתמכת על זמן המערכת להיות מסונכרן כדי ליצור קודים נכונים. סטייה של מספר שניות בלבד עלולה לגרום לקודים שגויים. נראה שהמכשיר שלך לא מוגדר לסנכרון אוטומטי של השעה. האם תרצה לעשות זאת כעת?</string>
     <string name="time_sync_warning_disable">תפסיק להזהיר אותי. אני יודע מה אני עושה.</string>
     <string name="google_qr_export_unrelated">נמצא קוד QR לא קשור. נסה להפעיל מחדש את הסורק.</string>
-    <string name="google_qr_export_unexpected">צפי לקוד QR #%d, אך במקום זאת נסרק #%d</string>
     <string name="backup_error_bar_message"><b>גיבוי הכספת נכשל לאחרונה</b></string>
-    <string name="backup_error_dialog_details" comment="The first parameter is the type of backup (e.g. built-in or Android backup). The second parameter is an elapsed time in the style of 'x seconds/minutes/days ago'.">        ניסיון גיבוי של כספת לאחרונה באמצעות %s נכשל מכיוון שאירעה שגיאה. בוצע ניסיון הגיבוי %s. אנא בדוק את הגדרות הגיבוי שלך כדי לוודא שהגיבויים יכולים להסתיים בהצלחה.
-    </string>
     <string name="backup_system_builtin">גיבויים אוטומטיים מובנים של Aegis</string>
     <string name="backup_system_android">מערכת גיבוי בענן של אנדרואיד</string>
     <string name="backup_reminder_bar_message_with_latest" comment="The parameter is an elapsed time in the style of 'x seconds/minutes/days ago'">        הגיבוי האחרון מיושן (%s)
@@ -370,7 +363,6 @@
     <string name="copy_uri">העתק שורת כתובת</string>
     <string name="unable_to_copy_uri_to_clipboard">לא ניתן להעתיק URI ללוח</string>
     <string name="uri_copied_to_clipboard">URI שהועתק ללוח</string>
-    <string name="transfer_entry">העברת ערך</string>
     <string name="transfer_entry_description">סרוק קוד QR זה באמצעות אפליקציית המאמת שאליה ברצונך להעביר ערך זה</string>
     <string name="google_auth_compatible_transfer_description">סרוק קודי QR אלה באמצעות Aegis אוGoogle Authenticator.\n\n בשל מגבלות אפליקציית מאמת Google, רק אסימוני TOTP &amp; HOTP המשתמשים ב- SHA1 ומייצרים קודים בני 6 ספרות כלולים</string>
     <string name="password_strength_very_weak">חלש מאוד</string>
@@ -393,17 +385,13 @@
     <string name="panic_trigger_ignore_toast">Aegis קיבל הפעלת פאניקה אך ההגדרה מושבתת, מתעלמת</string>
     <string name="pref_panic_trigger_title">מחק את הכספת בהפעלת הפאניקה</string>
     <string name="pref_panic_trigger_summary">מחק את הכספת בהפעלת הפאניקה</string>
-    <string name="import_vault">ייצוא כספת</string>
     <string name="importer_help_2fas">ספק קובץ גיבוי של 2FAS Authenticator.</string>
     <string name="importer_help_aegis">ספק קובץ ייצוא/גיבוי של Aegis.</string>
     <string name="importer_help_authenticator_plus">ספק קובץ ייצוא של Authenticator Plus שהושג דרך <b>הגדרות -&gt; גיבוי &amp; שחזור -&gt; ייצוא כטקסט ו-HTML</b>.</string>
-    <string name="importer_help_authenticator_pro">ספק קובץ ייצוא של Authenticator Pro שהושג דרך <b>הגדרות -&gt; גיבוי -&gt; גבה לקובץ מוצפן (מומלץ)</b>.</string>
     <string name="importer_help_authy">ספק עותק של <b>/data/data/com.authy.authy/shared_prefs/com.authy.storage.tokens.authenticator.xml</b>, הממוקם בספריית האחסון הפנימית של Authy.</string>
     <string name="importer_help_andotp">ספק קובץ יצוא/גיבוי andOTP.</string>
     <string name="importer_help_bitwarden">ספק קובץ יצוא/גיבוי של Bitwarden. קבצים מוצפנים אינם נתמכים.</string>
-    <string name="importer_help_battle_net_authenticator">ספק עותק של <b>/data/data/com.blizzard.bma/shared_prefs/com.blizzard.bma.AUTH_STORE.xml</b>, הממוקם בספריית האחסון הפנימית של Battle.net Authenticator.</string>
     <string name="importer_help_duo">ספק עותק של <b>/data/data/com.duosecurity.duomobile/files/duokit/accounts.json</b>, הממוקם בספריית האחסון הפנימית של DUO.</string>
-    <string name="importer_help_freeotp">ספק עותק של <b>/data/data/org.fedorahosted.freeotp/shared_prefs/tokens.xml</b>, הממוקם בספריית האחסון הפנימית של FreeOTP.</string>
     <string name="importer_help_freeotp_plus">ספק קובץ יצוא FreeOTP+.</string>
     <string name="importer_help_google_authenticator"><b>רק קבצי מסד נתונים מ-Google Authenticator v5.10 ואילך נתמכים</b>. \n\nספק עותק של<b> /data/data</b>/com.google.android.apps.authenticator2/databases/databases, הממוקם בספריית האחסון הפנימית של Google Authenticator.</string>
     <string name="importer_help_microsoft_authenticator">ספק עותק של <b>/data/data/com.azure.authenticator/databases/PhoneFactor</b>, הממוקם בספריית האחסון הפנימית של Microsoft Authenticator.</string>

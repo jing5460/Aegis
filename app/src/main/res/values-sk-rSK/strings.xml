@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="action_settings">Nastavenia</string>
     <string name="action_about">O programe</string>
     <string name="action_delete">Odstrániť</string>
@@ -10,6 +10,7 @@
     <string name="action_default_icon">Obnoviť predvolenú ikonu</string>
     <string name="discard">Zahodiť</string>
     <string name="save">Uložiť</string>
+    <string name="all">Všetky</string>
     <string name="issuer">Vydavateľ</string>
     <string name="yandex_pin">PIN (4-16 číslic)</string>
     <string name="motp_pin">PIN (4 číslice)</string>
@@ -28,38 +29,53 @@
     <string name="pref_section_security_summary">Nakonfigurujte šifrovanie, biometrické odomknutie, automatické uzamknutie a ďalšie nastavenia zabezpečenia.</string>
     <string name="pref_section_import_export_title">Import &amp; export dát</string>
     <string name="pref_section_import_export_summary">Importujte zálohy Aegis alebo iných autentifikačných aplikácií. Vytvorte manuálne exporty svojho trezoru Aegis.</string>
+    <string name="pref_section_audit_log_title">Denník záznamov</string>
+    <string name="pref_section_audit_log_summary">Nájdite zoznam všetkých nahlásených dôležitých udalosti, ktoré sa stali v aplikácii.</string>
     <string name="pref_section_backups_title">Zálohy</string>
     <string name="pref_section_backups_summary">Nastavte automatické zálohovanie na miesto podľa vášho výberu alebo povoľte účasť v cloudovom zálohovacom systéme Androidu.</string>
     <string name="pref_section_icon_packs">Balíčky ikon</string>
     <string name="pref_section_icon_packs_summary">Spravovať a importovať balíčky ikon</string>
     <string name="pref_select_theme_title">Téma</string>
+    <string name="pref_dynamic_colors_title">Dynamické farby</string>
+    <string name="pref_dynamic_colors_summary">Použiť prekrytie na základe farieb vášho Android motívu</string>
     <string name="pref_view_mode_title">Režim zobrazenia</string>
     <string name="pref_lang_title">Jazyk</string>
     <string name="pref_show_icons_title">Zobraziť ikony</string>
-    <string name="pref_show_icons_summary">Zobrazte ikony vedľa každého záznamu</string>
+    <string name="pref_show_icons_summary">Zobraziť ikony vedľa každého záznamu</string>
     <string name="pref_code_group_size_title">Zoskupenie číselných znakov</string>
+    <string name="pref_code_group_size_summary">Vyberte číslo po koľkých čísliciach sa majú zoskupovať kódy</string>
     <string name="pref_account_name_position_title">Zobraziť názov účtu</string>
+    <string name="pref_show_next_code_title">Ukáž ďalší kód</string>
+    <string name="pref_show_next_code_summary">Vygenerovať a zobraziť ďalší kód v predstihu</string>
+    <string name="pref_expiration_state_title">Zobraz kedy sa skončí platnosť kódov</string>
+    <string name="pref_expiration_state_summary">Zmena farbu kódov a rozblikaj ich, keď sa blíži koniec platnosti</string>
+    <string name="pref_expiration_state_fallback">Zmena farbu kódov keď sa blíži koniec platnosti</string>
     <string name="pref_shared_issuer_account_name_title">Zobrazovať názov účtu iba pokiaľ to je potrebné</string>
-    <string name="pref_import_file_title">Importovanie zo súboru</string>
+    <string name="pref_shared_issuer_account_name_summary">Zobraziť názvy účtov len v prípade, že majú rovnakého vydavateľa. Ostatné názvy účtov budú skryté.</string>
+    <string name="pref_import_file_title">Importovať zo súboru</string>
     <string name="pref_import_file_summary">Importovať tokeny zo súboru</string>
     <string name="pref_android_backups_title">Zálohy na Android cloude</string>
+    <string name="pref_android_backups_summary">Povoliť zálohovaciemu systému Android Cloud zahrnúť Aegis\' trezor v ich zálohách. Táto možnosť je podporovaná iba pre šifrované trezory.</string>
     <string name="pref_android_backups_hint"><i>Device-to-device (D2D) zálohy sú povolené vždy, nezávisle na nastavení vyššie</i></string>
     <string name="pref_backups_title">Automaticky zálohovať trezor</string>
     <string name="pref_backups_summary">Po vykonaní zmien automaticky vytvárať zálohy trezoru na externom úložisku. Toto je podporované iba pre šifrované trezory.</string>
     <string name="pref_backups_reminder_title">Pripomienky zálohovania</string>
+    <string name="pref_backups_reminder_summary">Zobraziť pripomienku o zálohovaní vášho trezoru v prípade, že ste nezálohovali vaše najnovšie zmeny.</string>
     <string name="pref_backups_reminder_dialog_title">Zakázať pripomienky zálohovania</string>
-    <string name="pref_backups_location_title">Adresár pre zálohy</string>
+    <string name="pref_backups_reminder_dialog_summary">Ak túto pripomienku zakážete, Aegis vám nepovie, či máte alebo nemáte zmeny, ktoré ešte nie sú zálohované. Vystavujete sa tak riziku straty prístupu k svojim tokenom. Naozaj chcete zakázať pripomenutie?</string>
     <string name="pref_backups_location_summary">Zálohy budú uložené v</string>
     <string name="pref_backups_trigger_title">Spustiť zálohu</string>
     <string name="pref_backups_trigger_summary">Ručné spustenie zálohy</string>
     <string name="pref_backups_versions_title">Počet verzií na uchovanie</string>
+    <string name="pref_backups_versions_infinite">\u221E</string>
     <plurals name="pref_backups_versions_summary">
         <item quantity="one">Ponechať %1$d verziu zálohy</item>
         <item quantity="few">Ponechať %1$d verzie zálohy</item>
         <item quantity="many">Ponechať %1$d verzií zálohy</item>
         <item quantity="other">Ponechať %1$d verzií zálohy</item>
     </plurals>
-    <string name="pref_import_app_title">Importovanie z aplikácie</string>
+    <string name="pref_backups_versions_infinite_summary">Ponechať nekonečné množstvo verzií zálohy</string>
+    <string name="pref_import_app_title">Importovať z aplikácie</string>
     <string name="pref_import_app_summary">Importovať tokeny z aplikácie (vyžaduje sa prístup root)</string>
     <string name="pref_export_title">Exportovať</string>
     <string name="pref_export_summary">Exportovať trezor</string>
@@ -73,6 +89,7 @@
     <string name="pref_secure_screen_summary">Blokujte snímky obrazovky a iné pokusy o zachytenie obrazovky v rámci aplikácie</string>
     <string name="pref_tap_to_reveal_title">Stlač pre zobrazenie</string>
     <string name="pref_tap_to_reveal_summary">Tokeny budú predvolene skryté. Kliknite na tokeny pre zobrazenie kódu.</string>
+    <string name="pref_tap_to_reveal_time_title">Čas do skrytia zobrazeného kódu</string>
     <string name="pref_auto_lock_title">Automatické zamykanie</string>
     <string name="pref_auto_lock_summary">Keď %s</string>
     <string name="pref_auto_lock_summary_disabled">Vypnuté</string>
@@ -82,21 +99,58 @@
     <string name="pref_auto_lock_type_device_lock">Zariadenie je uzamknuté</string>
     <string name="pref_backup_password_category">Záloha &amp; Export</string>
     <string name="pref_backup_password_title">Samostatné heslo pre zálohu &amp; export</string>
+    <string name="pref_backup_password_summary">Ak je povolené, heslo, ktoré sa používa na odomknutie aplikácie, už nemožno použiť na dešifrovanie záloh a exportov.</string>
+    <string name="pref_backup_password_change_title">Zmeniť heslo pre zálohu &amp; export</string>
+    <string name="pref_backup_password_change_summary">Nastavte nové heslo, ktoré sa použije na šifrovanie trezoru počas zálohovania a exportu.</string>
     <string name="pref_encryption_title">Šifrovanie</string>
     <string name="pref_encryption_summary">Zašifrujte trezor a odomknite ho pomocou hesla alebo biometrie</string>
     <string name="pref_biometrics_title">Biometrické odomykanie</string>
     <string name="pref_biometrics_summary">Povoliť biometrické overenie na odomknutie trezoru</string>
+    <string name="pref_search_behavior_prompt">Vyhľadávanie v niektorom z nasledujúcich polí</string>
+    <string name="pref_search_behavior_type_name">Meno</string>
+    <string name="pref_search_behavior_type_issuer">Vydavateľ</string>
+    <string name="pref_search_behavior_type_note">Poznámka</string>
+    <string name="pref_search_behavior_type_groups">Skupiny</string>
     <string name="pref_set_password_title">Zmeniť heslo</string>
     <string name="pref_set_password_summary">Zadajte nové heslo, ktoré budete potrebovať na odomknutie trezoru</string>
+    <string name="no_events_title">Žiadne nahlásené udalosti</string>
+    <string name="no_events_description">V aplikácii neboli nahlásené žiadne dôležité udalosti</string>
+    <string name="event_title_vault_unlocked">Trezor odomknutý</string>
+    <string name="event_description_vault_unlocked">Trezor bol úspešne odomknutý</string>
+    <string name="event_title_backup_created">Záloha vytvorená</string>
+    <string name="event_description_backup_created">Záloha trezoru bola úspešne vytvorená</string>
+    <string name="event_title_android_backup_created">Záloha vytvorená systémom Android</string>
+    <string name="event_description_android_backup_created">Záloha trezoru bola úspešne vytvorená systémom Android</string>
+    <string name="event_title_vault_exported">Trezor exportovaný</string>
+    <string name="event_description_vault_exported">Kópia trezoru bola exportovaná</string>
+    <string name="event_title_entry_shared">Záznam zdieľaný</string>
+    <string name="event_description_entry_shared">Záznam bol zdieľaný</string>
+    <string name="event_title_vault_unlock_failed_password">Odomknutie trezora sa nepodarilo (heslo)</string>
+    <string name="event_description_vault_unlock_failed_password">Pokus o odomknutie trezora s heslom zlyhalo</string>
+    <string name="event_title_vault_unlock_failed_biometrics">Odomknutie trezora sa nepodarilo (biometria)</string>
+    <string name="event_description_vault_unlock_failed_biometrics">Pokus o odomknutie trezora s biometriou zlyhalo</string>
+    <string name="event_unknown">Neznámy typ udalosti</string>
+    <string name="today_at_time">Dnes o %1$s</string>
+    <string name="day_of_week_at_time">%1$s o %2$s</string>
     <string name="export_encrypted">Šifrovať trezor</string>
     <string name="export_help">Touto akciou sa exportuje trezor z interného úložiska Aegis. Vyberte formát, v ktorom chcete mať export:</string>
-    <string name="export_warning_unencrypted">Chystáte sa exportovať nezašifrovanú kópiu svojho trezoru Aegis. <b> Toto sa neodporúča </b>.</string>
+    <string name="export_warning_unencrypted">Chystáte sa exportovať nezašifrovanú kópiu svojho trezoru Aegis. <b>Toto sa neodporúča</b>.</string>
+    <string name="export_warning_password">Exporty sú šifrované pomocou samostatného hesla nakonfigurovaného v nastaveniach zabezpečenia.</string>
     <string name="understand_risk_accept">Rozumiem rizikám</string>
     <string name="export_format_aegis">Aegis (.JSON)</string>
     <string name="export_format_google_auth_uri">Textový súbor (.TXT)</string>
     <string name="export_format_html">Webová stránka (.HTML)</string>
     <string name="export_format_hint">Formát exportu</string>
     <string name="export_all_groups">Exportovať všetky skupiny</string>
+    <string name="export_choose_groups">Vyberte, ktoré skupiny sa majú exportovať</string>
+    <plurals name="export_groups_selected_count">
+        <item quantity="one">%d vybraná skupina</item>
+        <item quantity="few">%d vybrané skupiny</item>
+        <item quantity="many">%d vybraných skupín</item>
+        <item quantity="other">%d vybraných skupín</item>
+    </plurals>
+    <string name="export_no_groups_selected">Nie sú vybrané žiadne skupiny na exportovanie</string>
+    <string name="export_html_title" comment="The title of an HTML export document">Export Aegis Authenticator</string>
     <string name="choose_authentication_method">Zabezpečenie</string>
     <string name="authentication_method_none">Žiadne</string>
     <string name="authentication_method_none_description">Na odomknutie trezoru nie je potrebné žiadne heslo a nebude šifrovaný. <b> Táto možnosť sa neodporúča </b>.</string>
@@ -113,6 +167,7 @@
     <string name="set_number">Prosím zadajte číslo</string>
     <string name="set_password_confirm">Prosím potvrďte heslo</string>
     <string name="invalid_password">Heslo je nesprávne</string>
+    <string name="password_reminder_dialog_title">Predvolené biometrické odomykanie</string>
     <string name="password_reminder_freq_never">Nikdy</string>
     <string name="password_reminder_freq_weekly">Týždenne</string>
     <string name="password_reminder_freq_biweekly">Každý druhý týždeň</string>
@@ -125,16 +180,23 @@
     <string name="share">Zdieľať</string>
     <string name="yes">Áno</string>
     <string name="no">Nie</string>
+    <string name="undo">Späť</string>
     <string name="unlock">Odomknúť</string>
     <string name="advanced">Pokročilé</string>
     <string name="counter">Počítadlo</string>
     <string name="digits">Číslice</string>
+    <string name="secret">Tajný kľúč</string>
     <string name="scan">Naskenovať QR kód</string>
     <string name="scan_image">Naskenovať obrázok</string>
     <string name="enter_manually">Zadať ručne</string>
     <string name="set_up_biometric">Nastaviť biometrické odomknutie</string>
     <string name="copy">Kopírovať</string>
     <string name="edit">Upraviť</string>
+    <string name="select_all">Vybrať všetko</string>
+    <string name="assign_icons">Priradiť ikonky</string>
+    <string name="assign_groups">Priraď do skupiny</string>
+    <string name="assign_groups_dialog_summary">Vyberte skupinu, do ktorej chcete priradiť vybrané položky.</string>
+    <string name="assign_groups_dialog_dropdown">Vyber skupinu</string>
     <string name="favorite" comment="Verb">Obľúbené</string>
     <string name="unfavorite" comment="Verb">Odobrať z obľúbených</string>
     <string name="error_all_caps">CHYBA</string>
@@ -156,9 +218,16 @@
     <string name="delete_entry">Odstrániť položku</string>
     <string name="delete_entry_description">Naozaj chcete túto položku odstrániť?</string>
     <string name="delete_entries">Vymazať položky</string>
+    <plurals name="delete_entries_description">
+        <item quantity="one">Naozaj chcete odstrániť %d položku?</item>
+        <item quantity="few">Naozaj chcete odstrániť %d položky?</item>
+        <item quantity="many">Naozaj chcete odstrániť %d položiek?</item>
+        <item quantity="other">Naozaj chcete odstrániť %d položiek?</item>
+    </plurals>
     <string name="discard_changes">Zrušiť zmeny?</string>
     <string name="discard_changes_description">Vaše zmeny neboli uložené</string>
     <string name="saving_profile_error">Pri ukladaní profilu sa vyskytla chyba</string>
+    <string name="saving_assign_icons_error">Chyba priradenia ikon</string>
     <string name="welcome">Vitajte</string>
     <string name="app_description">Aegis je bezplatná, bezpečná a open source aplikácia 2FA</string>
     <string name="setup_completed">Nastavenie je dokončené</string>
@@ -167,6 +236,7 @@
     <string name="copied">Skopírované</string>
     <string name="errors_copied">Chyby boli skopírované do schránky</string>
     <string name="version_copied">Verzia bola skopírovaná do schránky</string>
+    <string name="error_required_field">Toto pole je povinné</string>
     <string name="error_occurred">Došlo k chybe</string>
     <string name="decryption_error">Pri pokuse o odomknutie trezoru sa vyskytla chyba</string>
     <string name="decryption_corrupt_error">Pri pokuse o odomknutie trezoru sa vyskytla chyba. Váš súbor trezoru môže byť poškodený.</string>
@@ -175,33 +245,61 @@
     <string name="vault_load_error">Pri pokuse o načítanie trezoru z úložiska sa vyskytla chyba</string>
     <string name="biometric_decrypt_error">Pri pokuse o dešifrovanie trezoru pomocou biometrického overenia sa vyskytla chyba. Zvyčajne sa to stane iba vtedy, ak sa zmenili nastavenia zabezpečenia vášho zariadenia. Odomknite trezor pomocou svojho hesla a prekonfigurujte biometrické overenie v nastaveniach Aegis.</string>
     <string name="disable_encryption">Vypnúť šifrovanie</string>
+    <string name="enable_encryption_error">Pri zapínaní šifrovania došlo k chybe</string>
+    <string name="disable_encryption_error">Pri vypínaní šifrovania došlo k chybe</string>
+    <string name="backup_successful">Zálohovanie bolo úspešne naplánované</string>
+    <string name="backup_error">Pri pokuse o vytvorenie zálohy došlo k chybe</string>
+    <string name="backup_status_success">Nedávna úspešná záloha: %s</string>
+    <string name="backup_status_failed">Nedávna neúspešná záloha: %s</string>
     <string name="backup_status_none">Zatiaľ neboli vytvorené žiadne zálohy</string>
+    <string name="backup_warning_password">Zálohy sú šifrované pomocou samostatného hesla zadaného v nastaveniach zabezpečenia</string>
+    <string name="icon_pack_import_error">Pri pokuse o import balíka ikon došlo k chybe</string>
+    <string name="icon_pack_import_exists_error">Balík ikon, ktorý sa snažíte importovať, už existuje. Chcete ho prepísať?</string>
+    <string name="icon_pack_delete_error">Pri pokuse o odstránenie balíka ikon došlo k chybe</string>
+    <plurals name="icon_pack_info">
+        <item quantity="one">%d ikona</item>
+        <item quantity="few">%d ikony</item>
+        <item quantity="many">%d ikon</item>
+        <item quantity="other">%d ikon</item>
+    </plurals>
     <string name="icon_custom">Vlastný</string>
     <string name="permission_denied">Prístup bol zamietnutý</string>
     <string name="andotp_new_format">Nový formát (v0.6.3 alebo novšia) </string>
     <string name="andotp_old_format">Starý formát (v0.6.2 alebo staršia) </string>
+    <string name="choose_andotp_importer">Aký formát má záložný súbor andOTP?</string>
+    <string name="choose_totpauth_importer">Je táto záloha autentifikátora TOTP zašifrovaná heslom?</string>
     <string name="choose_application">Vyberte aplikáciu, z ktorej chcete importovať</string>
     <string name="choose_theme">Vyberte si vašu želanú tému</string>
     <string name="choose_account_name_position">Vyberte si vašu želanú pozíciu názvu účtu</string>
     <string name="choose_view_mode">Vyberte si váš želaný režim zobrazenia</string>
     <string name="choose_copy_behavior">Vyberte si vaše želané správanie kopírovania</string>
+    <string name="parsing_file_error">Pri pokuse o analyzovanie súboru došlo k chybe</string>
     <string name="file_not_found">Chyba: Súbor nenájdený</string>
     <string name="reading_file_error">Pri pokuse o prečitanie súboru sa vyskytla chyba</string>
+    <string name="app_lookup_error">Chyba: Aplikácia nie je nainštalovaná</string>
+    <string name="root_error">Chyba: Nie je možné získať prístup root</string>
     <plurals name="entries_shown">
         <item quantity="one">Zobrazuje sa %d záznam</item>
         <item quantity="few">Zobrazujú sa %d záznamy</item>
         <item quantity="many">Zobrazuje sa %d záznamov</item>
         <item quantity="other">Zobrazuje sa %d záznamov</item>
     </plurals>
+    <string name="intro_import_error_title">Pri importe trezoru došlo k chybe</string>
+    <string name="import_error_title">Počas importu sa vyskytla jedna alebo viacero chýb</string>
     <string name="exported_vault">Trezor bol exportovaný</string>
     <string name="encryption_set_password_error">Pri pokuse o nastavenie hesla sa vyskytla chyba.</string>
     <string name="encryption_enable_biometrics_error">Pri pokuse o povolenie biometrického odomykania sa vyskytla chyba. Niektoré zariadenia majú slabú implementáciu biometrickej autentifikácie a je pravdepodobné, že to vaše je jedno z nich. Zvážte namiesto toho prechod na konfiguráciu iba s heslom.</string>
     <string name="no_cameras_available">K dispozícii nie sú žiadne kamery</string>
     <string name="read_qr_error">Pri pokuse o načítanie kódu QR sa vyskytla chyba</string>
     <string name="read_qr_error_phonefactor">Aegis nie je kompatibilný s proprietárnym algoritmom 2FA spoločnosti Microsoft. Pri konfigurácii 2FA v Office 365 nezabudnite vybrať možnosť „Nastaviť aplikáciu bez upozornení“.</string>
+    <string name="missing_qr_code_descriptor">• QR kód %d</string>
+    <string name="import_google_auth_failure">Importovanie exportu služby Google Authenticator zlyhalo</string>
     <string name="unlocking_vault">Odomykanie trezoru</string>
+    <string name="rename_group">Premenovať Skupinu</string>
     <string name="remove_group">Odstránenie skupiny</string>
     <string name="remove_group_description">Ste si istí, že chcete odstrániť túto skupinu? Záznamy v tejto skupine budú automaticky prehodené na \'Žiadna skupina\'.</string>
+    <string name="remove_unused_groups">Odstrániť nepoužité skupiny</string>
+    <string name="remove_unused_groups_description">Ste si istí, že chcete odstrániť všetky skupiny, ktoré nie sú priradené k záznamu?</string>
     <string name="remove_icon_pack">Odstrániť balíček ikon</string>
     <string name="remove_icon_pack_description">Ste si istí, že chcete odstrániť tento balíček ikon? Záznamy, ktoré používajú ikony z tohto balíka, nebudú ovplyvnené.</string>
     <string name="details">Podrobnosti</string>
@@ -209,13 +307,16 @@
     <string name="lock">Uzamknúť</string>
     <string name="name">Meno</string>
     <string name="no_group">Žiadna skupina</string>
-    <string name="sort">Zoradiť</string>
+    <string name="sort" comment="Title of the Sort button in the top action bar of the main view">Zoradiť</string>
     <string name="sort_alphabetically">Vydavateľ (od A po Z)</string>
     <string name="sort_alphabetically_reverse">Vydavateľ (od Z po A)</string>
     <string name="sort_alphabetically_name">Účet (od A po Z)</string>
     <string name="sort_alphabetically_name_reverse">Účet (od Z po A)</string>
     <string name="sort_usage_count">Počet použití</string>
+    <string name="sort_last_used">Naposledy použité</string>
     <string name="sort_custom">Vlastné</string>
+    <string name="last_used">Naposledy použité</string>
+    <string name="last_used_never">nikdy</string>
     <string name="new_group">Nová skupina…</string>
     <string name="group">Skupina</string>
     <string name="group_name_hint">Názov skupiny</string>
@@ -224,12 +325,14 @@
     <string name="preference_reset_usage_count">Vynulovať počet použití</string>
     <string name="preference_reset_usage_count_summary">Vynuluje sa počet použití pre každý záznam vo vašom trezore</string>
     <string name="preference_reset_usage_count_dialog">Naozaj chcete nastaviť počet použití každého záznamu vo vašom trezore na 0?</string>
-    <string name="note">Poznámka</string>
+    <string name="note" comment="Users can add a note to an entry">Poznámka</string>
     <string name="clear">Vymazať</string>
     <string name="pref_highlight_entry_title">Zvýrazniť tokeny po klepnutí</string>
     <string name="pref_minimize_on_copy_title">Minimalizovať pri kopírovaní</string>
     <string name="pref_minimize_on_copy_summary">Minimalizujte aplikáciu po skopírovaní tokenu</string>
     <string name="pref_copy_behavior_title">Kopírovať tokeny do schránky</string>
+    <string name="pref_search_behavior_title">Správanie pri vyhľadávaní</string>
+    <string name="pref_pause_entry_title">Zmraziť tokeny po klepnutí</string>
     <string name="pin_keyboard_disabled">Heslo bolo zmenené. Klávesnica pre PIN sa už nebude zobrazovať.</string>
     <string name="selected">Zvolené</string>
     <string name="dark_theme_title">Tmavá téma</string>
@@ -243,6 +346,12 @@
     <string name="tiles_mode_title">Dlaždice</string>
     <string name="unknown_issuer">Neznámy vydavateľ</string>
     <string name="unknown_account_name">Neznámy názov účtu</string>
+    <plurals name="import_error_dialog">
+        <item quantity="one">Aegis nedokázal importovať %d token. Tento token bude preskočený. Pre zobrazenie informácii o chybe kliknite na \'podrobnosti\'.</item>
+        <item quantity="few">Aegis nedokázal importovať %d tokeny. Tieto tokeny budú preskočené. Pre zobrazenie informácii o chybách kliknite na \'podrobnosti\'.</item>
+        <item quantity="many">Aegis nedokázal importovať %d tokenov. Tieto tokeny budú preskočené. Pre zobrazenie informácii o chybách kliknite na \'podrobnosti\'.</item>
+        <item quantity="other">Aegis nedokázal importovať %d tokenov. Tieto tokeny budú preskočené. Pre zobrazenie informácii o chybách kliknite na \'podrobnosti\'.</item>
+    </plurals>
     <string name="unable_to_generate_qrcode">Nie je možné vygenerovať QR kód</string>
     <string name="select_picture">Vybrať obrázok</string>
     <string name="select_icon">Vybrať ikonu</string>
@@ -267,24 +376,34 @@
     <string name="support_rate_description">Podporte nás zanechaním recenzie v obchode Google Play</string>
     <string name="email">E-mail</string>
     <string name="time_sync_warning_title">Automatická synchronizácia času</string>
+    <string name="google_qr_export_unrelated">Nesúvisiaci QR kód bol nájdený. Pokúste sa reštartovať skener.</string>
     <string name="backup_error_bar_message"><b>Zálohovanie trezora nedávno zlyhalo</b></string>
     <string name="backup_reminder_bar_message_with_latest" comment="The parameter is an elapsed time in the style of 'x seconds/minutes/days ago'">        Najnovšia záloha je zastaraná (%s)
     </string>
     <string name="backup_reminder_bar_message">        Zmeny nie sú zálohované
     </string>
     <string name="backup_reminder_bar_dialog_title">Zmeny nie sú zálohované</string>
+    <string name="backup_plaintext_export_warning"><b>Trezor bol nedávno exportovaný ako obyčajný text</b></string>
+    <string name="pref_show_plaintext_warning_hint">Toto upozornenie viac nezobrazovať</string>
     <string name="switch_camera">Prepnúť fotoaparát</string>
     <string name="empty_list_title">Neboli nájdené žiadne záznamy</string>
     <string name="empty_group_list_title">Neboli nájdené žiadne skupiny</string>
     <string name="no_icon_packs">Zatiaľ neboli importované žiadne balíčky ikon. Klepnite na znamienko plus aby ste ho importovali. Tip: vyskúšajte <a href="https://aegis-icons.github.io">aegis-icons</a>.</string>
     <string name="no_icon_packs_title">Žiadne balíčky ikon</string>
+    <string name="uncategorized">Nezaradené</string>
     <string name="done">Hotovo</string>
+    <plurals name="qr_count">
+        <item quantity="one">%d / %d QR kódu</item>
+        <item quantity="few">%d / %d QR kódov</item>
+        <item quantity="many">%d / %d QR kódov</item>
+        <item quantity="other">%d / %d QR kódov</item>
+    </plurals>
     <string name="next">Ďalšie</string>
     <string name="previous">Predchádzajúce</string>
     <string name="copy_uri">Skopírovať URI</string>
     <string name="uri_copied_to_clipboard">URI bola skopírovaná do schránky</string>
-    <string name="transfer_entry">Prenos záznamu</string>
     <string name="transfer_entry_description">Naskenujte tento QR kód pomocou overovacej aplikácie, do ktorej chcete tento záznam preniesť</string>
+    <string name="google_auth_compatible_transfer_description">Naskenujte tieto QR kódy s aplikáciou Aegis alebo Google Authenticator.\n\nKvôli limitáciám aplikácie Google Authenticator sú zahrnuté iba TOTP &amp; HOTP tokény, ktoré používajú SHA1 a obsahujú 6 číselné kódy</string>
     <string name="password_strength_very_weak">Veľmi slabé</string>
     <string name="password_strength_weak">Slabé</string>
     <string name="password_strength_fair">Dostatočné</string>
@@ -297,10 +416,13 @@
     <string name="title_activity_about">O programe</string>
     <string name="title_activity_edit_entry">Upraviť záznam</string>
     <string name="title_activity_scan_qr">Skenovať QR kód</string>
-    <string name="import_vault">Importovať trezor</string>
+    <string name="title_activity_assign_icons">Priradiť ikonky</string>
+    <string name="import_vault">Importovať Aegis trezor</string>
+    <string name="importer_help_aegis">Poskytnite súbor exportu/zálohy Aegisu.</string>
     <string name="importer_help_bitwarden">Nahrajte súbor s Bitwarden exportom/zálohou. Šifrované súbory nie sú podporované.</string>
     <string name="groups">Skupiny</string>
-    <string name="pref_focus_search">Focusnúť vyhľadávanie pri spustení aplikácie</string>
+    <string name="pref_focus_search">Zamerať vyhľadávanie pri spustení aplikácie</string>
+    <string name="pref_focus_search_summary">Zamerá vyhľadávanie okamžite po otvorení aplikácie.</string>
     <string name="pref_grouping_halves">Na polovicu</string>
     <string name="pref_grouping_none">Nezoskupovať</string>
     <string name="pref_grouping_size_two">Zoskupovať po 2</string>
@@ -309,4 +431,35 @@
     <string name="pref_copy_behavior_never">Nikdy</string>
     <string name="pref_copy_behavior_single_tap">Jedno klepnutie</string>
     <string name="pref_copy_behavior_double_tap">Dvojité poklepanie</string>
+    <string name="pref_account_name_position_hidden">Skryté</string>
+    <plurals name="time_elapsed_seconds" tools:ignore="UnusedResources">
+        <item quantity="one">Pred %d sekundou</item>
+        <item quantity="few">Pred %d sekundami</item>
+        <item quantity="many">Pred %d sekundami</item>
+        <item quantity="other">Pred %d sekundami</item>
+    </plurals>
+    <plurals name="time_elapsed_minutes" tools:ignore="UnusedResources">
+        <item quantity="one">Pred %d minútou</item>
+        <item quantity="few">Pred %d minútami</item>
+        <item quantity="many">Pred %d minútami</item>
+        <item quantity="other">Pred %d minútami</item>
+    </plurals>
+    <plurals name="time_elapsed_hours" tools:ignore="UnusedResources">
+        <item quantity="one">Pred %d hodinou</item>
+        <item quantity="few">Pred %d hodinami</item>
+        <item quantity="many">Pred %d hodinami</item>
+        <item quantity="other">Pred %d hodinami</item>
+    </plurals>
+    <plurals name="time_elapsed_days" tools:ignore="UnusedResources">
+        <item quantity="one">Pred %d dňom</item>
+        <item quantity="few">Pred %d dňami</item>
+        <item quantity="many">Pred %d dňami</item>
+        <item quantity="other">Pred %d dňami</item>
+    </plurals>
+    <plurals name="time_elapsed_years" tools:ignore="UnusedResources">
+        <item quantity="one">Pred %d rokom</item>
+        <item quantity="few">Pred %d rokmi</item>
+        <item quantity="many">Pred %d rokmi</item>
+        <item quantity="other">Pred %d rokmi</item>
+    </plurals>
 </resources>

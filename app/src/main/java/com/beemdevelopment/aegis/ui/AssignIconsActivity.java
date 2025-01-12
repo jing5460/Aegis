@@ -25,6 +25,7 @@ import com.beemdevelopment.aegis.ui.models.AssignIconEntry;
 import com.beemdevelopment.aegis.ui.views.AssignIconAdapter;
 import com.beemdevelopment.aegis.ui.views.IconAdapter;
 import com.beemdevelopment.aegis.util.IOUtils;
+import com.beemdevelopment.aegis.helpers.ViewHelper;
 import com.beemdevelopment.aegis.vault.VaultEntry;
 import com.beemdevelopment.aegis.vault.VaultEntryIcon;
 import com.bumptech.glide.Glide;
@@ -42,6 +43,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class AssignIconsActivity extends AegisActivity implements AssignIconAdapter.Listener {
     private AssignIconAdapter _adapter;
@@ -60,6 +62,7 @@ public class AssignIconsActivity extends AegisActivity implements AssignIconAdap
 
         setContentView(R.layout.activity_assign_icons);
         setSupportActionBar(findViewById(R.id.toolbar));
+        ViewHelper.setupAppBarInsets(findViewById(R.id.app_bar_layout));
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -184,7 +187,11 @@ public class AssignIconsActivity extends AegisActivity implements AssignIconAdap
 
     @Override
     public void onAssignIconEntryClick(AssignIconEntry entry) {
-        BottomSheetDialog dialog = IconPickerDialog.create(this, Collections.singletonList(_favoriteIconPack), entry.getEntry().getIssuer(), false, new IconAdapter.Listener() {
+        List<IconPack> iconPacks = _iconPackManager.getIconPacks().stream()
+                .sorted(Comparator.comparing(IconPack::getName))
+                .collect(Collectors.toList());
+
+        BottomSheetDialog dialog = IconPickerDialog.create(this, iconPacks, entry.getEntry().getIssuer(), false, new IconAdapter.Listener() {
             @Override
             public void onIconSelected(IconPack.Icon icon) {
                 entry.setNewIcon(icon);

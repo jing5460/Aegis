@@ -5,21 +5,23 @@ import android.app.backup.BackupManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.beemdevelopment.aegis.BackupsVersioningStrategy;
 import com.beemdevelopment.aegis.Preferences;
 import com.beemdevelopment.aegis.R;
 import com.beemdevelopment.aegis.crypto.KeyStoreHandle;
 import com.beemdevelopment.aegis.crypto.KeyStoreHandleException;
+import com.beemdevelopment.aegis.database.AuditLogRepository;
 import com.beemdevelopment.aegis.services.NotificationService;
 import com.beemdevelopment.aegis.ui.dialogs.Dialogs;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -30,8 +32,6 @@ public class VaultManager {
     private final Context _context;
     private final Preferences _prefs;
 
-    private VaultFile _vaultFile;
-    private VaultRepositoryException _vaultFileError;
     private VaultRepository _repo;
 
     private final VaultBackupManager _backups;
@@ -40,41 +40,20 @@ public class VaultManager {
     private final List<LockListener> _lockListeners;
     private boolean _blockAutoLock;
 
-    public VaultManager(@NonNull Context context) {
+    private final AuditLogRepository _auditLogRepository;
+
+    public VaultManager(@NonNull Context context, AuditLogRepository auditLogRepository) {
         _context = context;
         _prefs = new Preferences(_context);
-        _backups = new VaultBackupManager(_context);
+        _backups = new VaultBackupManager(_context, auditLogRepository);
         _androidBackups = new BackupManager(context);
         _lockListeners = new ArrayList<>();
-        loadVaultFile();
-    }
-
-    private void loadVaultFile() {
-        try {
-            _vaultFile = VaultRepository.readVaultFile(_context);
-        } catch (VaultRepositoryException e) {
-            if (!(e.getCause() instanceof FileNotFoundException)) {
-                _vaultFileError = e;
-                e.printStackTrace();
-            }
-        }
-
-        if (_vaultFile != null && !_vaultFile.isEncrypted()) {
-            try {
-                loadFrom(_vaultFile, null);
-            } catch (VaultRepositoryException e) {
-                e.printStackTrace();
-                _vaultFile = null;
-                _vaultFileError = e;
-            }
-        }
+        _auditLogRepository = auditLogRepository;
     }
 
     /**
      * Initializes the vault repository with a new empty vault and the given creds. It can
      * only be called if isVaultLoaded() returns false.
-     *
-     * Calling this method removes the manager's internal reference to the raw vault file (if it had one).
      */
     @NonNull
     public VaultRepository initNew(@Nullable VaultFileCredentials creds) throws VaultRepositoryException {
@@ -82,10 +61,9 @@ public class VaultManager {
             throw new IllegalStateException("Vault manager is already initialized");
         }
 
-        _vaultFile = null;
-        _vaultFileError = null;
-        _repo = new VaultRepository(_context, new Vault(), creds);
-        save();
+        VaultRepository repo = new VaultRepository(_context, new Vault(), creds);
+        repo.save();
+        _repo = repo;
 
         if (getVault().isEncryptionEnabled()) {
             startNotificationService();
@@ -97,8 +75,6 @@ public class VaultManager {
     /**
      * Initializes the vault repository by decrypting the given vaultFile with the given
      * creds. It can only be called if isVaultLoaded() returns false.
-     *
-     * Calling this method removes the manager's internal reference to the raw vault file (if it had one).
      */
     @NonNull
     public VaultRepository loadFrom(@NonNull VaultFile vaultFile, @Nullable VaultFileCredentials creds) throws VaultRepositoryException {
@@ -106,8 +82,6 @@ public class VaultManager {
             throw new IllegalStateException("Vault manager is already initialized");
         }
 
-        _vaultFile = null;
-        _vaultFileError = null;
         _repo = VaultRepository.fromFile(_context, vaultFile, creds);
 
         if (getVault().isEncryptionEnabled()) {
@@ -117,32 +91,9 @@ public class VaultManager {
         return getVault();
     }
 
-    /**
-     * Initializes the vault repository by loading and decrypting the vault file stored in
-     * internal storage, with the given creds. It can only be called if isVaultLoaded()
-     * returns false.
-     *
-     * Calling this method removes the manager's internal reference to the raw vault file (if it had one).
-     */
     @NonNull
-    public VaultRepository load(@Nullable VaultFileCredentials creds) throws VaultRepositoryException {
-        if (isVaultLoaded()) {
-            throw new IllegalStateException("Vault manager is already initialized");
-        }
-
-        loadVaultFile();
-        if (isVaultLoaded()) {
-            return _repo;
-        }
-
-        return loadFrom(getVaultFile(), creds);
-    }
-
-    @NonNull
-    public VaultRepository unlock(@NonNull VaultFileCredentials creds) throws VaultRepositoryException {
-        VaultRepository repo = loadFrom(getVaultFile(), creds);
-        startNotificationService();
-        return repo;
+    public VaultRepository loadFrom(@NonNull VaultFile vaultFile) throws VaultRepositoryException {
+        return loadFrom(vaultFile, null);
     }
 
     /**
@@ -157,7 +108,6 @@ public class VaultManager {
         }
 
         stopNotificationService();
-        loadVaultFile();
     }
 
     public void enableEncryption(VaultFileCredentials creds) throws VaultRepositoryException {
@@ -224,8 +174,11 @@ public class VaultManager {
             try (OutputStream outStream = new FileOutputStream(tempFile)) {
                 _repo.export(outStream);
             }
+            BackupsVersioningStrategy strategy = _prefs.getBackupVersioningStrategy();
+            Uri uri = _prefs.getBackupsLocation();
+            int versionsToKeep = _prefs.getBackupsVersionCount();
 
-            _backups.scheduleBackup(tempFile, _prefs.getBackupsLocation(), _prefs.getBackupsVersionCount());
+            _backups.scheduleBackup(tempFile, strategy, uri, versionsToKeep);
         } catch (IOException e) {
             throw new VaultRepositoryException(e);
         }
@@ -270,12 +223,8 @@ public class VaultManager {
         return _repo != null;
     }
 
-    public boolean isVaultFileLoaded() {
-        return _vaultFile != null;
-    }
-
     public boolean isVaultInitNeeded() {
-        return !isVaultLoaded() && !isVaultFileLoaded() && getVaultFileError() == null;
+        return !isVaultLoaded() && !VaultRepository.fileExists(_context);
     }
 
     @NonNull
@@ -285,20 +234,6 @@ public class VaultManager {
         }
 
         return _repo;
-    }
-
-    @NonNull
-    public VaultFile getVaultFile() {
-        if (_vaultFile == null) {
-            throw new IllegalStateException("Vault file is not in memory");
-        }
-
-        return _vaultFile;
-    }
-
-    @Nullable
-    public VaultRepositoryException getVaultFileError() {
-        return _vaultFileError;
     }
 
     /**

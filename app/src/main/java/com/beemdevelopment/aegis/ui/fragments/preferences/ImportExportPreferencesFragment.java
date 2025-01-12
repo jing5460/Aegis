@@ -22,6 +22,7 @@ import androidx.core.content.FileProvider;
 import androidx.preference.Preference;
 
 import com.beemdevelopment.aegis.BuildConfig;
+import com.beemdevelopment.aegis.GroupPlaceholderType;
 import com.beemdevelopment.aegis.R;
 import com.beemdevelopment.aegis.helpers.DropdownHelper;
 import com.beemdevelopment.aegis.importers.DatabaseImporter;
@@ -45,6 +46,7 @@ import com.beemdevelopment.aegis.vault.VaultRepository;
 import com.beemdevelopment.aegis.vault.VaultRepositoryException;
 import com.beemdevelopment.aegis.vault.slots.PasswordSlot;
 import com.beemdevelopment.aegis.vault.slots.SlotException;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
@@ -67,11 +69,6 @@ public class ImportExportPreferencesFragment extends PreferencesFragment {
     // keep a reference to the type of database converter that was selected
     private DatabaseImporter.Definition _importerDef;
     private Vault.EntryFilter _exportFilter;
-
-    private final ActivityResultLauncher<Intent> importResultLauncher =
-            registerForActivityResult(new StartActivityForResult(), activityResult -> {
-                getResult().putExtra("needsRecreate", true);
-            });
 
     private final ActivityResultLauncher<Intent> importSelectResultLauncher =
             registerForActivityResult(new StartActivityForResult(), activityResult -> {
@@ -99,7 +96,6 @@ public class ImportExportPreferencesFragment extends PreferencesFragment {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        super.onCreatePreferences(savedInstanceState, rootKey);
         addPreferencesFromResource(R.xml.preferences_import_export);
 
         if (savedInstanceState != null) {
@@ -166,7 +162,7 @@ public class ImportExportPreferencesFragment extends PreferencesFragment {
         Intent intent = new Intent(requireContext(), ImportEntriesActivity.class);
         intent.putExtra("importerDef", importerDef);
         intent.putExtra("file", file);
-        importResultLauncher.launch(intent);
+        startActivity(intent);
     }
 
     private void startExport() {
@@ -195,14 +191,14 @@ public class ImportExportPreferencesFragment extends PreferencesFragment {
             checkBoxExportAllGroups.setVisibility(View.VISIBLE);
 
             ArrayList<VaultGroupModel> groupsArray = new ArrayList<>();
-            groupsArray.add(new VaultGroupModel(getString(R.string.no_group)));
+            groupsArray.add(new VaultGroupModel(requireContext(), GroupPlaceholderType.NO_GROUP));
             groupsArray.addAll(groups.stream().map(VaultGroupModel::new).collect(Collectors.toList()));
 
             groupsSelection.setCheckedItemsCountTextRes(R.plurals.export_groups_selected_count);
             groupsSelection.addItems(groupsArray, false);
         }
 
-        AlertDialog dialog = new AlertDialog.Builder(requireContext())
+        AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.pref_export_summary)
                 .setView(view)
                 .setNeutralButton(R.string.share, null)
@@ -276,6 +272,7 @@ public class ImportExportPreferencesFragment extends PreferencesFragment {
                         .setType(getExportMimeType(getExportRequestCode(pos, encrypt)))
                         .putExtra(Intent.EXTRA_TITLE, fileInfo.toString());
 
+                _auditLogRepository.addVaultExportedEvent();
                 ActivityResultLauncher<Intent> resultLauncher = getExportRequestLauncher(pos, encrypt);
                 _vaultManager.fireIntentLauncher(this, intent, resultLauncher);
             });
@@ -299,7 +296,7 @@ public class ImportExportPreferencesFragment extends PreferencesFragment {
                 boolean encrypt = checkBoxEncrypt.isChecked();
                 try {
                     VaultBackupManager.FileInfo fileInfo = getExportFileInfo(pos, encrypt);
-                    file = File.createTempFile(fileInfo.getFilename() + "-", "." + fileInfo.getExtension(), getExportCacheDir());
+                    file = new File(getExportCacheDir(), fileInfo.toString());
                 } catch (IOException e) {
                     e.printStackTrace();
                     Dialogs.showErrorDialog(requireContext(), R.string.exporting_vault_error, e);
@@ -319,7 +316,7 @@ public class ImportExportPreferencesFragment extends PreferencesFragment {
 
                     // if the user creates an export, hide the backup reminder
                     _prefs.setLatestExportTimeNow();
-
+                    _auditLogRepository.addVaultExportedEvent();
                     Uri uri = FileProvider.getUriForFile(requireContext(), BuildConfig.FILE_PROVIDER_AUTHORITY, file);
                     Intent intent = new Intent(Intent.ACTION_SEND)
                             .setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
@@ -558,7 +555,7 @@ public class ImportExportPreferencesFragment extends PreferencesFragment {
             } else {
                 // if the user creates an export, hide the backup reminder
                 _prefs.setLatestExportTimeNow();
-
+                _auditLogRepository.addVaultExportedEvent();
                 Toast.makeText(requireContext(), getString(R.string.exported_vault), Toast.LENGTH_SHORT).show();
             }
         }

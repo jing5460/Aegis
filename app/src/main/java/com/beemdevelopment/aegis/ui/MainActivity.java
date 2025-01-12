@@ -23,50 +23,73 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ActionMode;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
-import com.beemdevelopment.aegis.CopyBehavior;
-import com.beemdevelopment.aegis.AccountNamePosition;
+import com.beemdevelopment.aegis.GroupPlaceholderType;
 import com.beemdevelopment.aegis.Preferences;
 import com.beemdevelopment.aegis.R;
 import com.beemdevelopment.aegis.SortCategory;
-import com.beemdevelopment.aegis.ViewMode;
+import com.beemdevelopment.aegis.helpers.BitmapHelper;
+import com.beemdevelopment.aegis.helpers.DropdownHelper;
 import com.beemdevelopment.aegis.helpers.FabScrollHelper;
 import com.beemdevelopment.aegis.helpers.PermissionHelper;
+import com.beemdevelopment.aegis.helpers.ViewHelper;
+import com.beemdevelopment.aegis.icons.IconType;
 import com.beemdevelopment.aegis.otp.GoogleAuthInfo;
 import com.beemdevelopment.aegis.otp.GoogleAuthInfoException;
 import com.beemdevelopment.aegis.otp.OtpInfoException;
 import com.beemdevelopment.aegis.ui.dialogs.Dialogs;
 import com.beemdevelopment.aegis.ui.fragments.preferences.BackupsPreferencesFragment;
 import com.beemdevelopment.aegis.ui.fragments.preferences.PreferencesFragment;
+import com.beemdevelopment.aegis.ui.models.ErrorCardInfo;
+import com.beemdevelopment.aegis.ui.models.VaultGroupModel;
+import com.beemdevelopment.aegis.ui.tasks.IconOptimizationTask;
 import com.beemdevelopment.aegis.ui.tasks.QrDecodeTask;
 import com.beemdevelopment.aegis.ui.views.EntryListView;
 import com.beemdevelopment.aegis.util.TimeUtils;
+import com.beemdevelopment.aegis.util.UUIDMap;
 import com.beemdevelopment.aegis.vault.VaultEntry;
+import com.beemdevelopment.aegis.vault.VaultEntryIcon;
+import com.beemdevelopment.aegis.vault.VaultFile;
+import com.beemdevelopment.aegis.vault.VaultGroup;
+import com.beemdevelopment.aegis.vault.VaultRepository;
+import com.beemdevelopment.aegis.vault.VaultRepositoryException;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.color.MaterialColors;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.common.base.Strings;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class MainActivity extends AegisActivity implements EntryListView.Listener {
@@ -87,8 +110,11 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
     private Menu _menu;
     private SearchView _searchView;
     private EntryListView _entryListView;
-    private LinearLayout _btnErrorBar;
-    private TextView _textErrorBar;
+
+    private Collection<VaultGroup> _groups;
+    private ChipGroup _groupChip;
+    private Set<UUID> _groupFilter;
+    private Set<UUID> _prefGroupFilter;
 
     private FabScrollHelper _fabScrollHelper;
 
@@ -128,23 +154,18 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
                 if (activityResult.getResultCode() != RESULT_OK || activityResult.getData() == null) {
                     return;
                 }
-                onAssignEntriesResult(activityResult.getData());
+                onAssignIconsResult();
             });
 
     private final ActivityResultLauncher<Intent> preferenceResultLauncher =
-            registerForActivityResult(new StartActivityForResult(), activityResult -> {
-                if (activityResult.getResultCode() != RESULT_OK || activityResult.getData() == null) {
-                    return;
-                }
-                onPreferencesResult(activityResult.getData());
-            });
+            registerForActivityResult(new StartActivityForResult(), activityResult -> onPreferencesResult());
 
     private final ActivityResultLauncher<Intent> editEntryResultLauncher =
             registerForActivityResult(new StartActivityForResult(), activityResult -> {
                 if (activityResult.getResultCode() != RESULT_OK || activityResult.getData() == null) {
                     return;
                 }
-                onEditEntryResult(activityResult.getData());
+                onEditEntryResult();
             });
 
     private final ActivityResultLauncher<Intent> addEntryResultLauncher =
@@ -167,6 +188,7 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar(findViewById(R.id.toolbar));
+        ViewHelper.setupAppBarInsets(findViewById(R.id.app_bar_layout));
         _loaded = false;
         _isDPadPressed = false;
         _isDoingIntro = false;
@@ -191,6 +213,8 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
         _entryListView.setCodeGroupSize(_prefs.getCodeGroupSize());
         _entryListView.setAccountNamePosition(_prefs.getAccountNamePosition());
         _entryListView.setShowIcon(_prefs.isIconVisible());
+        _entryListView.setShowExpirationState(_prefs.getShowExpirationState());
+        _entryListView.setShowNextCode(_prefs.getShowNextCode());
         _entryListView.setOnlyShowNecessaryAccountNames(_prefs.onlyShowNecessaryAccountNames());
         _entryListView.setHighlightEntry(_prefs.isEntryHighlightEnabled());
         _entryListView.setPauseFocused(_prefs.isPauseFocusedEnabled());
@@ -199,7 +223,8 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
         _entryListView.setSortCategory(_prefs.getCurrentSortCategory(), false);
         _entryListView.setViewMode(_prefs.getCurrentViewMode());
         _entryListView.setCopyBehavior(_prefs.getCopyBehavior());
-        _entryListView.setPrefGroupFilter(_prefs.getGroupFilter());
+        _entryListView.setSearchBehaviorMask(_prefs.getSearchBehaviorMask());
+        _prefGroupFilter = _prefs.getGroupFilter();
 
          FloatingActionButton fab = findViewById(R.id.fab);
          fab.setOnClickListener(v -> {
@@ -223,11 +248,141 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
              Dialogs.showSecureDialog(dialog);
          });
 
-        _btnErrorBar = findViewById(R.id.btn_error_bar);
-        _textErrorBar = findViewById(R.id.text_error_bar);
-
+        _groupChip = findViewById(R.id.groupChipGroup);
         _fabScrollHelper = new FabScrollHelper(fab);
         _selectedEntries = new ArrayList<>();
+    }
+
+    public void setGroups(Collection<VaultGroup> groups) {
+        _groups = groups;
+        _groupChip.setVisibility(_groups.isEmpty() ? View.GONE : View.VISIBLE);
+
+        if (_prefGroupFilter != null) {
+            Set<UUID> groupFilter = cleanGroupFilter(_prefGroupFilter);
+            _prefGroupFilter = null;
+            if (!groupFilter.isEmpty()) {
+                _groupFilter = groupFilter;
+                _entryListView.setGroupFilter(groupFilter);
+            }
+        } else if (_groupFilter != null) {
+            Set<UUID> groupFilter = cleanGroupFilter(_groupFilter);
+            if (!_groupFilter.equals(groupFilter)) {
+                _groupFilter = groupFilter;
+                _entryListView.setGroupFilter(groupFilter);
+            }
+        }
+
+        _entryListView.setGroups(groups);
+        initializeGroups();
+    }
+
+    private void initializeGroups() {
+        _groupChip.removeAllViews();
+
+        for (VaultGroup group : _groups) {
+            addChipTo(_groupChip, new VaultGroupModel(group));
+        }
+
+        GroupPlaceholderType placeholderType = GroupPlaceholderType.NO_GROUP;
+        addChipTo(_groupChip, new VaultGroupModel(this, placeholderType));
+        addSaveChip(_groupChip);
+    }
+
+    private Set<UUID> cleanGroupFilter(Set<UUID> groupFilter) {
+        Set<UUID> groupUuids = _groups.stream().map(UUIDMap.Value::getUUID).collect(Collectors.toSet());
+
+        return groupFilter.stream()
+                .filter(g -> g == null || groupUuids.contains(g))
+                .collect(Collectors.toSet());
+    }
+
+    private void addChipTo(ChipGroup chipGroup, VaultGroupModel group) {
+        Chip chip = (Chip) getLayoutInflater().inflate(R.layout.chip_group_filter, null, false);
+        chip.setText(group.getName());
+        chip.setCheckable(true);
+        chip.setCheckedIconVisible(false);
+        chip.setChecked(_groupFilter != null && _groupFilter.contains(group.getUUID()));
+
+        if (group.isPlaceholder()) {
+            GroupPlaceholderType groupPlaceholderType = group.getPlaceholderType();
+            chip.setTag(groupPlaceholderType);
+
+            if (groupPlaceholderType == GroupPlaceholderType.ALL) {
+                chip.setChecked(_groupFilter == null);
+            } else if (groupPlaceholderType == GroupPlaceholderType.NO_GROUP) {
+                chip.setChecked(_groupFilter != null && _groupFilter.contains(null));
+            }
+        } else {
+            chip.setTag(group);
+        }
+
+        chip.setOnCheckedChangeListener((group1, isChecked) -> {
+            Set<UUID> groupFilter = new HashSet<>();
+            if (_actionMode != null) {
+                _actionMode.finish();
+            }
+
+            setSaveChipVisibility(true);
+
+            if (!isChecked) {
+                group1.setChecked(false);
+                _groupFilter = groupFilter;
+                _entryListView.setGroupFilter(groupFilter);
+                return;
+            }
+
+            Object chipTag = group1.getTag();
+            if (chipTag == GroupPlaceholderType.NO_GROUP) {
+                groupFilter.add(null);
+            } else {
+                groupFilter = getGroupFilter(chipGroup);
+            }
+
+            _groupFilter = groupFilter;
+            _entryListView.setGroupFilter(groupFilter);
+        });
+
+        chipGroup.addView(chip);
+    }
+
+    private void addSaveChip(ChipGroup chipGroup) {
+        Chip chip = (Chip) getLayoutInflater().inflate(R.layout.chip_group_filter, null, false);
+
+        chip.setText(getString(R.string.save));
+        chip.setVisibility(View.GONE);
+        chip.setChipStrokeWidth(0);
+        chip.setCheckable(false);
+        chip.setChipBackgroundColorResource(android.R.color.transparent);
+        chip.setTextColor(MaterialColors.getColor(chip.getRootView(), com.google.android.material.R.attr.colorSecondary));
+        chip.setClickable(true);
+        chip.setCheckedIconVisible(false);
+        chip.setOnClickListener(v -> {
+            onSaveGroupFilter(_groupFilter);
+            setSaveChipVisibility(false);
+        });
+
+        chipGroup.addView(chip);
+    }
+
+    private void setSaveChipVisibility(boolean visible) {
+        Chip saveChip = (Chip) _groupChip.getChildAt(_groupChip.getChildCount() - 1);
+        saveChip.setChecked(false);
+        saveChip.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
+    private static Set<UUID> getGroupFilter(ChipGroup chipGroup) {
+        return chipGroup.getCheckedChipIds().stream()
+                .map(i -> {
+                    Chip chip = chipGroup.findViewById(i);
+                    if (chip.getTag() instanceof VaultGroupModel) {
+                        VaultGroupModel group = (VaultGroupModel) chip.getTag();
+                        return group.getUUID();
+                    }
+
+                    return null;
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
     }
 
     @Override
@@ -243,6 +398,11 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
             _prefs.setUsageCount(usageMap);
         }
 
+        Map<UUID, Long> lastUsedMap = _entryListView.getLastUsedTimestamps();
+        if (lastUsedMap != null) {
+            _prefs.setLastUsedTimestamps(lastUsedMap);
+        }
+
         super.onPause();
     }
 
@@ -253,6 +413,10 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
         instance.putString("submittedSearchQuery", _submittedSearchQuery);
         instance.putBoolean("isDoingIntro", _isDoingIntro);
         instance.putBoolean("isAuthenticating", _isAuthenticating);
+
+        if (_groupFilter != null) {
+            instance.putSerializable("prefGroupFilter", new HashSet<>(_groupFilter));
+        }
     }
 
     @Override
@@ -282,36 +446,21 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
     @Override
     public void onEntryListTouch() {
         _isDPadPressed = false;
+
+        if (_searchView != null && !_searchView.isIconified()) {
+            if (ViewCompat.getRootWindowInsets(findViewById(android.R.id.content).getRootView()).isVisible(WindowInsetsCompat.Type.ime())) {
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (inputMethodManager != null && getCurrentFocus() != null) {
+                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                }
+            }
+        }
     }
 
-    private void onPreferencesResult(Intent data) {
+    private void onPreferencesResult() {
         // refresh the entire entry list if needed
         if (_loaded) {
-            if (data.getBooleanExtra("needsRecreate", false)) {
-                recreate();
-            } else if (data.getBooleanExtra("needsRefresh", false)) {
-                AccountNamePosition accountNamePosition = _prefs.getAccountNamePosition();
-                boolean showIcons = _prefs.isIconVisible();
-                boolean onlyShowNecessaryAccountNames = _prefs.onlyShowNecessaryAccountNames();
-                Preferences.CodeGrouping codeGroupSize = _prefs.getCodeGroupSize();
-                boolean highlightEntry = _prefs.isEntryHighlightEnabled();
-                boolean pauseFocused = _prefs.isPauseFocusedEnabled();
-                boolean tapToReveal = _prefs.isTapToRevealEnabled();
-                int tapToRevealTime = _prefs.getTapToRevealTime();
-                ViewMode viewMode = _prefs.getCurrentViewMode();
-                CopyBehavior copyBehavior = _prefs.getCopyBehavior();
-                _entryListView.setAccountNamePosition(accountNamePosition);
-                _entryListView.setOnlyShowNecessaryAccountNames(onlyShowNecessaryAccountNames);
-                _entryListView.setShowIcon(showIcons);
-                _entryListView.setCodeGroupSize(codeGroupSize);
-                _entryListView.setHighlightEntry(highlightEntry);
-                _entryListView.setPauseFocused(pauseFocused);
-                _entryListView.setTapToReveal(tapToReveal);
-                _entryListView.setTapToRevealTime(tapToRevealTime);
-                _entryListView.setViewMode(viewMode);
-                _entryListView.setCopyBehavior(copyBehavior);
-                _entryListView.refresh(true);
-            }
+            recreate();
         }
     }
 
@@ -346,6 +495,76 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
         assignIconsResultLauncher.launch(assignIconIntent);
     }
 
+    private void startAssignGroupsDialog() {
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_select_group, null);
+        TextInputLayout groupSelectionLayout = view.findViewById(R.id.group_selection_layout);
+        AutoCompleteTextView groupsSelection = view.findViewById(R.id.group_selection_dropdown);
+        TextInputLayout newGroupLayout = view.findViewById(R.id.text_group_name_layout);
+        TextInputEditText newGroupText = view.findViewById(R.id.text_group_name);
+
+        Collection<VaultGroup> groups = _vaultManager.getVault().getUsedGroups();
+        List<VaultGroupModel> groupModels = new ArrayList<>();
+        groupModels.add(new VaultGroupModel(this, GroupPlaceholderType.NEW_GROUP));
+        groupModels.addAll(groups.stream().map(VaultGroupModel::new).collect(Collectors.toList()));
+        DropdownHelper.fillDropdown(this, groupsSelection, groupModels);
+
+        AtomicReference<VaultGroupModel> groupModelRef = new AtomicReference<>();
+        groupsSelection.setOnItemClickListener((parent, view1, position, id) -> {
+            VaultGroupModel groupModel = (VaultGroupModel) parent.getItemAtPosition(position);
+            groupModelRef.set(groupModel);
+
+            if (groupModel.isPlaceholder()) {
+                newGroupLayout.setVisibility(View.VISIBLE);
+                newGroupText.requestFocus();
+            } else {
+                newGroupLayout.setVisibility(View.GONE);
+            }
+
+            groupSelectionLayout.setError(null);
+        });
+
+        AlertDialog dialog = new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.assign_groups)
+                .setView(view)
+                .setPositiveButton(android.R.string.ok, null)
+                .setNegativeButton(android.R.string.cancel, null)
+                .create();
+
+        dialog.setOnShowListener(d -> {
+            Button btnPos = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            btnPos.setOnClickListener(v -> {
+                VaultGroupModel groupModel = groupModelRef.get();
+                if (groupModel == null) {
+                    groupSelectionLayout.setError(getString(R.string.error_required_field));
+                    return;
+                }
+
+                if (groupModel.isPlaceholder()) {
+                    String newGroupName = newGroupText.getText().toString().trim();
+                    if (newGroupName.isEmpty()) {
+                        newGroupLayout.setError(getString(R.string.error_required_field));
+                        return;
+                    }
+
+                    VaultGroup group = new VaultGroup(newGroupName);
+                    _vaultManager.getVault().addGroup(group);
+                    groupModel = new VaultGroupModel(group);
+                }
+
+                for (VaultEntry selectedEntry : _selectedEntries) {
+                    selectedEntry.addGroup(groupModel.getUUID());
+                }
+
+                dialog.dismiss();
+                saveAndBackupVault();
+                _actionMode.finish();
+                setGroups(_vaultManager.getVault().getUsedGroups());
+            });
+        });
+
+        Dialogs.showSecureDialog(dialog);
+    }
+
     private void startIntroActivity() {
         if (!_isDoingIntro) {
             Intent intro = new Intent(this, IntroActivity.class);
@@ -365,31 +584,20 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
         if (_loaded) {
             UUID entryUUID = (UUID) data.getSerializableExtra("entryUUID");
             VaultEntry entry = _vaultManager.getVault().getEntryByUUID(entryUUID);
-            _entryListView.addEntry(entry, true);
+            _entryListView.setEntries(_vaultManager.getVault().getEntries());
+            _entryListView.onEntryAdded(entry);
         }
     }
 
-    private void onEditEntryResult(Intent data) {
+    private void onEditEntryResult() {
         if (_loaded) {
-            UUID entryUUID = (UUID) data.getSerializableExtra("entryUUID");
-
-            if (data.getBooleanExtra("delete", false)) {
-                _entryListView.removeEntry(entryUUID);
-            } else {
-                VaultEntry entry = _vaultManager.getVault().getEntryByUUID(entryUUID);
-                _entryListView.replaceEntry(entryUUID, entry);
-            }
+            _entryListView.setEntries(_vaultManager.getVault().getEntries());
         }
     }
 
-    private void onAssignEntriesResult(Intent data) {
+    private void onAssignIconsResult() {
         if (_loaded) {
-            ArrayList<UUID> entryUUIDs = (ArrayList<UUID>) data.getSerializableExtra("entryUUIDs");
-
-            for (UUID entryUUID: entryUUIDs) {
-                VaultEntry entry = _vaultManager.getVault().getEntryByUUID(entryUUID);
-                _entryListView.replaceEntry(entryUUID, entry);
-            }
+            _entryListView.setEntries(_vaultManager.getVault().getEntries());
         }
     }
 
@@ -458,7 +666,7 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
                 boolean isSingleBatch = GoogleAuthInfo.Export.isSingleBatch(googleAuthExports);
                 if (!isSingleBatch && errors.size() > 0) {
                     errors.add(getString(R.string.unrelated_google_auth_batches_error));
-                    Dialogs.showMultiMessageDialog(this, R.string.import_error_title, getString(R.string.no_tokens_can_be_imported), errors, null);
+                    Dialogs.showMultiErrorDialog(this, R.string.import_error_title, getString(R.string.no_tokens_can_be_imported), errors, null);
                     return;
                 } else if (!isSingleBatch) {
                     Dialogs.showErrorDialog(this, R.string.import_google_auth_failure, getString(R.string.unrelated_google_auth_batches_error));
@@ -473,7 +681,7 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
             }
 
             if ((errors.size() > 0 && results.size() > 1) || errors.size() > 1) {
-                Dialogs.showMultiMessageDialog(this, R.string.import_error_title, getString(R.string.unable_to_read_qrcode_files, uris.size() - errors.size(), uris.size()), errors, dialogDismissHandler);
+                Dialogs.showMultiErrorDialog(this, R.string.import_error_title, getString(R.string.unable_to_read_qrcode_files, uris.size() - errors.size(), uris.size()), errors, dialogDismissHandler);
             } else if (errors.size() > 0) {
                 Dialogs.showErrorDialog(this, getString(R.string.unable_to_read_qrcode_file, results.get(0).getFileName()), errors.get(0), dialogDismissHandler);
             } else {
@@ -489,23 +697,25 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
         } else if (entries.size() > 1) {
             for (VaultEntry entry: entries) {
                 _vaultManager.getVault().addEntry(entry);
-                _entryListView.addEntry(entry);
             }
 
             if (saveAndBackupVault()) {
                 Toast.makeText(this, getResources().getQuantityString(R.plurals.added_new_entries, entries.size(), entries.size()), Toast.LENGTH_LONG).show();
             }
+
+            _entryListView.setEntries(_vaultManager.getVault().getEntries());
         }
     }
 
     private void updateSortCategoryMenu() {
-        SortCategory category = _prefs.getCurrentSortCategory();
-        _menu.findItem(category.getMenuItem()).setChecked(true);
+        if (_menu != null) {
+            SortCategory category = _prefs.getCurrentSortCategory();
+            _menu.findItem(category.getMenuItem()).setChecked(true);
+        }
     }
 
     private void onIntroResult() {
         loadEntries();
-        checkTimeSyncSetting();
     }
 
     private void checkTimeSyncSetting() {
@@ -518,9 +728,41 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
         }
     }
 
+    private void checkIconOptimization() {
+        if (!_vaultManager.getVault().areIconsOptimized()) {
+            Map<UUID, VaultEntryIcon> oldIcons = _vaultManager.getVault().getEntries().stream()
+                    .filter(e -> e.getIcon() != null
+                            && !e.getIcon().getType().equals(IconType.SVG)
+                            && !BitmapHelper.isVaultEntryIconOptimized(e.getIcon()))
+                    .collect(Collectors.toMap(VaultEntry::getUUID, VaultEntry::getIcon));
+
+            if (!oldIcons.isEmpty()) {
+                IconOptimizationTask task = new IconOptimizationTask(this, this::onIconsOptimized);
+                task.execute(getLifecycle(), oldIcons);
+            } else {
+                onIconsOptimized(Collections.emptyMap());
+            }
+        }
+    }
+
+    private void onIconsOptimized(Map<UUID, VaultEntryIcon> newIcons) {
+        for (Map.Entry<UUID, VaultEntryIcon> mapEntry : newIcons.entrySet()) {
+            VaultEntry entry = _vaultManager.getVault().getEntryByUUID(mapEntry.getKey());
+            entry.setIcon(mapEntry.getValue());
+        }
+
+        _vaultManager.getVault().setIconsOptimized(true);
+        saveAndBackupVault();
+
+        if (!newIcons.isEmpty()) {
+            _entryListView.setEntries(_vaultManager.getVault().getEntries());
+        }
+    }
+
     private void onDecryptResult() {
+        _auditLogRepository.addVaultUnlockedEvent();
+
         loadEntries();
-        checkTimeSyncSetting();
     }
 
     private void startScanActivity() {
@@ -652,8 +894,8 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
 
         if (_vaultManager.isVaultInitNeeded()) {
             if (_prefs.isIntroDone()) {
@@ -663,25 +905,49 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
             return;
         }
 
-        if (!_vaultManager.isVaultLoaded() && !_vaultManager.isVaultFileLoaded()) {
-            Dialogs.showErrorDialog(this, R.string.vault_load_error, _vaultManager.getVaultFileError(), (dialog1, which) -> finish());
-            return;
+        // If the vault is not loaded yet, try to load it now in case it's plain text
+        if (!_vaultManager.isVaultLoaded()) {
+            VaultFile vaultFile;
+            try {
+                vaultFile = VaultRepository.readVaultFile(this);
+            } catch (VaultRepositoryException e) {
+                e.printStackTrace();
+                Dialogs.showErrorDialog(this, R.string.vault_load_error, e, (dialog, which) -> {
+                    finish();
+                });
+                return;
+            }
+
+            if (!vaultFile.isEncrypted()) {
+                try {
+                    _vaultManager.loadFrom(vaultFile);
+                } catch (VaultRepositoryException e) {
+                    e.printStackTrace();
+                    Dialogs.showErrorDialog(this, R.string.vault_load_error, e, (dialog, which) -> {
+                        finish();
+                    });
+                    return;
+                }
+            }
         }
 
         if (!_vaultManager.isVaultLoaded()) {
             startAuthActivity(false);
         } else if (_loaded) {
             // update the list of groups in the entry list view so that the chip gets updated
-            _entryListView.setGroups(_vaultManager.getVault().getUsedGroups());
+            setGroups(_vaultManager.getVault().getUsedGroups());
 
             // update the usage counts in case they are edited outside of the EntryListView
             _entryListView.setUsageCounts(_prefs.getUsageCounts());
+
+            _entryListView.setLastUsedTimestamps(_prefs.getLastUsedTimestamps());
 
             // refresh all codes to prevent showing old ones
             _entryListView.refresh(false);
         } else {
             loadEntries();
             checkTimeSyncSetting();
+            checkIconOptimization();
         }
 
         _lockBackPressHandler.setEnabled(
@@ -690,17 +956,9 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
 
         handleIncomingIntent();
         updateLockIcon();
+        updateSortCategoryMenu();
         doShortcutActions();
-        updateErrorBar();
-    }
-
-    private void deleteEntries(List<VaultEntry> entries) {
-        for (VaultEntry entry: entries) {
-            VaultEntry oldEntry = _vaultManager.getVault().removeEntry(entry);
-            _entryListView.removeEntry(oldEntry);
-        }
-
-        saveAndBackupVault();
+        updateErrorCard();
     }
 
     @Override
@@ -709,13 +967,9 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         updateLockIcon();
-        if (_loaded) {
-            _entryListView.setGroups(_vaultManager.getVault().getUsedGroups());
-            updateSortCategoryMenu();
-        }
+        updateSortCategoryMenu();
 
         MenuItem searchViewMenuItem = menu.findItem(R.id.mi_search);
-
         _searchView = (SearchView) searchViewMenuItem.getActionView();
         _searchView.setMaxWidth(Integer.MAX_VALUE);
         _searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
@@ -725,6 +979,7 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
         _searchView.setOnCloseListener(() -> {
             boolean enabled = _submittedSearchQuery != null;
             _searchViewBackPressHandler.setEnabled(enabled);
+            _groupChip.setVisibility(_groups.isEmpty() ? View.GONE : View.VISIBLE);
             return false;
         });
 
@@ -758,6 +1013,7 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
         });
         _searchView.setOnSearchClickListener(v -> {
             String query = _submittedSearchQuery != null ? _submittedSearchQuery : _pendingSearchQuery;
+            _groupChip.setVisibility(View.GONE);
             _searchView.setQuery(query, false);
         });
 
@@ -806,6 +1062,8 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
                     sortCategory = SortCategory.ACCOUNT_REVERSED;
                 } else if (subItemId == R.id.menu_sort_usage_count) {
                     sortCategory = SortCategory.USAGE_COUNT;
+                } else if (subItemId == R.id.menu_sort_last_used) {
+                    sortCategory = SortCategory.LAST_USED;
                 } else {
                     sortCategory = SortCategory.CUSTOM;
                 }
@@ -821,15 +1079,20 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
     }
 
     private void collapseSearchView() {
+        _groupChip.setVisibility(_groups.isEmpty() ? View.GONE : View.VISIBLE);
         _searchView.setQuery(null, false);
         _searchView.setIconified(true);
     }
 
     private void loadEntries() {
         if (!_loaded) {
+            setGroups(_vaultManager.getVault().getUsedGroups());
             _entryListView.setUsageCounts(_prefs.getUsageCounts());
-            _entryListView.addEntries(_vaultManager.getVault().getEntries());
-            _entryListView.runEntriesAnimation();
+            _entryListView.setLastUsedTimestamps(_prefs.getLastUsedTimestamps());
+            _entryListView.setEntries(_vaultManager.getVault().getEntries());
+            if (!_isRecreated) {
+                _entryListView.runEntriesAnimation();
+            }
             _loaded = true;
         }
     }
@@ -851,49 +1114,49 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
         }
     }
 
-    private void updateErrorBar() {
-        Preferences.BackupResult backupRes = _prefs.getErroredBackupResult();
-        if (backupRes != null) {
-            _textErrorBar.setText(R.string.backup_error_bar_message);
-            _btnErrorBar.setOnClickListener(view -> {
-                Dialogs.showBackupErrorDialog(this, backupRes, (dialog, which) -> {
-                    startPreferencesActivity(BackupsPreferencesFragment.class, "pref_backups");
-                });
-            });
-            _btnErrorBar.setVisibility(View.VISIBLE);
-        } else if (_prefs.isBackupsReminderNeeded() && _prefs.isBackupReminderEnabled()) {
-            Date date = _prefs.getLatestBackupOrExportTime();
-            if (date != null) {
-                _textErrorBar.setText(getString(R.string.backup_reminder_bar_message_with_latest, TimeUtils.getElapsedSince(this, date)));
-            } else {
-                _textErrorBar.setText(R.string.backup_reminder_bar_message);
-            }
-            _btnErrorBar.setOnClickListener(view -> {
-                Dialogs.showSecureDialog(new AlertDialog.Builder(this)
-                        .setTitle(R.string.backup_reminder_bar_dialog_title)
-                        .setMessage(R.string.backup_reminder_bar_dialog_summary)
-                        .setPositiveButton(R.string.backup_reminder_bar_dialog_accept, (dialog, whichButton) -> {
-                            startPreferencesActivity(BackupsPreferencesFragment.class, "pref_backups");
-                        })
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .create());
-            });
-            _btnErrorBar.setVisibility(View.VISIBLE);
-        } else if (_prefs.isPlaintextBackupWarningNeeded()) {
-            _textErrorBar.setText(R.string.backup_plaintext_export_warning);
-            _btnErrorBar.setOnClickListener(view -> showPlaintextExportWarningOptions());
-            _btnErrorBar.setVisibility(View.VISIBLE);
-        } else {
-            _btnErrorBar.setVisibility(View.GONE);
-        }
-    }
+   private void updateErrorCard() {
+       ErrorCardInfo info = null;
+
+       Preferences.BackupResult backupRes = _prefs.getErroredBackupResult();
+       if (backupRes != null) {
+           info = new ErrorCardInfo(getString(R.string.backup_error_bar_message), view -> {
+               Dialogs.showBackupErrorDialog(this, backupRes, (dialog, which) -> {
+                   startPreferencesActivity(BackupsPreferencesFragment.class, "pref_backups");
+               });
+           });
+       } else if (_prefs.isBackupsReminderNeeded() && _prefs.isBackupReminderEnabled()) {
+           String text;
+           Date date = _prefs.getLatestBackupOrExportTime();
+           if (date != null) {
+               text = getString(R.string.backup_reminder_bar_message_with_latest, TimeUtils.getElapsedSince(this, date));
+           } else {
+               text = getString(R.string.backup_reminder_bar_message);
+           }
+           info = new ErrorCardInfo(text, view -> {
+               Dialogs.showSecureDialog(new MaterialAlertDialogBuilder(this, R.style.ThemeOverlay_Aegis_AlertDialog_Error)
+                       .setTitle(R.string.backup_reminder_bar_dialog_title)
+                       .setMessage(R.string.backup_reminder_bar_dialog_summary)
+                       .setIconAttribute(android.R.attr.alertDialogIcon)
+                       .setPositiveButton(R.string.backup_reminder_bar_dialog_accept, (dialog, whichButton) -> {
+                           startPreferencesActivity(BackupsPreferencesFragment.class, "pref_backups");
+                       })
+                       .setNegativeButton(android.R.string.cancel, null)
+                       .create());
+           });
+       } else if (_prefs.isPlaintextBackupWarningNeeded()) {
+           info = new ErrorCardInfo(getString(R.string.backup_plaintext_export_warning), view -> showPlaintextExportWarningOptions());
+       }
+
+       _entryListView.setErrorCardInfo(info);
+   }
 
     private void showPlaintextExportWarningOptions() {
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_plaintext_warning, null);
 
-        AlertDialog dialog = new AlertDialog.Builder(this)
+        AlertDialog dialog = new MaterialAlertDialogBuilder(this, R.style.ThemeOverlay_Aegis_AlertDialog_Warning)
                 .setTitle(R.string.backup_plaintext_export_warning)
                 .setView(view)
+                .setIconAttribute(android.R.attr.alertDialogIcon)
                 .setPositiveButton(android.R.string.ok, null)
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
@@ -910,11 +1173,24 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
                 _prefs.setIsPlaintextBackupWarningDisabled(checkBox.isChecked());
                 _prefs.setIsPlaintextBackupWarningNeeded(false);
 
-                updateErrorBar();
+                updateErrorCard();
             });
         });
 
         Dialogs.showSecureDialog(dialog);
+    }
+
+    @Override
+    public void onRestoreInstanceState(@Nullable Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState == null) {
+            return;
+        }
+
+        HashSet<UUID> filter = (HashSet<UUID>) savedInstanceState.getSerializable("prefGroupFilter");
+        if (filter != null) {
+            _prefGroupFilter = filter;
+        }
     }
 
     @Override
@@ -926,8 +1202,6 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
                 setFavoriteMenuItemVisiblity();
                 setIsMultipleSelected(_selectedEntries.size() > 1);
             }
-
-            return;
         }
     }
 
@@ -957,14 +1231,14 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
 
         if (_selectedEntries.size() == 1){
             if (_selectedEntries.get(0).isFavorite()) {
-                toggleFavoriteMenuItem.setIcon(R.drawable.ic_set_favorite);
+                toggleFavoriteMenuItem.setIcon(R.drawable.ic_filled_star_24);
                 toggleFavoriteMenuItem.setTitle(R.string.unfavorite);
             } else {
-                toggleFavoriteMenuItem.setIcon(R.drawable.ic_unset_favorite);
+                toggleFavoriteMenuItem.setIcon(R.drawable.ic_outline_star_24);
                 toggleFavoriteMenuItem.setTitle(R.string.favorite);
             }
         } else {
-            toggleFavoriteMenuItem.setIcon(R.drawable.ic_unset_favorite);
+            toggleFavoriteMenuItem.setIcon(R.drawable.ic_outline_star_24);
             toggleFavoriteMenuItem.setTitle(String.format("%s / %s", getString(R.string.favorite), getString(R.string.unfavorite)));
         }
     }
@@ -1018,6 +1292,9 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
 
     @Override
     public void onSaveGroupFilter(Set<UUID> groupFilter) {
+        if (_vaultManager.getVault().isGroupsMigrationFresh()) {
+            saveAndBackupVault();
+        }
         _prefs.setGroupFilter(groupFilter);
     }
 
@@ -1038,6 +1315,13 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
         } else {
             super.onLocked(false);
         }
+    }
+
+    @Override
+    protected boolean saveAndBackupVault() {
+        boolean res = super.saveAndBackupVault();
+        updateErrorCard();
+        return res;
     }
 
     @SuppressLint("InlinedApi")
@@ -1136,12 +1420,13 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
                 mode.finish();
             } else if (itemId == R.id.action_toggle_favorite) {
                 for (VaultEntry entry : _selectedEntries) {
-                    entry.setIsFavorite(!entry.isFavorite());
-                    _entryListView.replaceEntry(entry.getUUID(), entry);
+                    _vaultManager.getVault().editEntry(entry, newEntry -> {
+                        newEntry.setIsFavorite(!newEntry.isFavorite());
+                    });
                 }
-                _entryListView.refresh(true);
 
                 saveAndBackupVault();
+                _entryListView.setEntries(_vaultManager.getVault().getEntries());
                 mode.finish();
             } else if (itemId == R.id.action_share_qr) {
                 Intent intent = new Intent(getBaseContext(), TransferEntriesActivity.class);
@@ -1149,6 +1434,8 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
                 for (VaultEntry entry : _selectedEntries) {
                     GoogleAuthInfo authInfo = new GoogleAuthInfo(entry.getInfo(), entry.getName(), entry.getIssuer());
                     authInfos.add(authInfo);
+
+                    _auditLogRepository.addEntrySharedEvent(entry.getUUID().toString());
                 }
 
                 intent.putExtra("authInfos", authInfos);
@@ -1157,8 +1444,12 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
                 mode.finish();
             } else if (itemId == R.id.action_delete) {
                 Dialogs.showDeleteEntriesDialog(MainActivity.this, _selectedEntries, (d, which) -> {
-                    deleteEntries(_selectedEntries);
+                    for (VaultEntry entry : _selectedEntries) {
+                        _vaultManager.getVault().removeEntry(entry);
+                    }
+                    saveAndBackupVault();
                     _entryListView.setGroups(_vaultManager.getVault().getUsedGroups());
+                    _entryListView.setEntries(_vaultManager.getVault().getEntries());
                     mode.finish();
                 });
             } else if (itemId == R.id.action_select_all) {
@@ -1168,6 +1459,8 @@ public class MainActivity extends AegisActivity implements EntryListView.Listene
             } else if (itemId == R.id.action_assign_icons) {
                 startAssignIconsActivity(_selectedEntries);
                 mode.finish();
+            } else if (itemId == R.id.action_assign_groups) {
+                startAssignGroupsDialog();
             } else {
                 return false;
             }

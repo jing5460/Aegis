@@ -7,14 +7,17 @@ import android.view.View;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.beemdevelopment.aegis.R;
 import com.beemdevelopment.aegis.ui.dialogs.Dialogs;
 import com.beemdevelopment.aegis.ui.views.GroupAdapter;
+import com.beemdevelopment.aegis.util.Cloner;
+import com.beemdevelopment.aegis.helpers.ViewHelper;
 import com.beemdevelopment.aegis.vault.VaultGroup;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -37,6 +40,7 @@ public class GroupManagerActivity extends AegisActivity implements GroupAdapter.
         }
         setContentView(R.layout.activity_groups);
         setSupportActionBar(findViewById(R.id.toolbar));
+        ViewHelper.setupAppBarInsets(findViewById(R.id.app_bar_layout));
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -46,13 +50,36 @@ public class GroupManagerActivity extends AegisActivity implements GroupAdapter.
 
         _removedGroups = new HashSet<>();
         if (savedInstanceState != null) {
-            List<String> groups = savedInstanceState.getStringArrayList("removedGroups");
-            if (groups != null) {
-                for (String uuid : groups) {
+            List<String> removedGroups = savedInstanceState.getStringArrayList("removedGroups");
+            if (removedGroups != null) {
+                for (String uuid : removedGroups) {
                     _removedGroups.add(UUID.fromString(uuid));
                 }
             }
         }
+
+        ItemTouchHelper touchHelper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
+            @Override
+            public int getMovementFlags(
+                    @NonNull RecyclerView recyclerView,
+                    @NonNull RecyclerView.ViewHolder viewHolder) {
+
+                return makeMovementFlags(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0);
+            }
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                int draggedItemIndex = viewHolder.getBindingAdapterPosition();
+                int targetIndex = target.getBindingAdapterPosition();
+
+                _adapter.onItemMove(draggedItemIndex, targetIndex);
+
+                return true;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) { }
+        });
 
         _adapter = new GroupAdapter(this);
         _groupsView = findViewById(R.id.list_groups);
@@ -60,6 +87,7 @@ public class GroupManagerActivity extends AegisActivity implements GroupAdapter.
         _groupsView.setLayoutManager(layoutManager);
         _groupsView.setAdapter(_adapter);
         _groupsView.setNestedScrollingEnabled(false);
+        touchHelper.attachToRecyclerView(_groupsView);
 
         for (VaultGroup group : _vaultManager.getVault().getGroups()) {
             if (!_removedGroups.contains(group.getUUID())) {
@@ -83,10 +111,26 @@ public class GroupManagerActivity extends AegisActivity implements GroupAdapter.
     }
 
     @Override
+    public void onEditGroup(VaultGroup group) {
+        Dialogs.TextInputListener onEditGroup = text -> {
+            String newGroupName = new String(text).trim();
+            if (!newGroupName.isEmpty()) {
+                VaultGroup newGroup = Cloner.clone(group);
+                newGroup.setName(newGroupName);
+                _adapter.replaceGroup(group.getUUID(), newGroup);
+                _backPressHandler.setEnabled(true);
+            }
+        };
+
+        Dialogs.showTextInputDialog(GroupManagerActivity.this, R.string.rename_group, R.string.group_name_hint, onEditGroup, group.getName());
+    }
+
+    @Override
     public void onRemoveGroup(VaultGroup group) {
-        Dialogs.showSecureDialog(new AlertDialog.Builder(this)
+        Dialogs.showSecureDialog(new MaterialAlertDialogBuilder(this, R.style.ThemeOverlay_Aegis_AlertDialog_Warning)
                 .setTitle(R.string.remove_group)
                 .setMessage(R.string.remove_group_description)
+                .setIconAttribute(android.R.attr.alertDialogIcon)
                 .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
                     _removedGroups.add(group.getUUID());
                     _adapter.removeGroup(group);
@@ -98,9 +142,10 @@ public class GroupManagerActivity extends AegisActivity implements GroupAdapter.
     }
 
     public void onRemoveUnusedGroups() {
-        Dialogs.showSecureDialog(new AlertDialog.Builder(this)
+        Dialogs.showSecureDialog(new MaterialAlertDialogBuilder(this, R.style.ThemeOverlay_Aegis_AlertDialog_Warning)
                 .setTitle(R.string.remove_unused_groups)
                 .setMessage(R.string.remove_unused_groups_description)
+                .setIconAttribute(android.R.attr.alertDialogIcon)
                 .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
                     Set<VaultGroup> unusedGroups = new HashSet<>(_vaultManager.getVault().getGroups());
                     unusedGroups.removeAll(_vaultManager.getVault().getUsedGroups());
@@ -121,9 +166,10 @@ public class GroupManagerActivity extends AegisActivity implements GroupAdapter.
             for (UUID uuid : _removedGroups) {
                 _vaultManager.getVault().removeGroup(uuid);
             }
-
-            saveAndBackupVault();
         }
+
+        _vaultManager.getVault().replaceGroups(_adapter.getGroups());
+        saveAndBackupVault();
 
         finish();
     }

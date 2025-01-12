@@ -18,11 +18,11 @@ import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
 
 import com.beemdevelopment.aegis.R;
-import com.beemdevelopment.aegis.ThemeMap;
 import com.beemdevelopment.aegis.helpers.QrCodeAnalyzer;
 import com.beemdevelopment.aegis.otp.GoogleAuthInfo;
 import com.beemdevelopment.aegis.otp.GoogleAuthInfoException;
 import com.beemdevelopment.aegis.ui.dialogs.Dialogs;
+import com.beemdevelopment.aegis.helpers.ViewHelper;
 import com.beemdevelopment.aegis.vault.VaultEntry;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.zxing.Result;
@@ -57,6 +57,7 @@ public class ScannerActivity extends AegisActivity implements QrCodeAnalyzer.Lis
         }
         setContentView(R.layout.activity_scanner);
         setSupportActionBar(findViewById(R.id.toolbar));
+        ViewHelper.setupAppBarInsets(findViewById(R.id.app_bar_layout));
 
         _entries = new ArrayList<>();
         _lenses = new ArrayList<>();
@@ -93,11 +94,6 @@ public class ScannerActivity extends AegisActivity implements QrCodeAnalyzer.Lis
             _executor.shutdownNow();
         }
         super.onDestroy();
-    }
-
-    @Override
-    protected void onSetTheme() {
-        setTheme(ThemeMap.FULLSCREEN);
     }
 
     @Override
@@ -142,10 +138,10 @@ public class ScannerActivity extends AegisActivity implements QrCodeAnalyzer.Lis
             if (dual) {
                 switch (_currentLens) {
                     case CameraSelector.LENS_FACING_BACK:
-                        item.setIcon(R.drawable.ic_camera_front_24dp);
+                        item.setIcon(R.drawable.ic_outline_camera_front_24);
                         break;
                     case CameraSelector.LENS_FACING_FRONT:
-                        item.setIcon(R.drawable.ic_camera_rear_24dp);
+                        item.setIcon(R.drawable.ic_outline_camera_rear_24);
                         break;
                 }
             }

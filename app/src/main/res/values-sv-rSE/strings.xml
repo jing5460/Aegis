@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="action_settings">Inställningar</string>
     <string name="action_about">Om</string>
     <string name="action_delete">Radera</string>
@@ -10,6 +10,7 @@
     <string name="action_default_icon">Återställ standardikon</string>
     <string name="discard">Ignorera</string>
     <string name="save">Spara</string>
+    <string name="all">Alla</string>
     <string name="issuer">Utfärdare</string>
     <string name="yandex_pin">Pinkod (4–16 siffror)</string>
     <string name="motp_pin">Pinkod (4 siffror)</string>
@@ -28,11 +29,15 @@
     <string name="pref_section_security_summary">Konfigurera kryptering, biometrisk upplåsning, automatisk låsning och andra säkerhetsinställningar.</string>
     <string name="pref_section_import_export_title">Import &amp; export</string>
     <string name="pref_section_import_export_summary">Importera säkerhetskopior från Aegis eller andra autentiseringsappar. Skapa manuella exporter av ditt Aegis-valv.</string>
+    <string name="pref_section_audit_log_title">Granskningslogg</string>
+    <string name="pref_section_audit_log_summary">Hitta en lista över alla rapporterade viktiga händelser som har inträffat i appen.</string>
     <string name="pref_section_backups_title">Säkerhetskopior</string>
     <string name="pref_section_backups_summary">Ställ in automatiska säkerhetskopior till en plats som du väljer eller aktivera deltagande i Androids molnsäkerhetskopieringssystem.</string>
     <string name="pref_section_icon_packs">Ikonpaket</string>
     <string name="pref_section_icon_packs_summary">Hantera och importera ikonpaket</string>
     <string name="pref_select_theme_title">Tema</string>
+    <string name="pref_dynamic_colors_title">Dynamiska färger</string>
+    <string name="pref_dynamic_colors_summary">Tillämpa ett överlägg baserat på färgerna i ditt Android-tema</string>
     <string name="pref_view_mode_title">Visningsläge</string>
     <string name="pref_lang_title">Språk</string>
     <string name="pref_show_icons_title">Visa ikoner</string>
@@ -40,9 +45,14 @@
     <string name="pref_code_group_size_title">Gruppering av kodsiffror</string>
     <string name="pref_code_group_size_summary">Välj antal siffror att gruppera koder efter</string>
     <string name="pref_account_name_position_title">Visa kontonamn</string>
+    <string name="pref_show_next_code_title">Visa nästa kod</string>
+    <string name="pref_show_next_code_summary">Generera och visa nästa kod i förtid</string>
+    <string name="pref_expiration_state_title">Indikera när koder är på väg att utlöpa</string>
+    <string name="pref_expiration_state_summary">Ändra färgen på koderna och få dem att blinka när de är på väg att utlöpa</string>
+    <string name="pref_expiration_state_fallback">Ändra färgen på koderna när de är på väg att utlöpa</string>
     <string name="pref_shared_issuer_account_name_title">Visa kontonamn endast vid behov</string>
     <string name="pref_shared_issuer_account_name_summary">Visa kontonamn endast när de har samma utfärdare. Andra kontonamn kommer att döljas.</string>
-    <string name="pref_account_name_position_summary_override">Denna inställning åsidosätts av visningsläget paneler. Kontonamn kommer alltid att visas nedanför utfärdaren.</string>
+    <string name="pref_account_name_position_summary_override">Denna inställning åsidosätts av visningsläget paneler. Kontonamn kommer att visas nedanför utfärdaren.</string>
     <string name="pref_import_file_title">Importera från fil</string>
     <string name="pref_import_file_summary">Importera polletter från en fil</string>
     <string name="pref_android_backups_title">Android-molnsäkerhetskopior</string>
@@ -54,15 +64,23 @@
     <string name="pref_backups_reminder_summary">Visa en påminnelse om att säkerhetskopiera ditt valv ifall du inte har säkerhetskopierat dina senaste ändringar.</string>
     <string name="pref_backups_reminder_dialog_title">Inaktivera påminnelse om säkerhetskopiering</string>
     <string name="pref_backups_reminder_dialog_summary">Inaktivering av denna påminnelse innebär att Aegis inte kommer att meddela dig om du har ändringar som ännu inte har säkerhetskopierats. Detta utsätter dig för risken att förlora åtkomst till dina polletter. Är du säker på att du vill inaktivera påminnelsen?</string>
-    <string name="pref_backups_location_title">Katalog för säkerhetskopior</string>
+    <string name="pref_backups_versioning_strategy_title">Strategi för säkerhetskopiering</string>
+    <string name="pref_backups_versioning_strategy_keep_x_versions">Behåll ett antal versioner</string>
+    <string name="pref_backups_versioning_strategy_single_backup">Enstaka säkerhetskopia</string>
+    <string name="pref_backups_versioning_strategy_single_backup_warning">Den valda strategin för säkerhetskopiering är inte tillförlitlig och rekommenderas inte. Ett enda säkerhetskopieringsfel kan leda till att du förlorar din enda säkerhetskopia.</string>
+    <string name="pref_backups_versioning_strategy_dialog_title">Välj en strategi för säkerhetskopiering</string>
+    <string name="pref_backups_location_title">Plats för säkerhetskopior</string>
     <string name="pref_backups_location_summary">Säkerhetskopior kommer att lagras i</string>
+    <string name="pref_backup_location_summary">Säkerhetskopia kommer att lagras i</string>
     <string name="pref_backups_trigger_title">Skapa säkerhetskopia</string>
     <string name="pref_backups_trigger_summary">Skapa en säkerhetskopia manuellt</string>
     <string name="pref_backups_versions_title">Antal versioner att behålla</string>
+    <string name="pref_backups_versions_infinite">\u221E</string>
     <plurals name="pref_backups_versions_summary">
         <item quantity="one">Behåll %1$d version av säkerhetskopian</item>
         <item quantity="other">Behåll %1$d versioner av säkerhetskopian</item>
     </plurals>
+    <string name="pref_backups_versions_infinite_summary">Behåll ett oändligt antal versioner av säkerhetskopian</string>
     <string name="pref_import_app_title">Importera från app</string>
     <string name="pref_import_app_summary">Importera polletter från en app (kräver rotåtkomst)</string>
     <string name="pref_export_title">Exportera</string>
@@ -98,8 +116,34 @@
     <string name="pref_encryption_summary">Kryptera valvet och lås upp det med ett lösenord eller biometri</string>
     <string name="pref_biometrics_title">Biometrisk upplåsning</string>
     <string name="pref_biometrics_summary">Tillåt biometrisk autentisering för att låsa upp valvet</string>
+    <string name="pref_search_behavior_summary">Sök igenom: %s</string>
+    <string name="pref_search_behavior_prompt">Sök i något av följande fält</string>
+    <string name="pref_search_behavior_type_name">Namn</string>
+    <string name="pref_search_behavior_type_issuer">Utfärdare</string>
+    <string name="pref_search_behavior_type_note">Anteckning</string>
+    <string name="pref_search_behavior_type_groups">Grupper</string>
     <string name="pref_set_password_title">Ändra lösenord</string>
     <string name="pref_set_password_summary">Ange ett nytt lösenord som kommer att krävas för att låsa upp ditt valv</string>
+    <string name="no_events_title">Inga rapporterade händelser</string>
+    <string name="no_events_description">Inga viktiga händelser har rapporterats i appen</string>
+    <string name="event_title_vault_unlocked">Valv upplåst</string>
+    <string name="event_description_vault_unlocked">Valvet har låsts upp</string>
+    <string name="event_title_backup_created">Säkerhetskopia skapad</string>
+    <string name="event_description_backup_created">En säkerhetskopia av valvet har skapats</string>
+    <string name="event_title_android_backup_created">Säkerhetskopia skapad av Android</string>
+    <string name="event_description_android_backup_created">En säkerhetskopia av valvet har skapats av Android</string>
+    <string name="event_title_vault_exported">Valv exporterat</string>
+    <string name="event_description_vault_exported">En kopia av valvet har exporterats</string>
+    <string name="event_title_entry_shared">Post delades</string>
+    <string name="event_description_entry_shared">En post delades</string>
+    <string name="event_title_vault_unlock_failed_password">Valvupplåsning misslyckades (lösenord)</string>
+    <string name="event_description_vault_unlock_failed_password">Ett försök att låsa upp valvet med ett lösenord misslyckades</string>
+    <string name="event_title_vault_unlock_failed_biometrics">Valvupplåsning misslyckades (biometri)</string>
+    <string name="event_description_vault_unlock_failed_biometrics">Ett försök att låsa upp valvet med biometri misslyckades</string>
+    <string name="event_unknown">Okänd händelsetyp</string>
+    <string name="audit_log_entry_deleted">(raderad)</string>
+    <string name="today_at_time">I dag kl. %1$s</string>
+    <string name="day_of_week_at_time">%1$s kl. %2$s</string>
     <string name="export_encrypted">Kryptera valvet</string>
     <string name="export_help">Denna åtgärd kommer att exportera valvet från Aegis interna lagring. Välj det format som du vill att din export ska vara i:</string>
     <string name="export_warning_unencrypted">Du håller på att exportera en okrypterad kopia av ditt Aegis-valv. <b>Detta rekommenderas inte.</b></string>
@@ -116,7 +160,7 @@
         <item quantity="other">%d grupper valda</item>
     </plurals>
     <string name="export_no_groups_selected">Inga grupper valda för exportering</string>
-    <string name="export_html_title" context="The title of an HTML export document">Aegis Authenticator-export</string>
+    <string name="export_html_title" comment="The title of an HTML export document">Aegis Authenticator-export</string>
     <string name="choose_authentication_method">Säkerhet</string>
     <string name="authentication_method_explanation">Aegis är en säkerhetsfokuserad 2FA-app. Polletter lagras i ett valv som, om så önskas, kan krypteras med ett lösenord som du väljer. Om en angripare får tag i din krypterade valvfil, kommer hen inte att kunna komma åt innehållet utan att känna till lösenordet.\n\nVi har förvalt det alternativ som vi tror passar bäst för din enhet.</string>
     <string name="authentication_method_none">Ingen</string>
@@ -152,6 +196,7 @@
     <string name="share">Dela</string>
     <string name="yes">Ja</string>
     <string name="no">Nej</string>
+    <string name="undo">Ångra</string>
     <string name="unlock">Lås upp</string>
     <string name="advanced">Avancerat</string>
     <string name="counter">Räknare</string>
@@ -163,6 +208,11 @@
     <string name="set_up_biometric">Konfigurera biometrisk upplåsning</string>
     <string name="copy">Kopiera</string>
     <string name="edit">Redigera</string>
+    <string name="select_all">Markera alla</string>
+    <string name="assign_icons">Tilldela ikoner</string>
+    <string name="assign_groups">Tilldela till grupp</string>
+    <string name="assign_groups_dialog_summary">Välj en grupp som du vill tilldela de valda posterna till.</string>
+    <string name="assign_groups_dialog_dropdown">Välj grupp</string>
     <string name="favorite" comment="Verb">Favoritmarkera</string>
     <string name="unfavorite" comment="Verb">Ta bort som favorit</string>
     <string name="error_all_caps">FEL</string>
@@ -177,10 +227,12 @@
     <string name="snackbar_authentication_method">Vänligen välj en autentiseringsmetod</string>
     <string name="encrypting_vault">Krypterar valvet</string>
     <string name="exporting_vault">Exporterar valvet</string>
+    <string name="optimizing_icon">Optimerar ikon</string>
+    <string name="optimizing_icon_multiple">Optimerar ikoner %1$d/%2$d</string>
     <string name="reading_file">Läser fil</string>
     <string name="requesting_root_access">Begär rotåtkomst</string>
     <string name="analyzing_qr">Analyserar rutkod</string>
-    <string name="analyzing_qr_multiple">Analyserar rutkod %d/%d (%s)</string>
+    <string name="analyzing_qr_multiple">Analyserar rutkod %1$d/%2$d (%3$s)</string>
     <plurals name="added_new_entries">
         <item quantity="one">Lade till %d ny post i valvet</item>
         <item quantity="other">Lade till %d nya poster i valvet</item>
@@ -197,6 +249,7 @@
     <string name="discard_changes">Ignorera ändringar?</string>
     <string name="discard_changes_description">Dina ändringar har inte sparats</string>
     <string name="saving_profile_error">Fel när profil skulle sparas</string>
+    <string name="saving_assign_icons_error">Fel vid tilldelning av ikoner</string>
     <string name="welcome">Välkommen</string>
     <string name="app_description">Aegis är en gratis, säker och öppenkällkodad 2FA-app</string>
     <string name="setup_completed">Konfigurationen slutförd</string>
@@ -205,6 +258,7 @@
     <string name="copied">Kopierad</string>
     <string name="errors_copied">Fel kopierade till urklipp</string>
     <string name="version_copied">Version kopierad till urklipp</string>
+    <string name="error_required_field">Detta fält är obligatoriskt</string>
     <string name="error_occurred">Ett fel uppstod</string>
     <string name="decryption_error">Ett fel uppstod när valvet skulle låsas upp</string>
     <string name="decryption_corrupt_error">Ett fel uppstod när valvet skulle låsas upp. Din valvfil kan vara korrupt.</string>
@@ -242,7 +296,7 @@
     <string name="choose_account_name_position">Välj önskad kontonamnsplacering</string>
     <string name="choose_view_mode">Välj önskat visningsläge</string>
     <string name="choose_copy_behavior">Välj önskat kopieringsbeteende</string>
-    <string name="parsing_file_error">Ett fel uppstod när filen skulle analyseras</string>
+    <string name="parsing_file_error">Ett fel uppstod när filen skulle tolkas</string>
     <string name="file_not_found">Fel: Filen hittades inte</string>
     <string name="reading_file_error">Ett fel uppstod när filen skulle läsas</string>
     <string name="app_lookup_error">Fel: Appen är inte installerad</string>
@@ -268,13 +322,20 @@
     <string name="partial_google_auth_import">Ofullständig Google Authenticator-export upptäckt</string>
     <string name="partial_google_auth_import_warning">Vissa rutkoder saknas från din import. Följande koder hittades inte:\n\n<b>%s</b>\n\nDu kan fortsätta att importera denna partiella export, men vi rekommenderar att du försöker igen med alla rutkoder, så att du inte riskerar att förlora åtkomst till några polletter.</string>
     <string name="missing_qr_code_descriptor">• rutkod %d</string>
-    <string name="import_partial_export_anyway">Importera %d polletter ändå</string>
+    <plurals name="import_partial_export_anyway">
+        <item quantity="one">Importera %d pollett ändå</item>
+        <item quantity="other">Importera %d polletter ändå</item>
+    </plurals>
     <string name="import_google_auth_failure">Import av Google Authenticator-export misslyckades</string>
     <string name="unrelated_google_auth_batches_error">Exporten innehåller information gällande en orelaterad omgång. Försök att importera 1 omgång i taget.</string>
     <string name="no_tokens_can_be_imported">Inga polletter kan importeras till följd av detta</string>
     <string name="unlocking_vault">Låser upp valvet</string>
+    <string name="rename_group">Byt namn på grupp</string>
+    <string name="no_group_selection">Om en post inte ingår i någon grupp, kan den hittas under \"Grupplös\".</string>
     <string name="remove_group">Ta bort grupp</string>
     <string name="remove_group_description">Är du säker på att du vill ta bort denna grupp? Poster i denna grupp kommer automatiskt att flyttas till \'Grupplös\'.</string>
+    <string name="remove_unused_groups">Radera oanvända grupper</string>
+    <string name="remove_unused_groups_description">Är du säker på att du vill radera alla grupper som inte är tilldelade någon post?</string>
     <string name="remove_icon_pack">Ta bort ikonpaket</string>
     <string name="remove_icon_pack_description">Är du säker på att du vill ta bort detta ikonpaket? Poster som använder ikoner från detta paket kommer inte att påverkas.</string>
     <string name="details">Detaljer</string>
@@ -282,13 +343,16 @@
     <string name="lock">Lås</string>
     <string name="name">Namn</string>
     <string name="no_group">Grupplös</string>
-    <string name="sort">Sortera</string>
+    <string name="sort" comment="Title of the Sort button in the top action bar of the main view">Sortera</string>
     <string name="sort_alphabetically">Utfärdare (A till Ö)</string>
     <string name="sort_alphabetically_reverse">Utfärdare (Ö till A)</string>
     <string name="sort_alphabetically_name">Konto (A till Ö)</string>
     <string name="sort_alphabetically_name_reverse">Konto (Ö till A)</string>
     <string name="sort_usage_count">Användningar</string>
+    <string name="sort_last_used">Senast använd</string>
     <string name="sort_custom">Anpassad</string>
+    <string name="last_used">Senast använd</string>
+    <string name="last_used_never">aldrig</string>
     <string name="new_group">Ny grupp…</string>
     <string name="group">Grupp</string>
     <string name="group_name_hint">Gruppnamn</string>
@@ -297,13 +361,14 @@
     <string name="preference_reset_usage_count">Nollställ användningar</string>
     <string name="preference_reset_usage_count_summary">Nollställ antalet användningar av alla poster i ditt valv</string>
     <string name="preference_reset_usage_count_dialog">Är du säker på att du vill ändra antalet användningar av alla poster i ditt valv till 0?</string>
-    <string name="note">Anteckning</string>
+    <string name="note" comment="Users can add a note to an entry">Anteckning</string>
     <string name="clear">Rensa</string>
     <string name="pref_highlight_entry_title">Markera polletter vid tryck</string>
     <string name="pref_highlight_entry_summary">Gör polletterna lättare att särskilja från varandra genom att tillfälligt markera dem vid tryck</string>
     <string name="pref_minimize_on_copy_title">Minimera vid kopiering</string>
     <string name="pref_minimize_on_copy_summary">Minimerar appen efter att en pollett har kopierats</string>
     <string name="pref_copy_behavior_title">Kopiera polletter till urklipp</string>
+    <string name="pref_search_behavior_title">Sökbeteende</string>
     <string name="pref_pause_entry_title">Frys polletter vid tryck</string>
     <string name="pref_pause_entry_summary">Pausa automatisk uppdatering av polletterna genom att trycka på dem. Polletterna kommer inte att uppdateras så länge som de är i fokus. Kräver \"Markera polletter vid tryck\" eller \"Tryck för att visa\".</string>
     <string name="pin_keyboard_description">Ange ditt lösenord för att aktivera pinkodstangentbordet. Observera att detta bara fungerar om ditt lösenord endast består av siffror.</string>
@@ -329,7 +394,7 @@
     <string name="unable_to_process_deeplink">Kunde inte bearbeta djuplänk</string>
     <string name="unable_to_read_qrcode_file">Kunde inte läsa och bearbeta rutkod från fil: %s.</string>
     <string name="unable_to_process_shared_text">Kunde inte bearbeta delad text som OTP</string>
-    <string name="unable_to_read_qrcode_files">Kunde inte läsa och bearbeta några av rutkoderna. Endast %d/%d poster kommer att importeras.</string>
+    <string name="unable_to_read_qrcode_files">Kunde inte läsa och bearbeta några av rutkoderna. Endast %1$d/%2$d poster kommer att importeras.</string>
     <string name="unable_to_generate_qrcode">Kunde inte generera rutkod</string>
     <string name="select_picture">Välj bild</string>
     <string name="select_icon">Välj ikon</string>
@@ -361,12 +426,14 @@
     <string name="time_sync_warning_disable">Sluta varna mig. Jag vet vad jag gör.</string>
     <string name="google_qr_export_unrelated">Orelaterad rutkod hittades. Pröva att starta om skannern.</string>
     <plurals name="google_qr_export_scanned">
-        <item quantity="one">Skannade %d/%d rutkoder</item>
-        <item quantity="other">Skannade %d/%d rutkoder</item>
+        <item quantity="one">Skannade %1$d/%2$d rutkod</item>
+        <item quantity="other">Skannade %1$d/%2$d rutkoder</item>
     </plurals>
-    <string name="google_qr_export_unexpected">Förutsatte rutkod #%d men skannade #%d i stället</string>
+    <string name="google_qr_export_unexpected">Förutsatte rutkod #%1$d men skannade #%2$d i stället</string>
     <string name="backup_error_bar_message"><b>Säkerhetskopiering av valvet misslyckades nyligen</b></string>
-    <string name="backup_error_dialog_details" comment="The first parameter is the type of backup (e.g. built-in or Android backup). The second parameter is an elapsed time in the style of 'x seconds/minutes/days ago'.">        Ett nyligt försök att säkerhetskopiera valvet via %s misslyckades eftersom ett fel uppstod. Försöket gjordes för %s. Vänligen kontrollera dina säkerhetskopieringsinställningar för att se till att säkerhetskopior kan skapas framgångsrikt.
+    <string name="backup_error_dialog_details" comment="The first parameter is the type of backup (e.g. built-in or Android backup). The second parameter is an elapsed time in the style of 'x seconds/minutes/days ago'.">        Ett nyligt försök att säkerhetskopiera valvet via %1$s misslyckades eftersom ett fel uppstod. Försöket gjordes för %2$s. Vänligen kontrollera dina säkerhetskopieringsinställningar för att se till att säkerhetskopior kan skapas framgångsrikt.
+    </string>
+    <string name="backup_permission_error_dialog_details" comment="The first parameter is the type of backup (e.g. built-in or Android backup). The second parameter is an elapsed time in the style of 'x seconds/minutes/days ago'.">        Ett nyligt försök att säkerhetskopiera valvet via %1$s misslyckades eftersom Aegis inte hade behörighet att skriva till lagringsplatsen för säkerhetskopior. Försöket gjordes för %2$s. Detta fel kan uppstå om du har flyttat/bytt namn på lagringsplatsen för säkerhetskopior eller om du nyligen har återställt Aegis från en säkerhetskopia. Vänligen konfigurera om lagringsplatsen för säkerhetskopior.
     </string>
     <string name="backup_system_builtin">Aegis inbyggda automatiska säkerhetskopior</string>
     <string name="backup_system_android">Androids molnsäkerhetskopieringssystem</string>
@@ -400,7 +467,6 @@
     <string name="copy_uri">Kopiera URI</string>
     <string name="unable_to_copy_uri_to_clipboard">Kunde inte kopiera URI till urklipp</string>
     <string name="uri_copied_to_clipboard">URI kopierad till urklipp</string>
-    <string name="transfer_entry">Överför post</string>
     <string name="transfer_entry_description">Skanna denna rutkod med den autentiseringsapp som du vill överföra denna post till</string>
     <string name="google_auth_compatible_transfer_description">Skanna dessa rutkoder med Aegis eller Google Authenticator.\n\nPå grund av begränsningar i Google Authenticator-appen inkluderas endast TOTP- &amp; HOTP-polletter som använder SHA1 och producerar 6-siffriga koder.</string>
     <string name="password_strength_very_weak">Mycket svagt</string>
@@ -408,6 +474,7 @@
     <string name="password_strength_fair">Skapligt</string>
     <string name="password_strength_good">Bra</string>
     <string name="password_strength_strong">Starkt</string>
+    <string name="password_strength_unknown">Lösenordet är för långt för styrkeanalys</string>
     <string name="pref_pin_keyboard_title">Använd pinkodstangentbordet på låsskärmen</string>
     <string name="pref_pin_keyboard_summary">Aktivera denna om du vill aktivera pinkodstangentbordet på låsskärmen. Detta fungerar endast med numeriska lösenord.</string>
     <string name="title_activity_preferences">Inställningar</string>
@@ -417,30 +484,42 @@
     <string name="title_activity_edit_entry">Redigera post</string>
     <string name="title_activity_scan_qr">Skanna en rutkod</string>
     <string name="title_activity_import_entries">Importera poster</string>
+    <string name="title_activity_assign_icons">Tilldela ikoner</string>
+    <string name="title_activity_licenses">Tredjepartslicenser</string>
     <string name="dialog_wipe_entries_title">Rensa poster</string>
     <string name="dialog_wipe_entries_message">Ditt valv innehåller redan poster. Vill du ta bort dessa poster innan du importerar den här filen?\n\n<b>Genom att göra det så förlorar du åtkomst till de befintliga posterna i valvet för alltid.</b></string>
     <string name="dialog_wipe_entries_checkbox">Rensa valvets innehåll</string>
     <string name="panic_trigger_ignore_toast">Aegis tog emot en panikutlösare, men inställningen är inaktiverad - ignorerar</string>
     <string name="pref_panic_trigger_title">Radera valvet vid panikutlösare</string>
     <string name="pref_panic_trigger_summary">Radera valvet när en panikutlösare tas emot från Ripple</string>
-    <string name="import_vault">Importera valv</string>
+    <string name="import_vault">Importera Aegis-valv</string>
+    <string name="import_vault_hint">Vill du importera från en annan 2FA-app? Slutför installationen först och gå sedan till inställningsmenyn.</string>
+    <plurals name="import_duplicate_toast">
+        <item quantity="one">Avmarkerade %d möjlig dubblett. Vänligen granska listan över poster.</item>
+        <item quantity="other">Avmarkerade %d möjliga dubbletter. Vänligen granska listan över poster.</item>
+    </plurals>
     <string name="importer_help_2fas">Tillhandahåll en säkerhetskopieringsfil från 2FAS Authenticator.</string>
     <string name="importer_help_aegis">Tillhandahåll en export-/säkerhetskopieringsfil från Aegis.</string>
     <string name="importer_help_authenticator_plus">Tillhandahåll en exportfil från Authenticator Plus som har erhållits genom <b>Settings -&gt; Backup &amp; Restore -&gt; Export as Text and HTML</b>.</string>
-    <string name="importer_help_authenticator_pro">Tillhandahåll en exportfil från Authenticator Pro som har erhållits genom <b>Inställningar -&gt; Säkerhetskopiera -&gt; Säkerhetskopiera till krypterad fil (rekommenderas)</b>.</string>
     <string name="importer_help_authy">Tillhandahåll en kopia av <b>/data/data/com.authy.authy/shared_prefs/com.authy.storage.tokens.authenticator.xml</b>, som finns i den interna lagringskatalogen för Authy.</string>
     <string name="importer_help_andotp">Tillhandahåll en export-/säkerhetskopieringsfil från andOTP.</string>
     <string name="importer_help_bitwarden">Tillhandahåll en export-/säkerhetskopieringsfil från Bitwarden. Krypterade filer stöds ej.</string>
-    <string name="importer_help_battle_net_authenticator">Tillhandahåll en kopia av <b>/data/data/com.blizzard.bma/shared_prefs/com.blizzard.bma.AUTH_STORE.xml</b>, som finns i den interna lagringskatalogen för Battle.net Authenticator.</string>
+    <string name="importer_help_battle_net_authenticator">Tillhandahåll en kopia av <b>/data/data/com.blizzard.messenger/shared_prefs/com.blizzard.messenger.authenticator_preferences.xml</b>, som finns i den interna lagringskatalogen för Battle.net Authenticator.</string>
     <string name="importer_help_duo">Tillhandahåll en kopia av <b>/data/data/com.duosecurity.duomobile/files/duokit/accounts.json</b>, som finns i den interna lagringskatalogen för DUO.</string>
-    <string name="importer_help_freeotp">Tillhandahåll en kopia av <b>/data/data/org.fedorahosted.freeotp/shared_prefs/tokens.xml</b>, som finns i den interna lagringskatalogen för FreeOTP.</string>
+    <string name="importer_help_ente_auth">Tillhandahåll en exportfil från Ente Auth. För närvarande stöds endast okrypterade filer.</string>
+    <string name="importer_help_freeotp">FreeOTP 2: Tillhandahåll en säkerhetskopiefil.\nFreeOTP 1.x: Tillhandahåll en kopia av <b>/data/data/org.fedorahosted.freeotp/shared_prefs/tokens.xml</b>, som finns i den interna lagringskatalogen för FreeOTP.</string>
     <string name="importer_help_freeotp_plus">Tillhandahåll en exportfil från FreeOTP+.</string>
+    <string name="importer_warning_title_freeotp2">FreeOTP 2-kompatibilitet</string>
+    <string name="importer_warning_message_freeotp2">Det finns ett antal problem i FreeOTP 2 som kan resultera i korrupta säkerhetskopior. Aegis kommer att försöka att rädda så många poster som möjligt, men det är möjligt att vissa eller till och med alla av dem inte kan importeras.</string>
     <string name="importer_help_google_authenticator"><b>Endast databasfiler från Google Authenticator v5.10 och tidigare stöds.</b>\n\nTillhandahåll en kopia av <b>/data/data/com.google.android.apps.authenticator2/databases/databases</b>, som finns i den interna lagringskatalogen för Google Authenticator.</string>
     <string name="importer_help_microsoft_authenticator">Tillhandahåll en kopia av <b>/data/data/com.azure.authenticator/databases/PhoneFactor</b>, som finns i den interna lagringskatalogen för Microsoft Authenticator.</string>
     <string name="importer_help_plain_text">Tillhandahåll en klartextfil med en Google Authenticator-URI per rad.</string>
     <string name="importer_help_steam"><b>Steam v3.0 och senare stöds inte.</b> Tillhandahåll en kopia av <b>/data/data/com.valvesoftware.android.steam.community/files/Steamguard-*.json</b>, som finns i den interna lagringskatalogen för Steam.</string>
+    <string name="importer_help_stratum">Tillhandahåll en exportfil från Stratum som har erhållits genom <b>Inställningar -&gt; Säkerhetskopiera -&gt; Säkerhetskopiera till krypterad fil (rekommenderas)</b>.</string>
     <string name="importer_help_totp_authenticator">Tillhandahåll en exportfil från TOTP Authenticator.</string>
     <string name="importer_help_winauth">Tillhandahåll en exportfil från WinAuth.</string>
+    <string name="import_assign_icons_dialog_title">Tilldela ikoner</string>
+    <string name="import_assign_icons_dialog_text">Vill du tilldela ikoner till de importerade posterna?</string>
     <string name="importer_encrypted_exception_google_authenticator">Krypterad post hoppades över: %s</string>
     <string name="importer_help_direct">Importera poster direkt från %s. Detta kräver att appen är installerad på den här enheten och att rotåtkomst ges till Aegis.</string>
     <string name="groups">Grupper</string>
@@ -457,23 +536,23 @@
     <string name="pref_account_name_position_hidden">Dolt</string>
     <string name="pref_account_name_position_end">Bredvid utfärdaren</string>
     <string name="pref_account_name_position_below">Nedanför utfärdaren</string>
-    <plurals name="time_elapsed_seconds">
+    <plurals name="time_elapsed_seconds" tools:ignore="UnusedResources">
         <item quantity="one">%d sekund sedan</item>
         <item quantity="other">%d sekunder sedan</item>
     </plurals>
-    <plurals name="time_elapsed_minutes">
+    <plurals name="time_elapsed_minutes" tools:ignore="UnusedResources">
         <item quantity="one">%d minut sedan</item>
         <item quantity="other">%d minuter sedan</item>
     </plurals>
-    <plurals name="time_elapsed_hours">
+    <plurals name="time_elapsed_hours" tools:ignore="UnusedResources">
         <item quantity="one">%d timme sedan</item>
         <item quantity="other">%d timmar sedan</item>
     </plurals>
-    <plurals name="time_elapsed_days">
+    <plurals name="time_elapsed_days" tools:ignore="UnusedResources">
         <item quantity="one">%d dag sedan</item>
         <item quantity="other">%d dagar sedan</item>
     </plurals>
-    <plurals name="time_elapsed_years">
+    <plurals name="time_elapsed_years" tools:ignore="UnusedResources">
         <item quantity="one">%d år sedan</item>
         <item quantity="other">%d år sedan</item>
     </plurals>

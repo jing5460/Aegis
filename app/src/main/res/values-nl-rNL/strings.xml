@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="action_settings">Instellingen</string>
     <string name="action_about">Over</string>
     <string name="action_delete">Verwijderen</string>
@@ -10,6 +10,7 @@
     <string name="action_default_icon">Standaard pictogram herstellen</string>
     <string name="discard">Ongedaan maken</string>
     <string name="save">Opslaan</string>
+    <string name="all">Alle</string>
     <string name="issuer">Uitgever</string>
     <string name="yandex_pin">Pin (4–16 cijfers)</string>
     <string name="motp_pin">Pin (4 cijfers)</string>
@@ -28,11 +29,15 @@
     <string name="pref_section_security_summary">Instellen van versleuteling, biometrische ontgrendeling, automatische vergrendeling en andere beveiligingsinstellingen.</string>
     <string name="pref_section_import_export_title">Importeren &amp; Exporteren</string>
     <string name="pref_section_import_export_summary">Back-ups van Aegis of andere authenticator-apps importeren. Maak handmatige export van je Aegis-kluis aan.</string>
+    <string name="pref_section_audit_log_title">Auditlogboek</string>
+    <string name="pref_section_audit_log_summary">Lijst met alle gerapporteerde belangrijke gebeurtenissen in de app bekijken.</string>
     <string name="pref_section_backups_title">Back-ups</string>
     <string name="pref_section_backups_summary">Automatische back-ups op een zelfgekozen locatie instellen, of meedoen met Androids cloud-back-upsysteem inschakelen.</string>
     <string name="pref_section_icon_packs">Pictogrampakketten</string>
     <string name="pref_section_icon_packs_summary">Pictogrampakketten beheren en importeren.</string>
     <string name="pref_select_theme_title">Thema</string>
+    <string name="pref_dynamic_colors_title">Dynamische kleuren</string>
+    <string name="pref_dynamic_colors_summary">Overlay toepassen op basis van de kleuren van je Android-thema</string>
     <string name="pref_view_mode_title">Weergavemodus</string>
     <string name="pref_lang_title">Taal</string>
     <string name="pref_show_icons_title">Pictogrammen tonen</string>
@@ -40,9 +45,14 @@
     <string name="pref_code_group_size_title">Codecijfergroepering</string>
     <string name="pref_code_group_size_summary">Selecteer aantal cijfers om de codes op te groeperen</string>
     <string name="pref_account_name_position_title">Accountnaam tonen</string>
+    <string name="pref_show_next_code_title">Volgende code tonen</string>
+    <string name="pref_show_next_code_summary">Genereer en toon de volgende code vooraf</string>
+    <string name="pref_expiration_state_title">Geef aan wanneer codes op het punt staan te verlopen</string>
+    <string name="pref_expiration_state_summary">Wijzig de kleur van de codes en laat ze knipperen wanneer ze op het punt staan te verlopen</string>
+    <string name="pref_expiration_state_fallback">Wijzig de kleur van de codes wanneer ze op het punt staan te verlopen</string>
     <string name="pref_shared_issuer_account_name_title">Accountnaam alleen indien nodig tonen</string>
     <string name="pref_shared_issuer_account_name_summary">Accountnamen alleen tonen wanneer ze dezelfde uitgever hebben. Andere accountnamen worden verborgen.</string>
-    <string name="pref_account_name_position_summary_override">Deze instelling wordt overschreven door de tegelweergavemodus. Accountnaam wordt altijd getoond onder de uitgever.</string>
+    <string name="pref_account_name_position_summary_override">Instelling wordt overschreven door de weergavemodus Tegels. Accountnaam wordt getoond onder de uitgever.</string>
     <string name="pref_import_file_title">Importeren vanuit een bestand</string>
     <string name="pref_import_file_summary">Importeer tokens vanuit een bestand</string>
     <string name="pref_android_backups_title">Android-cloudback-ups</string>
@@ -54,15 +64,23 @@
     <string name="pref_backups_reminder_summary">Toon een herinnering om een back-up van je kluis te maken, als je nog geen back-up hebt van de laatste wijzigingen.</string>
     <string name="pref_backups_reminder_dialog_title">Back-up herinnering uitschakelen</string>
     <string name="pref_backups_reminder_dialog_summary">Uitschakelen van deze herinnering betekent dat Aegis je niet zal vertellen of je wijzigingen hebt die nog niet zijn geback-upt. Hiermee loop je het risico om de toegang tot tokens te verliezen. Weet je zeker dat je deze herinnering wil uitschakelen?</string>
-    <string name="pref_backups_location_title">Map voor back-upbestanden</string>
+    <string name="pref_backups_versioning_strategy_title">Back-upstrategie</string>
+    <string name="pref_backups_versioning_strategy_keep_x_versions">Een aantal versies behouden</string>
+    <string name="pref_backups_versioning_strategy_single_backup">Een enkele back-up</string>
+    <string name="pref_backups_versioning_strategy_single_backup_warning">De geselecteerde back-upstrategie is niet betrouwbaar en wordt niet aanbevolen. Een enkele mislukte back-up kan leiden tot het verliezen van de enige back-up.</string>
+    <string name="pref_backups_versioning_strategy_dialog_title">Selecteer een back-upstrategie</string>
+    <string name="pref_backups_location_title">Back-uplocatie</string>
     <string name="pref_backups_location_summary">Back-ups zullen worden opgeslagen in</string>
+    <string name="pref_backup_location_summary">Back-up zal worden opgeslagen in</string>
     <string name="pref_backups_trigger_title">Maak nu een back-up</string>
     <string name="pref_backups_trigger_summary">Handmatig een back-up aanzetten</string>
     <string name="pref_backups_versions_title">Aantal versies om te behouden</string>
+    <string name="pref_backups_versions_infinite">\u221E</string>
     <plurals name="pref_backups_versions_summary">
         <item quantity="one">Behoud %1$d versie van de back-up</item>
         <item quantity="other">Behoud %1$d versies van de back-up</item>
     </plurals>
+    <string name="pref_backups_versions_infinite_summary">Oneindig aantal versies van de back-up bewaren</string>
     <string name="pref_import_app_title">Importeren vanuit een app</string>
     <string name="pref_import_app_summary">Importeer tokens vanuit een app (vereist root-access)</string>
     <string name="pref_export_title">Exporteren</string>
@@ -98,8 +116,34 @@
     <string name="pref_encryption_summary">Versleutel de kluis en ontgrendel deze met een wachtwoord of biometrie</string>
     <string name="pref_biometrics_title">Ontgrendelen met biometrie</string>
     <string name="pref_biometrics_summary">Sta biometrische authenticatie toe om de kluis te ontgrendelen</string>
+    <string name="pref_search_behavior_summary">Zoek door: %s</string>
+    <string name="pref_search_behavior_prompt">Zoek in een van de volgende velden</string>
+    <string name="pref_search_behavior_type_name">Naam</string>
+    <string name="pref_search_behavior_type_issuer">Uitgever</string>
+    <string name="pref_search_behavior_type_note">Notitie</string>
+    <string name="pref_search_behavior_type_groups">Groepen</string>
     <string name="pref_set_password_title">Wachtwoord wijzigen</string>
     <string name="pref_set_password_summary">Stel een nieuw wachtwoord in waarmee je de kluis kunt ontgrendelen</string>
+    <string name="no_events_title">Geen gerapporteerde gebeurtenissen</string>
+    <string name="no_events_description">Geen belangrijke gebeurtenissen in de app gerapporteerd</string>
+    <string name="event_title_vault_unlocked">Kluis ontgrendeld</string>
+    <string name="event_description_vault_unlocked">De kluis is met succes ontgrendeld</string>
+    <string name="event_title_backup_created">Back-up gemaakt</string>
+    <string name="event_description_backup_created">Er is met succes een back-up van de kluis gemaakt</string>
+    <string name="event_title_android_backup_created">Back-up gemaakt door Android</string>
+    <string name="event_description_android_backup_created">Er is met succes een back-up van de kluis gemaakt door Android</string>
+    <string name="event_title_vault_exported">Kluis geëxporteerd</string>
+    <string name="event_description_vault_exported">Een kopie van de kluis is geëxporteerd</string>
+    <string name="event_title_entry_shared">Item gedeeld</string>
+    <string name="event_description_entry_shared">Een item is gedeeld</string>
+    <string name="event_title_vault_unlock_failed_password">Kluis ontgrendelen mislukt (wachtwoord)</string>
+    <string name="event_description_vault_unlock_failed_password">Een poging om de kluis met een wachtwoord te ontgrendelen is mislukt</string>
+    <string name="event_title_vault_unlock_failed_biometrics">Kluis ontgrendelen mislukt (biometrie)</string>
+    <string name="event_description_vault_unlock_failed_biometrics">Een poging om de kluis te ontgrendelen met biometrie is mislukt</string>
+    <string name="event_unknown">Onbekende gebeurtenis</string>
+    <string name="audit_log_entry_deleted">(verwijderd)</string>
+    <string name="today_at_time">Vandaag om %1$s</string>
+    <string name="day_of_week_at_time">%1$s om %2$s</string>
     <string name="export_encrypted">Kluis versleutelen</string>
     <string name="export_help">Deze actie zal de kluis exporteren uit de interne opslag van Aegis. Selecteer het formaat waarin je de export wilt:</string>
     <string name="export_warning_unencrypted">Je staat op het punt een onversleutelde kopie van de Aegis-kluis te exporteren. <b>Dit wordt niet aanbevolen</b>.</string>
@@ -116,7 +160,7 @@
         <item quantity="other">%d groepen geselecteerd</item>
     </plurals>
     <string name="export_no_groups_selected">Geen groepen gekozen om te exporteren</string>
-    <string name="export_html_title" context="The title of an HTML export document">Aegis Authenticator Export</string>
+    <string name="export_html_title" comment="The title of an HTML export document">Aegis Authenticator Export</string>
     <string name="choose_authentication_method">Beveiliging</string>
     <string name="authentication_method_explanation">Aegis is een op veiligheid gerichte 2FA-applicatie. Tokens worden opgeslagen in een kluis, die optioneel kan worden versleuteld met een wachtwoord naar keuze. Als een aanvaller je versleutelde kluisbestand in handen krijgt, zal deze geen toegang hebben tot de inhoud zonder het wachtwoord te kennen.\n\nWij hebben de optie gekozen die volgens ons het beste past bij jouw apparaat.</string>
     <string name="authentication_method_none">Geen</string>
@@ -125,7 +169,7 @@
     <string name="authentication_method_password_description">Een wachtwoord is nodig om de kluis te ontgrendelen.</string>
     <string name="authentication_method_password_explanation">Waarschuwing: Als je je wachtwoord vergeet, verlies je permanent toegang tot je tokens. Er is geen manier om deze te herstellen zonder het wachtwoord.</string>
     <string name="authentication_method_biometrics">Biometrie</string>
-    <string name="authentication_method_biometrics_description">Naast een wachtwoord kunnen biometrische gegevens die geregistreerd zijn op dit apparaat, zoals een vingerafdruk of je gezicht, gebruikt worden om de kluis te ontgrendelen.</string>
+    <string name="authentication_method_biometrics_description">Naast een wachtwoord kan biometrie die geregistreerd is op dit apparaat, zoals een vingerafdruk of je gezicht, gebruikt worden om de kluis te ontgrendelen.</string>
     <string name="authentication">Ontgrendel de kluis</string>
     <string name="authentication_multiline" comment="The newline in the middle is used for aesthetic purposes">Ontgrendel\nde kluis</string>
     <string name="auth_use_biometrics">Of tik hier om <font fgcolor="#FF0D86C1">biometrie</font> te gebruiken</string>
@@ -164,6 +208,11 @@
     <string name="set_up_biometric">Biometrische ontgrendeling instellen</string>
     <string name="copy">Kopiëren</string>
     <string name="edit">Bewerken</string>
+    <string name="select_all">Alles selecteren</string>
+    <string name="assign_icons">Pictogrammen toewijzen</string>
+    <string name="assign_groups">Toewijzen aan groep</string>
+    <string name="assign_groups_dialog_summary">Selecteer een groep waaraan u de geselecteerde items wilt toewijzen.</string>
+    <string name="assign_groups_dialog_dropdown">Groep selecteren</string>
     <string name="favorite" comment="Verb">Aan favorieten toevoegen</string>
     <string name="unfavorite" comment="Verb">Uit favorieten verwijderen</string>
     <string name="error_all_caps">FOUT</string>
@@ -181,7 +230,7 @@
     <string name="reading_file">Bestand lezen</string>
     <string name="requesting_root_access">Root-toegang wordt aangevraagd</string>
     <string name="analyzing_qr">QR-code analyseren</string>
-    <string name="analyzing_qr_multiple">QR-code analyseren %d/%d (%s)</string>
+    <string name="analyzing_qr_multiple">QR-code analyseren %1$d/%2$d (%3$s)</string>
     <plurals name="added_new_entries">
         <item quantity="one">%d nieuwe items aan de kluis toegevoegd</item>
         <item quantity="other">%d nieuwe items aan de kluis toegevoegd</item>
@@ -198,6 +247,7 @@
     <string name="discard_changes">Wijzigingen ongedaan maken?</string>
     <string name="discard_changes_description">Je wijzigingen zijn niet opgeslagen</string>
     <string name="saving_profile_error">Fout bij opslaan profiel</string>
+    <string name="saving_assign_icons_error">Fout bij toewijzen pictogrammen</string>
     <string name="welcome">Welkom</string>
     <string name="app_description">Aegis is een gratis en veilige open-source 2FA-app.</string>
     <string name="setup_completed">Configuratie voltooid</string>
@@ -206,6 +256,7 @@
     <string name="copied">Gekopieerd</string>
     <string name="errors_copied">Fouten zijn naar klembord gekopieerd</string>
     <string name="version_copied">Versie is naar het klembord gekopieerd</string>
+    <string name="error_required_field">Dit veld is vereist</string>
     <string name="error_occurred">Er is een fout opgetreden</string>
     <string name="decryption_error">Er is een fout opgetreden tijdens het ontgrendelen van de kluis</string>
     <string name="decryption_corrupt_error">Er is een fout opgetreden tijdens het ontgrendelen van de kluis. Het kluisbestand kan beschadigd zijn.</string>
@@ -269,13 +320,20 @@
     <string name="partial_google_auth_import">Onvolledige Google Authenticator-export gedetecteerd</string>
     <string name="partial_google_auth_import_warning">Enkele QR-codes ontbreken in de import. De volgende codes zijn niet gevonden:\n\n<b>%s</b>\n\nJe kan doorgaan met het importeren van deze gedeeltelijke export, maar we raden aan het opnieuw te proberen met alle QR-codes, zodat je niet het risico loopt de toegang tot tokens te verliezen.</string>
     <string name="missing_qr_code_descriptor">• QR-code %d</string>
-    <string name="import_partial_export_anyway">%d tokens toch importeren</string>
+    <plurals name="import_partial_export_anyway">
+        <item quantity="one">%d token toch importeren</item>
+        <item quantity="other">%d tokens toch importeren</item>
+    </plurals>
     <string name="import_google_auth_failure">Importeren van Google Authenticator-export mislukt</string>
     <string name="unrelated_google_auth_batches_error">Export bevat informatie voor een niet gerelateerde batch. Probeer 1 batch tegelijk te importeren.</string>
     <string name="no_tokens_can_be_imported">Hierdoor kunnen geen tokens worden geïmporteerd</string>
     <string name="unlocking_vault">Kluis wordt ontgrendeld</string>
+    <string name="rename_group">Groep hernoemen</string>
+    <string name="no_group_selection">Als een item niet in een groep zit, kan dit worden gevonden onder ‘Geen groep’.</string>
     <string name="remove_group">Groep verwijderen</string>
     <string name="remove_group_description">Weet je zeker dat je deze groep wilt verwijderen? Alle items binnen deze groep worden automatisch verplaatst naar ‘Geen groep’.</string>
+    <string name="remove_unused_groups">Ongebruikte groepen verwijderen</string>
+    <string name="remove_unused_groups_description">Weet je zeker dat je alle groepen, die niet aan een item zijn toegewezen, wilt verwijderen?</string>
     <string name="remove_icon_pack">Pictogrammenpakket verwijderen</string>
     <string name="remove_icon_pack_description">Weet je zeker dat je dit pictogrampakket wil verwijderen? Items die pictogrammen uit dit pakket gebruiken, worden niet beïnvloed.</string>
     <string name="details">Details</string>
@@ -283,13 +341,16 @@
     <string name="lock">Vergrendel</string>
     <string name="name">Naam</string>
     <string name="no_group">Geen groep</string>
-    <string name="sort">Sorteren</string>
+    <string name="sort" comment="Title of the Sort button in the top action bar of the main view">Sorteren</string>
     <string name="sort_alphabetically">Uitgever (A t/m Z)</string>
     <string name="sort_alphabetically_reverse">Uitgever (Z t/m A)</string>
     <string name="sort_alphabetically_name">Account (A t/m Z)</string>
     <string name="sort_alphabetically_name_reverse">Account (Z t/m A)</string>
     <string name="sort_usage_count">Gebruikteller</string>
+    <string name="sort_last_used">Laatst gebruikt</string>
     <string name="sort_custom">Aangepast</string>
+    <string name="last_used">Laatst gebruikt</string>
+    <string name="last_used_never">nooit</string>
     <string name="new_group">Nieuwe groep…</string>
     <string name="group">Groep</string>
     <string name="group_name_hint">Groepsnaam</string>
@@ -298,13 +359,14 @@
     <string name="preference_reset_usage_count">Gebruikteller resetten</string>
     <string name="preference_reset_usage_count_summary">Reset de gebruikteller van elk item in je kluis</string>
     <string name="preference_reset_usage_count_dialog">Weet je zeker dat je de gebruikteller van alle items in de kluis op 0 wilt zetten?</string>
-    <string name="note">Notitie</string>
+    <string name="note" comment="Users can add a note to an entry">Notitie</string>
     <string name="clear">Wissen</string>
     <string name="pref_highlight_entry_title">Codes markeren na aantikken</string>
     <string name="pref_highlight_entry_summary">Maak codes makkelijker te onderscheiden van elkaar door ze tijdelijk te markeren na het aantikken</string>
     <string name="pref_minimize_on_copy_title">Na kopiëren minimaliseren</string>
     <string name="pref_minimize_on_copy_summary">Na kopiëren van een code de app minimaliseren</string>
     <string name="pref_copy_behavior_title">Codes naar het klembord kopiëren</string>
+    <string name="pref_search_behavior_title">Zoekgedrag</string>
     <string name="pref_pause_entry_title">Codes bevriezen na aantikken</string>
     <string name="pref_pause_entry_summary">Pauzeer automatisch verversen van codes door erop te tikken. Codes zullen niet worden bijgewerkt zolang ze gefocust zijn. Vereist ‘Codes markeren na aantikken’ of ‘Aantikken om te laten zien’.</string>
     <string name="pin_keyboard_description">Voer je wachtwoord in om het PIN-toetsenbord in te schakelen. Let op: dit werkt alleen als je wachtwoord uit cijfers bestaat</string>
@@ -324,13 +386,13 @@
     <string name="unknown_issuer">Onbekende uitgever</string>
     <string name="unknown_account_name">Onbekende accountnaam</string>
     <plurals name="import_error_dialog">
-        <item quantity="one">Aegis kon %d token niet importeren. Dit token zal worden overgeslagen. Druk op ‘details’ om meer informatie over de fouten te zien.</item>
-        <item quantity="other">Aegis kon %d tokens niet importeren. Deze tokens zullen worden overgeslagen. Druk op ‘details’ om meer informatie over de fouten te zien.</item>
+        <item quantity="one">Aegis kan %d token niet importeren. Dit token zal worden overgeslagen. Druk op ‘details’ voor meer informatie over de fouten.</item>
+        <item quantity="other">Aegis kan %d tokens niet importeren. Deze tokens zullen worden overgeslagen. Druk op ‘details’ voor meer informatie over de fouten.</item>
     </plurals>
     <string name="unable_to_process_deeplink">Kan de deeplink niet verwerken</string>
     <string name="unable_to_read_qrcode_file">Kan de QR-code van bestand niet lezen en verwerken: %s.</string>
     <string name="unable_to_process_shared_text">Kan gedeelde tekst niet verwerken als OTP</string>
-    <string name="unable_to_read_qrcode_files">Kan sommige QR-codes niet lezen en verwerken. Alleen %d/%d items worden geïmporteerd.</string>
+    <string name="unable_to_read_qrcode_files">Kan sommige QR-codes niet lezen en verwerken. Alleen %1$d/%2$d items worden geïmporteerd.</string>
     <string name="unable_to_generate_qrcode">Kan de QR-code niet genereren</string>
     <string name="select_picture">Foto selecteren</string>
     <string name="select_icon">Icoon selecteren</string>
@@ -346,7 +408,7 @@
     <string name="whats_new">Vernieuwingen</string>
     <string name="github_description">Broncode, problemen en informatie</string>
     <string name="license">Licentie</string>
-    <string name="license_description">Aegis Authenticator is gelicensieerd onder de GPLv3</string>
+    <string name="license_description">Aegis Authenticator is gelicenseerd onder de GPLv3</string>
     <string name="third_party_licenses">Licenties van derden</string>
     <string name="third_party_licenses_description">Licenties van bibliotheken van derden gebruikt door Aegis</string>
     <string name="country_netherlands">Nederland</string>
@@ -362,12 +424,14 @@
     <string name="time_sync_warning_disable">Stop met me te waarschuwen. Ik weet wat ik doe.</string>
     <string name="google_qr_export_unrelated">Ongerelateerde QR-code gevonden. Probeer de scanner opnieuw te starten.</string>
     <plurals name="google_qr_export_scanned">
-        <item quantity="one">%d/%d QR-code gescand</item>
-        <item quantity="other">%d/%d QR-codes gescand</item>
+        <item quantity="one">%1$d/%2$d QR-codes gescand</item>
+        <item quantity="other">%1$d/%2$d QR-codes gescand</item>
     </plurals>
-    <string name="google_qr_export_unexpected">QR-code #%d werd verwacht, maar in plaats daarvan #%d gescand</string>
+    <string name="google_qr_export_unexpected">QR-code #%1$d verwacht, in plaats daarvan #%2$d gescand</string>
     <string name="backup_error_bar_message"><b>Kluis back-up onlangs mislukt</b></string>
-    <string name="backup_error_dialog_details" comment="The first parameter is the type of backup (e.g. built-in or Android backup). The second parameter is an elapsed time in the style of 'x seconds/minutes/days ago'.">        Een recente back-up van de kluis met %s mislukte omdat er iets misging. De back-uppoging was op %s. Controleer de back-upinstellingen om zeker te zijn dat back-ups met succes kunnen worden voltooid.
+    <string name="backup_error_dialog_details" comment="The first parameter is the type of backup (e.g. built-in or Android backup). The second parameter is an elapsed time in the style of 'x seconds/minutes/days ago'.">        Een recente back-up van de kluis met %1$s mislukte omdat er iets misging. De back-uppoging was %2$s. Controleer de back-upinstellingen om zeker te zijn dat back-ups met succes kunnen worden voltooid.
+    </string>
+    <string name="backup_permission_error_dialog_details" comment="The first parameter is the type of backup (e.g. built-in or Android backup). The second parameter is an elapsed time in the style of 'x seconds/minutes/days ago'.">        Een recente poging een reservekopie van de kluis te maken met %1$s is mislukt. Aegis heeft geen toestemming om te schrijven naar de back-uplocatie. De De back-uppoging was %2$s. Deze fout kan optreden als je de back-uplocatie hebt verplaatst/hernoemd of als je onlangs een Aegis hebt hersteld met een back-up. Configureer de back-uplocatie opnieuw.
     </string>
     <string name="backup_system_builtin">het ingebouwde automatische back-ups van Aegis</string>
     <string name="backup_system_android">het cloud back-upsysteem van Android</string>
@@ -401,7 +465,6 @@
     <string name="copy_uri">URI kopiëren</string>
     <string name="unable_to_copy_uri_to_clipboard">Kan URI niet naar klembord kopiëren</string>
     <string name="uri_copied_to_clipboard">URI naar klembord gekopieerd</string>
-    <string name="transfer_entry">Item overzetten</string>
     <string name="transfer_entry_description">Scan deze QR-code met de authenticator-app waar je dit item naar wilt overzetten</string>
     <string name="google_auth_compatible_transfer_description">Scan deze QR-codes met Aegis of Google Authenticator.\n\nVanwege beperkingen van de Google Authenticator app, zijn alleen TOTP- &amp; HOTP-tokens die SHA1 gebruiken en 6-cijferige codes produceren opgenomen</string>
     <string name="password_strength_very_weak">Zeer zwak</string>
@@ -409,6 +472,7 @@
     <string name="password_strength_fair">Redelijk</string>
     <string name="password_strength_good">Goed</string>
     <string name="password_strength_strong">Sterk</string>
+    <string name="password_strength_unknown">Wachtwoord te lang voor sterkte-analyse</string>
     <string name="pref_pin_keyboard_title">PIN-toetsen op vergrendelscherm</string>
     <string name="pref_pin_keyboard_summary">Schakel dit in als je het PIN-toetsenbord op het vergrendelscherm wilt gebruiken. Werkt alleen bij numerieke wachtwoorden</string>
     <string name="title_activity_preferences">Instellingen</string>
@@ -418,13 +482,16 @@
     <string name="title_activity_edit_entry">Item bewerken</string>
     <string name="title_activity_scan_qr">QR-code scannen</string>
     <string name="title_activity_import_entries">Items importeren</string>
+    <string name="title_activity_assign_icons">Pictogrammen toewijzen</string>
+    <string name="title_activity_licenses">Licenties van derden</string>
     <string name="dialog_wipe_entries_title">Items wissen</string>
     <string name="dialog_wipe_entries_message">Je kluis bevat al items. Wil je deze items verwijderen voordat je dit bestand importeert?\n\n<b>Hiermee verlies je permanent toegang tot de bestaande items in de kluis.</b></string>
     <string name="dialog_wipe_entries_checkbox">Inhoud van kluis wissen</string>
     <string name="panic_trigger_ignore_toast">Aegis heeft paniektrigger ontvangen, maar instelling is uitgeschakeld, wordt genegeerd</string>
     <string name="pref_panic_trigger_title">Kluis bij paniektrigger verwijderen</string>
     <string name="pref_panic_trigger_summary">Kluis bij ontvangen van Ripple-paniektrigger verwijderen</string>
-    <string name="import_vault">Kluis importeren</string>
+    <string name="import_vault">Aegis-kluis importeren</string>
+    <string name="import_vault_hint">Wil je uit een andere 2FA-app importeren? Voltooi eerst de configuratie en ga dan naar het instellingenmenu.</string>
     <plurals name="import_duplicate_toast">
         <item quantity="one">%d potentiële dubbeling niet aangevinkt. Controleer de lijst met items.</item>
         <item quantity="other">%d potentiële dubbelingen niet aangevinkt. Controleer de lijst met items.</item>
@@ -432,20 +499,25 @@
     <string name="importer_help_2fas">Lever een 2FAS Authenticator-back-upbestand aan.</string>
     <string name="importer_help_aegis">Lever een Aegis-export/-back-upbestand aan.</string>
     <string name="importer_help_authenticator_plus">Lever een Authenticator Plus-exportbestand aan verkregen via <b>Instellingen -&gt; Back-up &amp; Herstellen -&gt; Exporteren als Tekst en HTML</b>.</string>
-    <string name="importer_help_authenticator_pro">Lever een Authenticator Pro-exportbestand aan verkregen via <b>Instellingen -&gt; Back-up -&gt; Back-up naar versleuteld bestand (aanbevolen)</b>.</string>
     <string name="importer_help_authy">Lever een kopie aan van <b>/data/data/com.authy.authy/shared_prefs/com.authy.storage.tokens.authenticator.xml</b>, geplaatst in de interne opslagmap van Authy.</string>
     <string name="importer_help_andotp">Lever een andOTP-export/-back-upbestand aan.</string>
     <string name="importer_help_bitwarden">Lever een Bitwarden-export/-back-upbestand aan. Versleutelde bestanden worden niet ondersteund.</string>
-    <string name="importer_help_battle_net_authenticator">Lever een kopie aan van <b>/data/data/com.blizzard.bma/shared_prefs/com.blizzard.bma.AUTH_STORE.xml</b>, geplaatst in de interne opslagmap van Battle.net Authenticator.</string>
+    <string name="importer_help_battle_net_authenticator">Lever een kopie aan van <b>/data/data/com.blizzard.messenger/shared_prefs/com.blizzard.messenger.authenticator_preferences.xml</b>, geplaatst in de interne opslagmap van Battle.net Authenticator.</string>
     <string name="importer_help_duo">Lever een kopie aan van <b>/data/data/com.duosecurity.duomobile/files/duokit/accounts.json</b>, geplaatst in de interne opslagmap van DUO.</string>
-    <string name="importer_help_freeotp">Lever een kopie aan van <b>/data/data/org.fedorahosted.freeotp/shared_prefs/tokens.xml</b>, geplaatst in de interne opslagmap van FreeOTP.</string>
+    <string name="importer_help_ente_auth">Lever een Ente Auth-exportbestand aan. Momenteel worden alleen niet-versleutelde bestanden ondersteund.</string>
+    <string name="importer_help_freeotp">FreeOTP 2: Lever een back-upbestand.\nFreeOTP 1.x: Lever een kopie aan van <b>/data/data/org.fedorahosted.freeotp/shared_prefs/tokens.xml</b>, geplaatst in de interne opslagmap van FreeOTP.</string>
     <string name="importer_help_freeotp_plus">Lever een FreeOTP+-exportbestand aan.</string>
+    <string name="importer_warning_title_freeotp2">Compatibiliteit met FreeOTP 2</string>
+    <string name="importer_warning_message_freeotp2">Er zijn een aantal problemen in FreeOTP 2 die tot beschadigde back-ups kunnen leiden. Aegis zal proberen zoveel mogelijk items te redden, maar mogelijk kunnen sommige items of zelfs alles niet worden geïmporteerd.</string>
     <string name="importer_help_google_authenticator"><b>Alleen database-bestanden van Google Authenticator v5.10 en eerder worden ondersteund</b>.\n\nLever een kopie aan van <b>/data/data/com.google.android.apps.authenticator2/databases/databases</b>, geplaatst in de interne opslagmap van Google Authenticator.</string>
     <string name="importer_help_microsoft_authenticator">Lever een kopie aan van <b>/data/data/com.azure.authenticator/databases/PhoneFactor</b>, geplaatst in de interne opslagmap van Microsoft Authenticator.</string>
     <string name="importer_help_plain_text">Lever een tekstbestand aan met een Google Authenticator URI op elke regel.</string>
     <string name="importer_help_steam"><b>Steam v3.0 en nieuwer worden niet ondersteund</b>. Zorg voor een kopie van <b>/data/data/com.valvesoftware.android.steam.community/files/Steamguard-*.json</b>, te vinden in de interne opslagmap van Steam.</string>
+    <string name="importer_help_stratum">Lever een Stratum-exportbestand aan verkregen via <b>Instellingen -&gt; Back-up -&gt; Back-up naar versleuteld bestand (aanbevolen)</b>.</string>
     <string name="importer_help_totp_authenticator">Lever een TOTP Authenticator-exportbestand aan.</string>
     <string name="importer_help_winauth">Lever een WinAuth-exportbestand aan.</string>
+    <string name="import_assign_icons_dialog_title">Pictogrammen toewijzen</string>
+    <string name="import_assign_icons_dialog_text">Wil je pictogrammen aan de geïmporteerde items toewijzen?</string>
     <string name="importer_encrypted_exception_google_authenticator">Versleuteld item is overgeslagen: %s</string>
     <string name="importer_help_direct">Importeer items rechtstreeks van %s. Dit vereist dat de app op dit apparaat staat en dat root-toegang aan Aegis wordt verleend.</string>
     <string name="groups">Groepen</string>
@@ -462,23 +534,23 @@
     <string name="pref_account_name_position_hidden">Verborgen</string>
     <string name="pref_account_name_position_end">Naast de uitgever</string>
     <string name="pref_account_name_position_below">Onder de uitgever</string>
-    <plurals name="time_elapsed_seconds">
+    <plurals name="time_elapsed_seconds" tools:ignore="UnusedResources">
         <item quantity="one">%d seconde geleden</item>
         <item quantity="other">%d seconden geleden</item>
     </plurals>
-    <plurals name="time_elapsed_minutes">
+    <plurals name="time_elapsed_minutes" tools:ignore="UnusedResources">
         <item quantity="one">%d minuut geleden</item>
         <item quantity="other">%d minuten geleden</item>
     </plurals>
-    <plurals name="time_elapsed_hours">
+    <plurals name="time_elapsed_hours" tools:ignore="UnusedResources">
         <item quantity="one">%d uur geleden</item>
         <item quantity="other">%d uur geleden</item>
     </plurals>
-    <plurals name="time_elapsed_days">
+    <plurals name="time_elapsed_days" tools:ignore="UnusedResources">
         <item quantity="one">%d dag geleden</item>
         <item quantity="other">%d dagen geleden</item>
     </plurals>
-    <plurals name="time_elapsed_years">
+    <plurals name="time_elapsed_years" tools:ignore="UnusedResources">
         <item quantity="one">%d jaar geleden</item>
         <item quantity="other">%d jaar geleden</item>
     </plurals>
